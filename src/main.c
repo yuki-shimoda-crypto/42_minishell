@@ -6,13 +6,13 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:52:04 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/05 00:13:09 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/05 01:32:03 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char const *argv[])
+int	main(int argc, char const *argv[])
 {
 	(void)argc;
 	ft_printf("%s\n", argv[0]);
