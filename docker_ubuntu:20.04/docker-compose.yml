@@ -5,7 +5,7 @@ version: '3'
 services:
   ubuntu:
     build: ./ubuntu
-    restart: always
+    # restart: always
   
   # image: "ubuntu:20.04"
   # build: "./ubuntu"
