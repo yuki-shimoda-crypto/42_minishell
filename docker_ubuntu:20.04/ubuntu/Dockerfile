@@ -41,7 +41,7 @@ RUN	apt update \
 RUN	python3 -m pip install norminette \
 	&& python3 -m pip install c-formatter-42
 
-create user
+# create user
 # RUN useradd --create-home --home-dir /home/${user_name} --shell /bin/bash -p $(perl -e "print crypt(${user_password}}, \$6\$${salt})") -G sudo ${user_name}
 # RUN	useradd --create-home --home-dir /home/${user_name} --shell /bin/bash -p $(perl -e 'print crypt("password", "\$6\$gvndskjfpgafjsdakljgioreio")') -G sudo ${user_name}
 RUN	useradd --create-home --home-dir /home/${user_name} --shell /bin/bash -p $(perl -e 'print crypt("password", "\$6\$gvndskjfpgafjsdakljgioreio")') ${user_name}
