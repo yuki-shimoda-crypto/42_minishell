@@ -1,13 +1,11 @@
 version: '3'
 
-# build: ubuntu
-
 services:
   ubuntu:
     build: ./ubuntu
+    container_name: minishell
+    image: minishell
+    tty: true
+    volumes:
+      - ${HOME}:/root/
     # restart: always
-  
-  # image: "ubuntu:20.04"
-  # build: "./ubuntu"
-  # restart: "always"
-  # volumes: "/home/${USER}/Desktop"
