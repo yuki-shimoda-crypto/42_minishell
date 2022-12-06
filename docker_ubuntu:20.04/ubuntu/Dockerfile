@@ -1,13 +1,14 @@
 FROM	ubuntu:20.04
 
-# set env
+# set env must be changed
 ENV	git_user_name=minishell
 ENV	git_user_email=example@example.com
+# set env not need to be changed
+ENV	user_name=minishell
+ENV	user_password=password
 ENV	TZ=Asia/Tokyo
 ENV	LANG=en_US.UTF-8
 ENV	LANGUAGE=en_US.UTF-8
-ENV	user_name=minishell
-ENV	user_password=password
 # ENV	salt=oJKHGEjbCDrWIWlgi8zSm2lJqizbvGhl
 # salt is random strings of characters that make it difficult to break passwords
 
@@ -43,7 +44,6 @@ RUN	python3 -m pip install norminette \
 
 # create user
 RUN	useradd --create-home --home-dir /home/${user_name} --shell /bin/bash -p $(perl -e "print crypt(${user_password}, '\$6\$gvndskjfpgafjsdakljgioreio')") -G sudo ${user_name}
-
 
 # install github-cl
 RUN	curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
