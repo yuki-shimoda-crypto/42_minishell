@@ -1,20 +1,26 @@
-FROM	ubuntu:20.04
+# # ubuntu ubuntu 20.04 amd64
+FROM	ubuntu@sha256:450e066588f42ebe1551f3b1a535034b6aa46cd936fe7f2c6b0d72997ec61dbd
+# # FROM 	ubuntu:20.04
 
 # set env must be changed
-ENV	git_user_name=minishell
-ENV	git_user_email=example@example.com
+ENV	git_user_name=yuki-shimoda-crypto
+ENV	git_user_email=77478109+yuki-shimoda-crypto@users.noreply.github.com
+WORKDIR /root
+
 # set env not need to be changed
-ENV	user_name=minishell
-ENV	user_password=password
-ENV	TZ=Asia/Tokyo
+ARG	user_name=minishell
+ARG	user_password=password
+ARG	TZ=Asia/Tokyo
 ENV	LANG=en_US.UTF-8
 ENV	LANGUAGE=en_US.UTF-8
 # ENV	salt=oJKHGEjbCDrWIWlgi8zSm2lJqizbvGhl
 # salt is random strings of characters that make it difficult to break passwords
 
+# set unminimize
+RUN	yes | unminimize
+
 # set timezone, language
-RUN	ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone RUN	export LANG=${LANG} \
-	&& export LANGUAGE=${LANGUAGE}
+RUN	ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 # install apt package
 RUN	apt update \
