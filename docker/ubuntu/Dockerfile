@@ -5,7 +5,7 @@ FROM	ubuntu@sha256:450e066588f42ebe1551f3b1a535034b6aa46cd936fe7f2c6b0d72997ec61
 # set env must be changed
 ARG	git_user_name=yuki-shimoda-crypto
 ARG	git_user_email=77478109+yuki-shimoda-crypto@users.noreply.github.com
-WORKDIR /root
+WORKDIR	/root
 
 # set env not need to be changed
 ARG	user_name=minishell
@@ -62,3 +62,5 @@ RUN	curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | s
 # set gitconfig
 RUN	git config --global user.name ${git_user_name} \
 	&& git config --global user.email ${git_user_email}
+
+COPY	.bashrc /root/
