@@ -1,6 +1,6 @@
-# # ubuntu ubuntu 20.04 amd64
+# ubuntu ubuntu 20.04 amd64
 FROM	ubuntu@sha256:450e066588f42ebe1551f3b1a535034b6aa46cd936fe7f2c6b0d72997ec61dbd
-# # FROM 	ubuntu:20.04
+# FROM 	ubuntu:20.04
 
 # set env must be changed
 ARG	git_user_name=yuki-shimoda-crypto
@@ -20,7 +20,8 @@ ENV	LANGUAGE=en_US.UTF-8
 RUN	yes | unminimize
 
 # set timezone, language
-RUN	ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+RUN	ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
+	&& echo ${TZ} > /etc/timezone
 
 # install apt package
 RUN	apt update \
