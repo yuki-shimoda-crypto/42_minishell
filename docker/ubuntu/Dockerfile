@@ -60,7 +60,13 @@ RUN	curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | s
 	&& sudo apt install gh -y
 
 # set gitconfig
+COPY	.gitconfig /root/
 RUN	git config --global user.name ${git_user_name} \
 	&& git config --global user.email ${git_user_email}
 
+# set ssh-key
+COPY	config /root/.ssh/
+RUN	ssh-keygen -q -t rsa -N "" -f ~/.ssh/id_rsa_github
+
+# set .bashrc
 COPY	.bashrc /root/
