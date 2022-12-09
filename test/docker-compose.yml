@@ -7,5 +7,5 @@ services:
     image: minishell
     tty: true
     volumes:
-      - ${HOME}:/root/
-    # restart: always
+      - ${HOME}:/mnt/host/
+    restart: always

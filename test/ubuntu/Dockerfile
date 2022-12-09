@@ -3,6 +3,7 @@ FROM	ubuntu:20.04
 # set env must be changed
 ENV	git_user_name=minishell
 ENV	git_user_email=example@example.com
+
 # set env not need to be changed
 ENV	user_name=minishell
 ENV	user_password=password
@@ -11,6 +12,9 @@ ENV	LANG=en_US.UTF-8
 ENV	LANGUAGE=en_US.UTF-8
 # ENV	salt=oJKHGEjbCDrWIWlgi8zSm2lJqizbvGhl
 # salt is random strings of characters that make it difficult to break passwords
+
+# set unminimize
+RUN	yes | unminimize
 
 # set timezone, language
 RUN	ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone RUN	export LANG=${LANG} \

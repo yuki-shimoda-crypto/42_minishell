@@ -6,13 +6,14 @@
 #    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2022/12/05 00:11:13 by yshimoda         ###   ########.fr        #
+#    Updated: 2022/12/07 18:33:40 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	minishell
 CC				=	cc
 CFLAGS			=	-Wall -Werror -Wextra
+CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=leak -fsanitize=undefined
 INCLUDE			=	-I include
 
 SRCS			=	src/main.c
@@ -38,6 +39,10 @@ clean:
 fclean:			clean
 				$(RM) $(NAME)
 
+debug:			CFLAGS += $(CFLAGS_DEBUG)
+debug:			all
+
 re:				fclean all
 
+debug:			
 .PHONY:			all clean fclean re

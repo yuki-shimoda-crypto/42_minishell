@@ -3,8 +3,8 @@ FROM	ubuntu@sha256:450e066588f42ebe1551f3b1a535034b6aa46cd936fe7f2c6b0d72997ec61
 # # FROM 	ubuntu:20.04
 
 # set env must be changed
-ENV	git_user_name=yuki-shimoda-crypto
-ENV	git_user_email=77478109+yuki-shimoda-crypto@users.noreply.github.com
+ARG	git_user_name=yuki-shimoda-crypto
+ARG	git_user_email=77478109+yuki-shimoda-crypto@users.noreply.github.com
 WORKDIR /root
 
 # set env not need to be changed

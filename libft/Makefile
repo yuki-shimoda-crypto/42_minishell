@@ -6,13 +6,14 @@
 #    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 12:25:55 by yshimoda          #+#    #+#              #
-#    Updated: 2022/11/15 23:35:49 by yshimoda         ###   ########.fr        #
+#    Updated: 2022/12/07 18:32:02 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	libft.a
 CC				=	cc
 CFLAGS			=	-Wall -Wextra -Werror
+CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=leak -fsanitize=undefined
 INCLUDE			=	-I include
 
 M_SRCS			=	ft_isalpha.c		\
@@ -95,6 +96,9 @@ fclean:			clean
 re:				fclean all
 
 bonus:			all
+
+debug:			CFLAGS += $(CFLAGS_DEBUG)
+debug:			all
 
 .PHONY:			all clean fclean re bonus
 
