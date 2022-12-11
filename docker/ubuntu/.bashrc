@@ -200,7 +200,6 @@ alias py='python'
 alias rma='find . -name  "a.out" | xargs rm'
 alias rmds='find . -name ".DS_Store" | xargs rm'
 
-
 # vim
 alias vimn='vim -u NONE -N'
 vack() {
@@ -210,6 +209,10 @@ vack() {
         l|list)    ls -- "$HOME/.vim/pack/vack/start" ;;
     esac
 }
+
+# other
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
 
 # alias -='cd -'
 # alias ...=../..
