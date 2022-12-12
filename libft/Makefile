@@ -6,7 +6,7 @@
 #    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 12:25:55 by yshimoda          #+#    #+#              #
-#    Updated: 2022/12/07 18:32:02 by yshimoda         ###   ########.fr        #
+#    Updated: 2022/12/12 03:06:56 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,7 +98,7 @@ re:				fclean all
 bonus:			all
 
 debug:			CFLAGS += $(CFLAGS_DEBUG)
-debug:			all
+debug:			re
 
 .PHONY:			all clean fclean re bonus
 

@@ -2,3 +2,8 @@ Host github
         HostName github.com
         User git
         IdentityFile ~/.ssh/id_rsa_github
+
+Host vogsphere-v2.42tokyo.jp
+        HostName vogsphere-v2.42tokyo.jp
+        User git
+        IdentityFile ~/.ssh/id_rsa_42
