@@ -82,4 +82,3 @@ RUN		git clone --recurse-submodules https://github.com/yuki-shimoda-crypto/42_mi
 
 # set .bashrc
 COPY	.bashrc /root/
-
