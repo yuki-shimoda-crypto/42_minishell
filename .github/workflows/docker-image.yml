@@ -4,11 +4,6 @@ on:
   push:
 
 jobs:
-
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: 42 Norminette
-    - uses: alexandregv/norminette-action@v3
+  steps:
+  - name: 42 Norminette
+  - uses: alexandregv/norminette-action@v3
