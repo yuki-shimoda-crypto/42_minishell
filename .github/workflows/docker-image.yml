@@ -5,8 +5,10 @@ jobs:
 
   norminette_v3:
     runs-on: ubuntu-latest
+    name: norminette v3
     steps:
     - name: checkout git repository
+    - uses: actions/checkout@v3
     - uses: actions/checkout@v3
 
     - name: install norminette
