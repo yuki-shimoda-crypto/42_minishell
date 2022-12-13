@@ -71,11 +71,15 @@ COPY	config /root/.ssh/
 RUN		ssh-keygen -q -f ~/.ssh/id_rsa_github -t rsa -N "" 
 RUN		ssh-keygen -q -f ~/.ssh/id_rsa_42 -t rsa -N ""
 
-# set .bashrc
-COPY	.bashrc /root/
-
 # copy rsa_key
 COPY	id_rsa_42 /root/.ssh/id_rsa_42
 COPY	id_rsa_42.pub /root/.ssh/id_rsa_42.pub
 COPY	id_rsa_github /root/.ssh/id_rsa_github
 COPY	id_rsa_github.pub /root/.ssh/id_rsa_github.pub
+
+# git clone minishell
+RUN		git clone --recurse-submodules https://github.com/yuki-shimoda-crypto/42_minishell.git minishell
+
+# set .bashrc
+COPY	.bashrc /root/
+
