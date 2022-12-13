@@ -7,13 +7,13 @@ jobs:
     name: norminette v3
     steps:
       - name: checkout git repository
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
       - name: install norminette
-      - run: python3 -m pip install --upgrade pip setuptools
-      - run: python3 -m pip install norminette
+        run: python3 -m pip install --upgrade pip setuptools
+        run: python3 -m pip install norminette
 
       - name: run norminette
-      - run: norminette
-      - run: norminette -R CheckForbiddenSourceHeader
-      - run: norminette -R CheckDefine
+        run: norminette
+        run: norminette -R CheckForbiddenSourceHeader
+        run: norminette -R CheckDefine
