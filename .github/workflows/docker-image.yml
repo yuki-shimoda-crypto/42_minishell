@@ -3,6 +3,7 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
+  push:
     branches: [ "yuki-shimoda-crypto-patch-1" ]
   pull_request:
     branches: [ "main" ]
