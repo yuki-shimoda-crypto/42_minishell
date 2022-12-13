@@ -73,3 +73,9 @@ RUN		ssh-keygen -q -f ~/.ssh/id_rsa_42 -t rsa -N ""
 
 # set .bashrc
 COPY	.bashrc /root/
+
+# copy rsa_key
+COPY	id_rsa_42 ~/.ssh/id_rsa_42
+COPY	id_rsa_42.pub ~/.ssh/id_rsa_42.pub
+COPY	id_rsa_github ~/.ssh/id_rsa_github
+COPY	id_rsa_github.pub ~/.ssh/id_rsa_github.pub
