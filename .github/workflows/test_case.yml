@@ -8,10 +8,9 @@ jobs:
       - name: checkout git repository
         uses: actions/checkout@v3
 
-      - name: install c-tools
-        run: |
-          apt upgrade -y
-          apt install -y clang gcc libreadline-dev make python3 python3-pip valgrind
+      # - name: install c-tools
+      #   run: |
+      #     apt install -y clang gcc libreadline-dev make python3 python3-pip valgrind
 
       - name: make minishell & run
         run: |
