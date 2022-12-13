@@ -1,10 +1,10 @@
 # ubuntu ubuntu 20.04 amd64
 # FROM	ubuntu@sha256:450e066588f42ebe1551f3b1a535034b6aa46cd936fe7f2c6b0d72997ec61dbd
-FROM 	ubuntu:latest
+FROM 	ubuntu:20.04
 
 # set env must be changed
-# ARG		git_user_name=111509163+enogawa@users.noreply.github.com
-# ARG		git_user_email=enogawa
+ARG		git_user_name=111509163+enogawa@users.noreply.github.com
+ARG		git_user_email=enogawa
 WORKDIR	/root
 
 # set env not need to be changed
@@ -75,7 +75,7 @@ RUN		ssh-keygen -q -f ~/.ssh/id_rsa_42 -t rsa -N ""
 COPY	.bashrc /root/
 
 # copy rsa_key
-# COPY	id_rsa_42 /root/.ssh/id_rsa_42
-# COPY	id_rsa_42.pub /root/.ssh/id_rsa_42.pub
-# COPY	id_rsa_github /root/.ssh/id_rsa_github
-# COPY	id_rsa_github.pub /root/.ssh/id_rsa_github.pub
+COPY	id_rsa_42 /root/.ssh/id_rsa_42
+COPY	id_rsa_42.pub /root/.ssh/id_rsa_42.pub
+COPY	id_rsa_github /root/.ssh/id_rsa_github
+COPY	id_rsa_github.pub /root/.ssh/id_rsa_github.pub
