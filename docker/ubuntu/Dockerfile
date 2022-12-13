@@ -3,8 +3,8 @@
 FROM 	ubuntu:20.04
 
 # set env must be changed
-ARG		git_user_name=yuki-shimoda-crypto
-ARG		git_user_email=77478109+yuki-shimoda-crypto@users.noreply.github.com
+ARG		git_user_name=111509163+enogawa@users.noreply.github.com
+ARG		git_user_email=enogawa
 WORKDIR	/root
 
 # set env not need to be changed
@@ -28,7 +28,7 @@ RUN		apt update			\
 		&&	apt upgrade -y	\
 		&&	apt install -y	\
 			bc				\
-			bash-completion		\
+			bash-completion	\
 			clang			\
 			curl			\
 			gcc				\
