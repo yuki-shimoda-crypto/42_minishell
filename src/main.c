@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:52:04 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/14 03:13:24 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/14 03:20:40 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int argc, char const *argv[], char **envp)
 		free(input);
 	}
 	ft_printf("%s\n", argv[0]);
+
 	return (0);
 }
 
