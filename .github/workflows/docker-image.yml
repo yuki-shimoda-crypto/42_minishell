@@ -15,3 +15,4 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - run: echo "test"
+      - run: uname -a
