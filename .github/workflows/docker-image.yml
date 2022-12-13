@@ -8,12 +8,10 @@ norminette_v3:
   - uses: actions/checkout@v3
 
   - name: install norminette
-    run: |
-    python3 -m pip install --upgrade pip setuptools
-    python3 -m pip install norminette
+    run: python3 -m pip install --upgrade pip setuptools
+    run: python3 -m pip install norminette
 
   - name: run norminette
-    run: |
-    norminette
-    norminette -R CheckForbiddenSourceHeader
-    norminette -R CheckDefine
+    run: norminette
+    run: norminette -R CheckForbiddenSourceHeader
+    run: norminette -R CheckDefine
