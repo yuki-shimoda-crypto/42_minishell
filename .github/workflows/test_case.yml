@@ -10,7 +10,6 @@ jobs:
 
       - name: install c-tools
         run: |
-          apt update
           apt upgrade -y
           apt install -y clang gcc libreadline-dev make python3 python3-pip valgrind
 
