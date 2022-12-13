@@ -194,6 +194,14 @@ alias gsb='git status -sb'
 alias gss='git status -s'
 alias gst='git status'
 
+# make 
+alias mk='make'
+alias mka='make all'
+alias mkac='make all clean'
+alias mkc='make clean'
+alias mkfc='make fclean'
+alias mkre='make re'
+
 # python
 alias py='python'
 
