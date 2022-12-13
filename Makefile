@@ -22,7 +22,11 @@ CFLAGS			=	-Wall -Werror -Wextra
 # CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=leak -fsanitize=undefined
 INCLUDE			=	-I include
 
-SRCS			=	src/main.c src/lexer.c src/parser.c src/minishell_signal.c
+SRCS			=	src/main.c				\
+					src/lexer.c				\
+					src/parser.c			\
+					src/minishell_signal.c
+
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 OBJ_DIR			=	obj
