@@ -4,8 +4,7 @@ on: [pull_request, workflow_dispatch]
 jobs:
 
   norminette_v3:
-	runs-on: ubuntu-latest
-	name: norminette v3
+	runs-on: ubuntu-20.04
 	steps:
 	- name: checkout git repository
 	- uses: actions/checkout@v3
