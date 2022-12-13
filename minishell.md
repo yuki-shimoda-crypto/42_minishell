@@ -13,3 +13,4 @@
 - [minishell_jtanaka](https://jun-networks.hatenablog.com/entry/2021/07/02/034002)
 - [minishell_rakiyama](https://rakiyama0229.hatenablog.jp/entry/2021/10/05/120920)
 - [gitを使った開発](https://qiita.com/keitean/items/eb0f00cb13d29c624ab1)
+- [github通知の削除](https://github.com/settings/notifications)
