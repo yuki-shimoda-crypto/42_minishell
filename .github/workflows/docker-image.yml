@@ -1,8 +1,6 @@
 name: norminette
 on: [pull_request, workflow_dispatch]
-
 jobs:
-
 	norminette_v3:
 		runs-on: ubuntu-20.04
 		steps:
