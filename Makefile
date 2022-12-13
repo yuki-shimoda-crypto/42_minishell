@@ -22,10 +22,12 @@ CFLAGS			=	-Wall -Werror -Wextra
 # CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=leak -fsanitize=undefined
 INCLUDE			=	-I include
 
-SRCS			=	src/main.c				\
-					src/lexer.c				\
-					src/parser.c			\
-					src/minishell_signal.c
+# SRCS			=	src/main.c				\
+# 					src/lexer.c				\
+# 					src/parser.c			\
+# 					src/minishell_signal.c
+
+SRCS			=	$(shell find src/ -name "*.c")
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
@@ -65,7 +67,18 @@ debug:			CFLAGS += $(CFLAGS_DEBUG)
 debug:			re
 
 PHONY			+=	valgrind
-valgrind:		
+valgrind:		all
 				valgrind --log-file=$(PWD)/log.txt --leak-check=full --tool=memcheck --leak-check=yes --show-reachable=yes ./$(NAME)
+
+PHONY			+=	leak
+leak:			all
+				while [ 1 ];			\
+				do leaks -q minishell;	\
+				sleep 1;				\
+				done
+
+PHONY			+=	test
+test:			all
+				./$(NAME) < test.txt
 
 .PHONY:			$(PHONY)
