@@ -39,7 +39,6 @@ RUN		apt update			\
 			man-db			\
 			python3			\
 			python3-pip		\
-			python3			\
 			sudo			\
 			tzdata			\
 			unzip			\

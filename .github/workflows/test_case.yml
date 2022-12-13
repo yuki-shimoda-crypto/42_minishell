@@ -1,0 +1,20 @@
+name: test_case
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  test_case:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout git repository
+        uses: actions/checkout@v3
+
+      - name: install c-tools
+        run: |
+          apt update
+          apt upgrade -y
+          apt install -y clang gcc libreadline-dev make python3 python3-pip valgrind
+
+      - name: make minishell & run
+        run: |
+          make
+          ./minishell < test.txt
