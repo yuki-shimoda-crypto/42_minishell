@@ -1,9 +1,16 @@
-name: norm
+# name: nor
 
+# on:
+#   push:
+
+# jobs:
+#   steps:
+#   - name: 42 Norminette
+#   - uses: alexandregv/norminette-action@v3
+name: learn-github-action
 on:
   push:
-
 jobs:
+  runs-on: ubuntu-20.04
   steps:
-  - name: 42 Norminette
-  - uses: alexandregv/norminette-action@v3
+    - run: echo "test"
