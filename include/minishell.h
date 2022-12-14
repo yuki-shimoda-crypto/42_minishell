@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:53:27 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/14 15:16:08 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/14 23:47:09 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,17 @@
 int		ft_parser(char *input);
 int		ft_lexer(char *input);
 void	minishell_signal(void);
+
+typedef struct s_cmd
+{
+	char			*cmd;
+	char			**cmd_option;
+	char			**redirections;
+	size_t			*s_quote_flag;
+	size_t			*d_quote_flag;
+	int				output_redirection;
+	pid_t			pid;
+	struct s_cmd	*next;
+}		t_cmd;
 
 #endif
