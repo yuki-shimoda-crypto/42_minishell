@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:52:04 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/13 16:59:19 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/14 15:07:40 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,25 @@
 
 int	main(int argc, char const *argv[], char **envp)
 {
+	char	*input;
+
 	(void)argc;
 	(void)envp;
-	char *input;
-	
 	minishell_signal();
 	while (1)
 	{
 		input = readline(PROMPT);
 		if (!input)
 		{
-			write (1, "exit\n", 6);
+			write (STDOUT_FILENO, "exit\n", ft_strlen("exit\n"));
 			exit(EXIT_SUCCESS);
 		}
 		else
 		{
-			add_history(input);
-			ft_lexer(input);//字句解析
-			ft_parser(input);//構文解析
+			if (ft_strlen(input))
+				add_history(input);
+			ft_lexer(input);
+			ft_parser(input);
 		}
 		ft_printf("%s\n", input);
 		free(input);

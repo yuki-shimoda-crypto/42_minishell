@@ -69,6 +69,8 @@ debug:			re
 PHONY			+=	valgrind
 valgrind:		all
 				valgrind --log-file=$(PWD)/log.txt --leak-check=full --tool=memcheck --leak-check=yes --show-reachable=yes ./$(NAME)
+				@cat log.txt | grep -A 3 "HEAP SUMMARY"
+				@cat log.txt | grep -A 6 "LEAK SUMMARY"
 
 PHONY			+=	leak
 leak:			all

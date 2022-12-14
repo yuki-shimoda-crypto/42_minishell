@@ -1,0 +1,20 @@
+name: norminette_v3
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  norminette_v3:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout git repository
+        uses: actions/checkout@v3
+
+      - name: install norminette
+        run: |
+          python3 -m pip install --upgrade pip setuptools
+          python3 -m pip install norminette
+
+      - name: run norminette
+        run: |
+          norminette
+          norminette -R CheckForbiddenSourceHeader
+          norminette -R CheckDefine
