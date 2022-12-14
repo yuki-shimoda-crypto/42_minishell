@@ -2,6 +2,7 @@ minishell
 .DS_Store
 .vscode/
 log.txt
+tmp
 
 # Prerequisites
 *.d
