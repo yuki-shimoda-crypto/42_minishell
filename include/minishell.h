@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:53:27 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/14 03:10:20 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/14 15:16:08 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include "libft.h"
 # include "ft_printf.h"
-# include <signal.h>
 
 // # define PROMPT "kimochiiii# "
 # define PROMPT "ぎぃぃもちぃぃぃぃいい# "

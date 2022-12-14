@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:52:04 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/14 04:53:35 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/14 15:07:40 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ int	main(int argc, char const *argv[], char **envp)
 		input = readline(PROMPT);
 		if (!input)
 		{
-			write (STDERR_FILENO, "exit\n", ft_strlen("exit\n"));
+			write (STDOUT_FILENO, "exit\n", ft_strlen("exit\n"));
 			exit(EXIT_SUCCESS);
 		}
 		else
 		{
-			add_history(input);
+			if (ft_strlen(input))
+				add_history(input);
 			ft_lexer(input);
 			ft_parser(input);
 		}
