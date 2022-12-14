@@ -19,5 +19,3 @@
 1. input
 1. Lexer
 1. Parser
-
-test
