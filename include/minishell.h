@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:53:27 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/14 23:47:09 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/17 17:13:15 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,28 @@
 // # define PROMPT "kimochiiii# "
 # define PROMPT "ぎぃぃもちぃぃぃぃいい# "
 
-int		ft_parser(char *input);
-int		ft_lexer(char *input);
-void	minishell_signal(void);
-
-typedef struct s_cmd
+typedef struct s_cmd_lst
 {
-	char			*cmd;
-	char			**cmd_option;
-	char			**redirections;
-	size_t			*s_quote_flag;
-	size_t			*d_quote_flag;
-	int				output_redirection;
-	pid_t			pid;
-	struct s_cmd	*next;
-}		t_cmd;
+	const char			*cmd;
+	char				**cmd_option;
+	char				**redirections;
+	size_t				*s_quote_flag;
+	size_t				*d_quote_flag;
+	int					output_redirection;
+	pid_t				pid;
+	struct s_cmd_lst	*pre;
+	struct s_cmd_lst	*next;
+}		t_cmd_lst;
+
+void		error_func(const char *str);
+int			lexer(char *input);
+void		minishell_signal(void);
+int			parser(char *input);
+void		cmd_addback(t_cmd_lst **cmd_lst, t_cmd_lst *cmd_new);
+void		cmd_addfront(t_cmd_lst **cmd_lst, t_cmd_lst *cmd_new);
+void		cmd_clear(t_cmd_lst **cmd_lst);
+t_cmd_lst	*cmd_last(t_cmd_lst *cmd_lst);
+t_cmd_lst	*cmd_new(const char *cmd);
+size_t		cmd_size(t_cmd_lst *cmd_lst);
 
 #endif
