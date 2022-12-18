@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 10:20:11 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/18 19:05:13 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/18 19:09:19 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	cmd_del_front(t_cmd_lst **cmd_lst)
 {
 	t_cmd_lst	*tmp;
-	
+
 	if (!cmd_lst || !*cmd_lst)
 		return ;
 	tmp = (*cmd_lst)->next;

@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 10:20:11 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/18 19:05:25 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/18 19:09:03 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 t_cmd_lst	*cmd_last(t_cmd_lst *cmd_lst)
 {
-	
 	if (!cmd_lst)
 		return (NULL);
 	while (cmd_lst->next)
