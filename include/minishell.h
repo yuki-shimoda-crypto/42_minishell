@@ -24,11 +24,8 @@
 # include "ft_printf.h"
 
 // # define PROMPT "kimochiiii# "
-# define PROMPT "ぎぃぃもちぃぃぃぃいい# "
-
-int		ft_parser(char *input);
-int		ft_lexer(char *input);
-void	minishell_signal(void);
+# define PROMPT "きぃぃもちぃぃぃぃいい# "
+// # define PROMPT "脳汁# "
 
 typedef struct s_cmd
 {
@@ -41,5 +38,9 @@ typedef struct s_cmd
 	pid_t			pid;
 	struct s_cmd	*next;
 }		t_cmd;
+
+int		ft_parser(char *input);
+int		ft_lexer(char *input);
+void	minishell_signal(void);
 
 #endif
