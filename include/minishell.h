@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:53:27 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/18 19:21:39 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/18 19:25:07 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define PROMPT "きぃぃもちぃぃぃぃいい# "
 // # define PROMPT "脳汁# "
 
-typedef struct s_cmd
+typedef struct s_cmd_lst
 {
 	const char			*cmd;
 	char				**cmd_option;
@@ -51,9 +51,7 @@ void		cmd_del_front(t_cmd_lst **cmd_lst);
 t_cmd_lst	*cmd_last(t_cmd_lst *cmd_lst);
 t_cmd_lst	*cmd_new(const char *cmd);
 size_t		cmd_size(t_cmd_lst *cmd_lst);
-
-int		ft_parser(char *input);
-int		ft_lexer(char *input);
-void	minishell_signal(void);
+int			parser(char *input);
+void		minishell_signal(void);
 
 #endif
