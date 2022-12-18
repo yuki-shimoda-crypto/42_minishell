@@ -150,6 +150,7 @@ alias dkrmi='docker rmi'
 # alias dks='docker service'
 
 # dir
+alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
