@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:53:27 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/17 17:13:15 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/18 18:11:59 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ typedef struct s_cmd_lst
 	const char			*cmd;
 	char				**cmd_option;
 	char				**redirections;
-	size_t				*s_quote_flag;
-	size_t				*d_quote_flag;
-	int					output_redirection;
+	size_t				s_quote_flag;
+	size_t				d_quote_flag;
+	long				output_redirection;
 	pid_t				pid;
 	struct s_cmd_lst	*pre;
 	struct s_cmd_lst	*next;
@@ -46,6 +46,7 @@ int			parser(char *input);
 void		cmd_addback(t_cmd_lst **cmd_lst, t_cmd_lst *cmd_new);
 void		cmd_addfront(t_cmd_lst **cmd_lst, t_cmd_lst *cmd_new);
 void		cmd_clear(t_cmd_lst **cmd_lst);
+void		cmd_del_front(t_cmd_lst **cmd_lst);
 t_cmd_lst	*cmd_last(t_cmd_lst *cmd_lst);
 t_cmd_lst	*cmd_new(const char *cmd);
 size_t		cmd_size(t_cmd_lst *cmd_lst);
