@@ -46,6 +46,9 @@ RUN		apt update			\
 			vim				\
 			xsel
 
+# git clone minishell
+RUN		git clone --recurse-submodules https://github.com/yuki-shimoda-crypto/42_minishell.git minishell
+
 # install python package
 RUN		python3 -m pip install norminette \
 		&& python3 -m pip install c-formatter-42
@@ -75,9 +78,6 @@ COPY	id_rsa_42 /root/.ssh/id_rsa_42
 COPY	id_rsa_42.pub /root/.ssh/id_rsa_42.pub
 COPY	id_rsa_github /root/.ssh/id_rsa_github
 COPY	id_rsa_github.pub /root/.ssh/id_rsa_github.pub
-
-# git clone minishell
-RUN		git clone --recurse-submodules https://github.com/yuki-shimoda-crypto/42_minishell.git minishell
 
 # set .bashrc
 COPY	.bashrc /root/

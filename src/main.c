@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:52:04 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/14 15:07:40 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/17 17:02:50 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	main(int argc, char const *argv[], char **envp)
 		{
 			if (ft_strlen(input))
 				add_history(input);
-			ft_lexer(input);
-			ft_parser(input);
+			lexer(input);
+			parser(input);
 		}
 		ft_printf("%s\n", input);
 		free(input);

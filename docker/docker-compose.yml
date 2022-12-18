@@ -5,7 +5,8 @@ services:
     build: ./ubuntu
     container_name: minishell
     image: minishell
+    platform: 'linux/amd64'
+    restart: always
     tty: true
     volumes:
       - ${HOME}:/mnt/host/
-    restart: always

@@ -15,6 +15,10 @@
 - [gitを使った開発](https://qiita.com/keitean/items/eb0f00cb13d29c624ab1)
 - [github通知の削除](https://github.com/settings/notifications)
 
+## Link_Tips
+- [知らないと恥ずかしいコードレビューで指摘されがちなポイント14選](https://qiita.com/ouauai/items/d38eeef9f0af5a4a87da)
+
+
 ## Flow
 1. input
 1. Lexer
