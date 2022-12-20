@@ -1,4 +1,5 @@
 echo "hello"
+echo "hello" 2>
 echo "test"
 |
 ||
