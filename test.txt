@@ -1,6 +1,14 @@
 echo "hello"
 echo "hello" 2>
 echo "test"
+echo test > a
+echo test >> a
+echo test >>> a
+echo test >'>' a
+echo test '>>' a
+echo test >">" a
+echo tste>  >>a
+echo > > a
 |
 ||
 |||

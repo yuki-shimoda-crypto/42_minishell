@@ -20,8 +20,7 @@
 - [Vimで高速で移動~プラグインなしでの移動まとめ](https://qiita.com/takeharu/items/9d1c3577f8868f7b07b5)
 
 ## Link_Discord
-- [シェルの多段パイプを自作してみる
-](https://keiorogiken.wordpress.com/2017/12/15/%E3%82%B7%E3%82%A7%E3%83%AB%E3%81%AE%E5%A4%9A%E6%AE%B5%E3%83%91%E3%82%A4%E3%83%97%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B/)
+- [シェルの多段パイプを自作してみる](https://keiorogiken.wordpress.com/2017/12/15/%E3%82%B7%E3%82%A7%E3%83%AB%E3%81%AE%E5%A4%9A%E6%AE%B5%E3%83%91%E3%82%A4%E3%83%97%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B/)
 - [man bash](https://linuxjm.osdn.jp/html/GNU_bash/man1/bash.1.html)
 - [aosa_bash_日本語版](https://github.com/m-takagi/aosa-ja)
 - [Tutorial - Write a Shell in C](https://brennan.io/2015/01/16/write-a-shell-in-c/)

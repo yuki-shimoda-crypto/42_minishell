@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:53:27 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/18 19:25:07 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/21 13:00:50 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@
 
 typedef struct s_cmd_lst
 {
-	const char			*cmd;
-	char				**cmd_option;
+	char				**cmd;
 	char				**redirections;
 	size_t				s_quote_flag;
 	size_t				d_quote_flag;
@@ -40,18 +39,17 @@ typedef struct s_cmd_lst
 	struct s_cmd_lst	*next;
 }		t_cmd_lst;
 
-void		error_func(const char *str);
-int			lexer(char *input);
-void		minishell_signal(void);
-int			parser(char *input);
 void		cmd_addback(t_cmd_lst **cmd_lst, t_cmd_lst *cmd_new);
 void		cmd_addfront(t_cmd_lst **cmd_lst, t_cmd_lst *cmd_new);
 void		cmd_clear(t_cmd_lst **cmd_lst);
 void		cmd_del_front(t_cmd_lst **cmd_lst);
 t_cmd_lst	*cmd_last(t_cmd_lst *cmd_lst);
-t_cmd_lst	*cmd_new(const char *cmd);
+t_cmd_lst	*cmd_new(char **cmd);
 size_t		cmd_size(t_cmd_lst *cmd_lst);
-int			parser(char *input);
+void		error_func(const char *str);
+int			lexer(char *input);
+// int			lexer(char *input, t_cmd_lst *cmd_lst);
 void		minishell_signal(void);
+int			parser(char *input);
 
 #endif

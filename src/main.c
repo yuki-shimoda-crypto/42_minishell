@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:52:04 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/17 17:02:50 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/21 11:42:59 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	main(int argc, char const *argv[], char **envp)
 {
-	char	*input;
+	char		*input;
+	t_cmd_lst	cmd_lst;
 
 	(void)argc;
 	(void)envp;
@@ -31,7 +32,7 @@ int	main(int argc, char const *argv[], char **envp)
 		{
 			if (ft_strlen(input))
 				add_history(input);
-			lexer(input);
+			lexer(input, &cmd_lst);
 			parser(input);
 		}
 		ft_printf("%s\n", input);
