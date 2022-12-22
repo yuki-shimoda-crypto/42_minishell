@@ -44,6 +44,9 @@
 - [connpass](https://connpass.com/)
 - [meety](https://meety.net/)
 
+## Other_link
+- [2020_nop_advent_calender](https://nop42.medium.com/42tokyo%E3%81%AE%E7%94%9F%E5%BE%92%E3%81%9F%E3%81%A1%E3%81%AE%E4%B8%8D%E6%80%9D%E8%AD%B0%E3%81%AA%E3%82%B3%E3%83%9F%E3%83%83%E3%83%88%E5%B1%A5%E6%AD%B4%E9%9B%86-406928cddfa1)
+
 ## memo
 - $の時のレキサーの処理
 	- $?の時のレキサーの処理

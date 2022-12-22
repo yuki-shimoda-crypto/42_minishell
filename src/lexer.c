@@ -6,27 +6,39 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 14:12:12 by enogawa           #+#    #+#             */
-/*   Updated: 2022/12/22 19:26:23 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/22 21:15:59 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static void	character_skip_redirect(char *input, const char c, size_t *i, size_t *count)
-// {
-// 	size_t	j;
+static void	character_skip(char *input, size_t *i, size_t *count)
+{
+	while (input[*i])
+		*i += 1;
+}
 
-// 	j = 0;
-// 	while (input[*i] && input[*i] == c)
-// 	{
-// 		*i += 1;
-// 		j++;
-// 	}
-// 	if (2 < j)
-// 		error_func("syntax error");
-// 	*count += 1;
-// 	return ;
-// }
+static void	character_skip_redirect(char *input, const char c, size_t *i, size_t *count)
+{
+	size_t	num_redirect;
+
+	num_redirect = 1;
+	if (*i == 0)
+		*count += 1;
+	else if (input[*i - 1] == '>' && (ft_isspace(input[*i - 1]) || input[*i - 1] == '|' || input[*i - 1] == '<'))
+		*count += 1;
+	else if (input[*i - 1] == '<' && (ft_isspace(input[*i - 1]) || input[*i - 1] == '|' || input[*i - 1] == '>'))
+		*count += 1;
+	*i += 1;
+	while (input[*i] && input[*i] == c)
+	{
+		*i += 1;
+		num_redirect++;
+	}
+	if (2 < num_redirect)
+		error_func("syntax error");
+	return ;
+}
 
 static void	character_skip_quote(char *input, const char c, size_t *i, size_t *count)
 {
@@ -56,10 +68,12 @@ static size_t	word_count(char *input)
 	{
 		if (input[i] == '\'' || input[i] == '\"')
 			character_skip_quote(input, input[i], &i, &count);
-		// else if (input[i] == '>' || input[i] == '<')
-		// 	character_skip_redirect(input, input[i], &i, &count);
+		else if (input[i] == '>' || input[i] == '<')
+			character_skip_redirect(input, input[i], &i, &count);
+		else if (input[i] == '|')
+			break ;
 		else
-			i++;
+			character_skip(input, &i, &count);
 	}
 	printf("%zu\n", count);
 	return (count);
