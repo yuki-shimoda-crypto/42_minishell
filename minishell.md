@@ -43,3 +43,7 @@
 ## Link_Community
 - [connpass](https://connpass.com/)
 - [meety](https://meety.net/)
+
+## memo
+- $の時のレキサーの処理
+	- $?の時のレキサーの処理

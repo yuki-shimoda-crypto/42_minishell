@@ -6,38 +6,45 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 14:12:12 by enogawa           #+#    #+#             */
-/*   Updated: 2022/12/20 21:40:0032 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/22 14:07:29 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	character_skip_redirect(char **input, const char c, size_t *i, size_t *count)
-{
-	size_t	j;
+// static void	character_skip_redirect(char *input, const char c, size_t *i, size_t *count)
+// {
+// 	size_t	j;
 
-	j = 0;
-	while (*input[*i] && *input[*i] == c)
-	{
-		*i++;
-		j++;
-	}
-	if (2 < j)
-		error_func("syntax error");
-	*count++;
-	return ;
-}
+// 	j = 0;
+// 	while (input[*i] && input[*i] == c)
+// 	{
+// 		*i += 1;
+// 		j++;
+// 	}
+// 	if (2 < j)
+// 		error_func("syntax error");
+// 	*count += 1;
+// 	return ;
+// }
 
-static void	character_skip_quote(char **input, const char c, size_t *i, size_t *count)
+static void	character_skip_quote(char *input, const char c, size_t *i, size_t *count)
 {
 	size_t	save;
 
 	save = *i;
-	while (*input[*i] && *input[*i] != c)
-		*i++;
-	if (!*input[*i])
-		error_func("Not closed in quarts");
-	*count++;
+	*i += 1;
+	if (save == 0)
+		*count += 1;
+	else if (ft_isspace(input[save - 1]) || input[save - 1] == '<' || input[save - 1] == '>' || input[save - 1] == '|')
+		*count += 1;
+	while (input[*i] && input[*i] != c)
+		*i += 1;
+	if (!input[*i])
+		*i = save + *i;
+
+		// error_func("Not closed in quarts");
+	*count += 1;
 	return ;
 }
 
@@ -51,11 +58,13 @@ static size_t	word_count(char *input)
 	while (input[i])
 	{
 		if (input[i] == '\'' || input[i] == '\"')
-			character_skip_quote(&input, input[i], &i, &count);
-		else if (input[i] == '>' || input[i] == '<')
-			character_skip_redirect(&input, input[i], &i, &count);
-		
+			character_skip_quote(input, input[i], &i, &count);
+		// else if (input[i] == '>' || input[i] == '<')
+		// 	character_skip_redirect(input, input[i], &i, &count);
+		else
+			i++;
 	}
+	printf("%zu\n", count);
 	return (count);
 }
 
