@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 14:12:12 by enogawa           #+#    #+#             */
-/*   Updated: 2022/12/22 14:07:29 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/22 19:26:23 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,7 @@ static void	character_skip_quote(char *input, const char c, size_t *i, size_t *c
 	while (input[*i] && input[*i] != c)
 		*i += 1;
 	if (!input[*i])
-		*i = save + *i;
-
-		// error_func("Not closed in quarts");
-	*count += 1;
+		*i = save + 1;
 	return ;
 }
 
