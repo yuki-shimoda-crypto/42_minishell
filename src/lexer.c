@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 14:12:12 by enogawa           #+#    #+#             */
-/*   Updated: 2022/12/22 22:48:07 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/23 00:11:05 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,31 @@
 
 static void	character_skip(char *input, size_t *i, size_t *count)
 {
+	int		flag;
+
+	printf("%s\n", "char");
+	flag = 1;
+	while (input[*i] && ft_isspace(input[*i]))
+		*i += 1;
 	while (input[*i])
 	{
+		if (input[*i] == '\'' || input[*i] == '\"' || input[*i] == '<' || input[*i] == '>' || input[*i] == '|' || ft_isspace(input[*i]))
+			break ;
+		if (flag)
+		{
+			*count += 1;
+			flag = 0;
+		}
 		*i += 1;
-		if (input[*i] == '\'' || input[*i] == '\"' || input[*i] == '<' || input[*i] == '>' || input[*i] == '|')
-			input[*i];
 	}
 	return ;
-}
-
-static void	character_skip_dollar(char *input, const char c, size_t *i, size_t *count)
-{
-	while (input[*i])
-	{
-		*i += 1;
-	}
 }
 
 static void	character_skip_redirect(char *input, const char c, size_t *i, size_t *count)
 {
 	size_t	num_redirect;
 
+	printf("%s\n", "redirect");
 	num_redirect = 1;
 	if (*i == 0)
 		*count += 1;
@@ -57,16 +61,29 @@ static void	character_skip_quote(char *input, const char c, size_t *i, size_t *c
 {
 	size_t	save;
 
+	printf("%s", "quote");
+	printf("%c", c);
 	save = *i;
 	*i += 1;
+	printf("%c\n", c);
 	if (save == 0)
 		*count += 1;
 	else if (ft_isspace(input[save - 1]) || input[save - 1] == '<' || input[save - 1] == '>' || input[save - 1] == '|')
 		*count += 1;
 	while (input[*i] && input[*i] != c)
+	while (1)
+	{
 		*i += 1;
-	if (!input[*i])
-		*i = save + 1;
+		if (input[*i] == c)
+			break ;
+		if (!input[*i])
+		{
+			*i = save + 1;
+			return ;
+		}
+	}
+	// if (!input[*i])
+	// 	*i = save + 1;
 	return ;
 }
 
@@ -83,8 +100,6 @@ static size_t	word_count(char *input)
 			character_skip_quote(input, input[i], &i, &count);
 		else if (input[i] == '>' || input[i] == '<')
 			character_skip_redirect(input, input[i], &i, &count);
-		else if (input[i] == '$')
-			character_skip_dollar()
 		else if (input[i] == '|')
 			break ;
 		else
