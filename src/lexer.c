@@ -30,6 +30,9 @@ static void	character_skip_redirect(char **input, const char c, size_t *i, size_
 
 static void	character_skip_quote(char **input, const char c, size_t *i, size_t *count)
 {
+	size_t	save;
+
+	save = *i;
 	while (*input[*i] && *input[*i] != c)
 		*i++;
 	if (!*input[*i])
