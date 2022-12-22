@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 14:12:12 by enogawa           #+#    #+#             */
-/*   Updated: 2022/12/22 21:15:59 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/22 22:48:07 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,20 @@
 static void	character_skip(char *input, size_t *i, size_t *count)
 {
 	while (input[*i])
+	{
 		*i += 1;
+		if (input[*i] == '\'' || input[*i] == '\"' || input[*i] == '<' || input[*i] == '>' || input[*i] == '|')
+			input[*i];
+	}
+	return ;
+}
+
+static void	character_skip_dollar(char *input, const char c, size_t *i, size_t *count)
+{
+	while (input[*i])
+	{
+		*i += 1;
+	}
 }
 
 static void	character_skip_redirect(char *input, const char c, size_t *i, size_t *count)
@@ -70,6 +83,8 @@ static size_t	word_count(char *input)
 			character_skip_quote(input, input[i], &i, &count);
 		else if (input[i] == '>' || input[i] == '<')
 			character_skip_redirect(input, input[i], &i, &count);
+		else if (input[i] == '$')
+			character_skip_dollar()
 		else if (input[i] == '|')
 			break ;
 		else

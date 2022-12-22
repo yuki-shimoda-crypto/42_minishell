@@ -9,6 +9,8 @@ echo test '>>' a
 echo test >">" a
 echo tste>  >>a
 echo > > a
+echo '$TMP'
+echo "$TMP"
 |
 ||
 |||

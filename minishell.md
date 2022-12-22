@@ -50,3 +50,6 @@
 ## memo
 - $の時のレキサーの処理
 	- $?の時のレキサーの処理
+
+## Rule
+- Only if original function exists add "ft" at head of the function
