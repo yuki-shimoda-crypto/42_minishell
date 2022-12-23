@@ -6,114 +6,98 @@
 /*   By: enogawa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 14:12:12 by enogawa           #+#    #+#             */
-/*   Updated: 2022/12/22 11:27:11 by enogawa          ###   ########.fr       */
+/*   Updated: 2022/12/23 21:27:29 by enogawa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static	int	find_next_quot(char *input, int i)
-{
-	char	c;
-	int		len;
-
-	c = input[i];
-	len = 0;
-	while (input[i + len])
-	{
-		if (input[i + len + 1] == c)
-			return (len + 1);
-		len++;
-	}
-	return (0);
-}
-
-static	int	split_count(char *input)
+static	void	free_tmp(char **tmp, int j)
 {
 	int	i;
-	int	count;
 
 	i = 0;
-	count = 0;
-	if (!input)
-		return (1);
-	while (input[i])
+	while (i < j)
 	{
-		if (input[i] == '\'' || input[i] == '"' )
-		{
-			if (find_next_quot(input, i))
-			{
-				i += find_next_quot(input, i);
-				count += 2;
-			}
-		}
+		free(tmp[i]);
+		tmp[i] = NULL;
 		i++;
 	}
-	return (count + 2);
+	free(tmp);
 }
 
-static	char	**split_by_quot(char *input)
+static	int	cpy_array(char *input, int start, int i, t_lexer_utils	*split_box)
+{
+	int	j;
+
+	j = split_box->index;
+	if (split_box->split_len)
+	{
+		if (split_box->flag || (input[i - 1] != '"' && input[i - 1] != '\''
+				&& i != 0))
+		{
+			split_box->flag = 0;
+			split_box->tmp[j] = ft_substr(input, start, (i - start));
+			if (!split_box->tmp[j])
+				free_tmp(split_box->tmp, j);
+			j++;
+		}
+		start = i;
+		split_box->tmp[j] = ft_substr(input, start, split_box->split_len + 1);
+		if (!split_box->tmp[j])
+			free_tmp(split_box->tmp, j);
+		start += (split_box->split_len + 1);
+		split_box->index = j + 1;
+	}
+	else
+		split_box->flag = 1;
+	return (start);
+}
+
+static	void	split_by_quot(char *input, t_lexer_utils	*split_box)
 {
 	int		i;
-	int		j;
-	int		count;
 	int		start;
-	int		split_len;
-	char	**tmp;
 
 	i = 0;
-	j = 0;
 	start = 0;
-	count = split_count(input);
-	tmp = malloc(sizeof(char **) * count);
 	while (input[i])
 	{
 		if (input[i] == '\'' || input[i] == '"' )
 		{
-			split_len = find_next_quot(input, i);
-			if (split_len)
-			{
-				if ((input[i - 1] != '"' && input[i - 1] != '\'') && i != 0)
-				{
-					tmp[j] = ft_substr(input, start, (i - start));
-					j++;
-				}
-				start = i;
-				tmp[j] = ft_substr(input, start, split_len + 1);
-				start += (split_len + 1);
-				i += split_len;
-				j++;
-			}
+			split_box->split_len = find_next_quot(input, i);
+			start = cpy_array(input, start, i, split_box);
+			i += split_box->split_len;
 		}
 		i++;
 	}
 	if (i != start)
 	{
-		tmp[j] = ft_substr(input, start, i - start);
-		j++;
+		split_box->tmp[split_box->index] = ft_substr(input, start, i - start);
+		if (!split_box->tmp[split_box->index])
+			free_tmp(split_box->tmp, split_box->index);
+		split_box->index++;
 	}
-	tmp[j] = NULL;
-	return (tmp);
+	split_box->tmp[split_box->index] = NULL;
 }
 
 int	lexer(char *input)
 {
-	char	**tmp;
-	int		split_count;
-	int		i;
+	int				count;
+	int				i;
+	t_lexer_utils	*split_box;
 
 	i = 0;
-	
-	tmp = split_by_quot(input);
-	while (tmp[i])
+	split_box = ft_calloc(1, sizeof(t_lexer_utils));
+	count = split_count(input);
+	split_box->tmp = malloc(sizeof(char **) * count);
+	if (!split_box->tmp)
+		return (0);
+	split_by_quot(input, split_box);
+	while (split_box->tmp[i])
 	{
-		printf("tmp: %s\n", tmp[i]);
+		printf("tmp: %s\n", split_box->tmp[i]);
 		i++;
 	}
 	return (0);
 }
-
-	// t_cmd_lst	*separated;
-	// separated = ft_calloc(1, sizeof(t_cmd_lst));
-	// tmp = split_by_pipe(input, separated);
-	// split_by_space(tmp, separated);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_lst_utils_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogawa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 10:20:11 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/18 19:09:03 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/21 17:51:37 by enogawa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ size_t	cmd_size(t_cmd_lst *cmd_lst)
 	return (i);
 }
 
-t_cmd_lst	*cmd_new(const char *cmd)
+t_cmd_lst	*cmd_new(const char **cmd)
 {
 	t_cmd_lst	*cmd_new;
 

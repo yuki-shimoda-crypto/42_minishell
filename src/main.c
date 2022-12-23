@@ -18,6 +18,7 @@ int	main(int argc, char const *argv[], char **envp)
 
 	(void)argc;
 	(void)envp;
+	(void)argv;
 	minishell_signal();
 	while (1)
 	{
@@ -31,13 +32,13 @@ int	main(int argc, char const *argv[], char **envp)
 		{
 			if (ft_strlen(input))
 				add_history(input);
-			lexer(input);
+			if (lexer(input))
+				continue ;
 			parser(input);
 		}
-		ft_printf("%s\n", input);
+		// ft_printf("%s\n", input);
 		free(input);
 	}
-	ft_printf("%s\n", argv[0]);
 	return (0);
 }
 
