@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 14:12:12 by enogawa           #+#    #+#             */
-/*   Updated: 2022/12/23 00:11:05 by yshimoda         ###   ########.fr       */
+/*   Updated: 2022/12/23 01:01:33 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,16 @@ static void	character_skip_quote(char *input, const char c, size_t *i, size_t *c
 		*count += 1;
 	else if (ft_isspace(input[save - 1]) || input[save - 1] == '<' || input[save - 1] == '>' || input[save - 1] == '|')
 		*count += 1;
-	while (input[*i] && input[*i] != c)
+	// while (input[*i] && input[*i] != c)
 	while (1)
 	{
 		*i += 1;
 		if (input[*i] == c)
+		{
+			printf("%c\n", c);
+			*i += 1;
 			break ;
+		}
 		if (!input[*i])
 		{
 			*i = save + 1;
