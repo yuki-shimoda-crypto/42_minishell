@@ -21,6 +21,7 @@
 - [知らないと恥ずかしいコードレビューで指摘されがちなポイント14選](https://qiita.com/ouauai/items/d38eeef9f0af5a4a87da)
 - [Vimで高速で移動~プラグインなしでの移動まとめ](https://qiita.com/takeharu/items/9d1c3577f8868f7b07b5)
 - [CERT C コーディングスタンダード](https://www.jpcert.or.jp/sc-rules/)
+- [C言語　__attribute__((destructor))を使用したメモリリークチェックツール](https://zenn.dev/keitean/articles/ad82c4bbfe434a)
 
 ## Link_Discord
 - [シェルの多段パイプを自作してみる](https://keiorogiken.wordpress.com/2017/12/15/%E3%82%B7%E3%82%A7%E3%83%AB%E3%81%AE%E5%A4%9A%E6%AE%B5%E3%83%91%E3%82%A4%E3%83%97%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B/)
