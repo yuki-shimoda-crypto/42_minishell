@@ -10,6 +10,8 @@
 - [The Architecture of Open Source Applications](https://aosabook.org/en/index.html)
 - [bash original](https://savannah.gnu.org/projects/bash/#devtools)
 - [bash original git](https://savannah.gnu.org/git/?group=bash)
+- [C11言語仕様の最終ドラフト（公式の規格書と内容は同一）](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf)
+- [低レイヤを知りたい人のためのCコンパイラ作成入門](https://www.sigbus.info/compilerbook)
 - [minishell_jtanaka](https://jun-networks.hatenablog.com/entry/2021/07/02/034002)
 - [minishell_rakiyama](https://rakiyama0229.hatenablog.jp/entry/2021/10/05/120920)
 - [gitを使った開発](https://qiita.com/keitean/items/eb0f00cb13d29c624ab1)
@@ -18,6 +20,7 @@
 ## Link_Tips
 - [知らないと恥ずかしいコードレビューで指摘されがちなポイント14選](https://qiita.com/ouauai/items/d38eeef9f0af5a4a87da)
 - [Vimで高速で移動~プラグインなしでの移動まとめ](https://qiita.com/takeharu/items/9d1c3577f8868f7b07b5)
+- [CERT C コーディングスタンダード](https://www.jpcert.or.jp/sc-rules/)
 
 ## Link_Discord
 - [シェルの多段パイプを自作してみる](https://keiorogiken.wordpress.com/2017/12/15/%E3%82%B7%E3%82%A7%E3%83%AB%E3%81%AE%E5%A4%9A%E6%AE%B5%E3%83%91%E3%82%A4%E3%83%97%E3%82%92%E8%87%AA%E4%BD%9C%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B/)
