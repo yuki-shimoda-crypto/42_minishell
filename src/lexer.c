@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 14:12:12 by enogawa           #+#    #+#             */
-/*   Updated: 2022/12/23 01:01:33 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/01/04 22:56:02 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	character_skip(char *input, size_t *i, size_t *count)
 {
 	int		flag;
 
-	printf("%s\n", "char");
+	// printf("%s\n", "char");
 	flag = 1;
 	while (input[*i] && ft_isspace(input[*i]))
 		*i += 1;
@@ -38,7 +38,7 @@ static void	character_skip_redirect(char *input, const char c, size_t *i, size_t
 {
 	size_t	num_redirect;
 
-	printf("%s\n", "redirect");
+	// printf("%s\n", "redirect");
 	num_redirect = 1;
 	if (*i == 0)
 		*count += 1;
@@ -61,8 +61,8 @@ static void	character_skip_quote(char *input, const char c, size_t *i, size_t *c
 {
 	size_t	save;
 
-	printf("%s", "quote");
-	printf("%c", c);
+	// printf("%s", "quote");
+	// printf("%c", c);
 	save = *i;
 	*i += 1;
 	printf("%c\n", c);
