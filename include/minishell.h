@@ -6,7 +6,7 @@
 /*   By: enogawa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:53:27 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/01/14 03:22:06 by enogawa          ###   ########.fr       */
+/*   Updated: 2023/01/14 15:56:45 by enogawa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,10 @@ void		env_addback(t_env_list **env_list, t_env_list *env_new);
 t_env_list	*env_last(t_env_list *env_list);
 t_env_list	*env_new(void);
 int			env(t_env_list	*env_box);
+int			env_add(char *env, t_env_list *new);
 t_env_list	*search_env(char *key_name, t_env_list *env_box);
 void		del_env(char *key_name, t_env_list *env_box);
 int			unset(char **del_target, t_env_list *env_box);
-void		cd(char **destination, t_env_list env_box);
+int			cd(char **destination, t_env_list *env_box);
 
 #endif
