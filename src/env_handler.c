@@ -6,13 +6,13 @@
 /*   By: enogawa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 21:51:52 by enogawa           #+#    #+#             */
-/*   Updated: 2023/01/14 04:23:31 by enogawa          ###   ########.fr       */
+/*   Updated: 2023/01/14 15:33:59 by enogawa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	env_add(char *env, t_env_list *new)
+int	env_add(char *env, t_env_list *new)
 {
 	char		*value_ptr;
 

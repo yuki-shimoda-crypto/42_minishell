@@ -6,7 +6,7 @@
 /*   By: enogawa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 03:19:18 by enogawa           #+#    #+#             */
-/*   Updated: 2023/01/14 15:54:01 by enogawa          ###   ########.fr       */
+/*   Updated: 2023/01/14 16:28:26 by enogawa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ static int	go_back_prev(t_env_list *env_box)
 
 static int	manage_cd_path(char *destination, t_env_list *env_box)
 {
-	char	*old_pwd;
+	t_env_list	*path;
+	char		*old_pwd;
+	int			status;
 
 	old_pwd = getcwd(NULL, 0);
 	if (!old_pwd)
@@ -61,6 +63,14 @@ static int	manage_cd_path(char *destination, t_env_list *env_box)
 		ft_putendl_fd("cannot allocate memory", STDERR_FILENO);
 		return (1);
 	}
+	status = chdir(destination);
+	if (status == -1)
+		ft_putendl_fd("no such a file or directory", STDERR_FILENO);
+	path = search_env("OLDPWD", env_box);
+	free(path->value);
+	path->value = old_pwd;
+	free(old_pwd);
+	return (0);
 }	
 
 int	cd(char **destination, t_env_list *env_box)
@@ -76,6 +86,6 @@ int	cd(char **destination, t_env_list *env_box)
 		return (go_home(env_box));
 	else if (destination[1] == '-')
 		return (go_back_prev(env_box));
-	status = manage_cd_path(destination, env_box);
+	status = manage_cd_path(destination[1], env_box);
 	return (status);
 }
