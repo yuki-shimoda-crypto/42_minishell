@@ -5,43 +5,28 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/02 16:52:04 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/12/17 17:02:50 by yshimoda         ###   ########.fr       */
+/*   Created: 2023/02/08 20:48:14 by yshimoda          #+#    #+#             */
+/*   Updated: 2023/02/08 21:05:07 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stdlib.h>
+#include <readline/readline.h>
 
-int	main(int argc, char const *argv[], char **envp)
+int main(void)
 {
-	char	*input;
+	char	*line;
 
-	(void)argc;
-	(void)envp;
-	minishell_signal();
-	while (1)
+	rl_outstream = stderr;
+	while(1)
 	{
-		input = readline(PROMPT);
-		if (!input)
-		{
-			write (STDOUT_FILENO, "exit\n", ft_strlen("exit\n"));
-			exit(EXIT_SUCCESS);
-		}
-		else
-		{
-			if (ft_strlen(input))
-				add_history(input);
-			lexer(input);
-			parser(input);
-		}
-		ft_printf("%s\n", input);
-		free(input);
+		line = readline("minishell$ ");
+		if (!line)
+			break ;
+		if (*line)
+			add_history(line);
+		free(line);
 	}
-	ft_printf("%s\n", argv[0]);
-	return (0);
+	exit(0);
 }
 
-// __attribute__((destructor)) static void destructor()
-// {
-// 	system("leaks -q minishell");
-// }

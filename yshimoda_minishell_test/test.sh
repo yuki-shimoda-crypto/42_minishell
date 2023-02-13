@@ -6,7 +6,7 @@
 #    By: yshimoda <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/08 21:44:51 by yshimoda          #+#    #+#              #
-#    Updated: 2023/02/09 18:21:03 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/02/10 00:56:34 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,10 @@ assert()
 	echo
 }
 
+# Empty line (EOF)
 assert ''
-assert ""
+
+# Absolute path commands without arg
 assert "/bin/pwd"
 assert "/bin/echo"
 
