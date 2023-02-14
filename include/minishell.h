@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:53:27 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/11 17:29:13 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/02/14 18:09:13 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdbool.h>
 # include "libft.h"
 # include "ft_printf.h"
+
 
 // # define PROMPT "kimochiiii# "
 # define PROMPT "きぃぃもちぃぃぃぃいい# "
@@ -75,7 +76,7 @@ typedef struct s_env_list
 // int			find_next_quot(char *input, int i);
 // void		split_by_space(t_lexer_utils *split_box, t_cmd_lst *separated);
 void			error_func(const char *str);
-int				lexer(char *input);
+// int				lexer(char *input);
 int				parser(char *input);
 void			minishell_signal(void);
 void			make_env_list(char **envp);
@@ -90,6 +91,7 @@ t_env_list		*search_env(char *key_name, t_env_list *env_box);
 void			del_env(char *key_name, t_env_list *env_box);
 int				unset(char **del_target, t_env_list *env_box);
 int				cd(char **destination, t_env_list *env_box);
-t_token_list	*tokenize(char *input);
+// t_token_list	*tokenize(char *input);
+t_token_list	*lexer(char *input);
 
 #endif
