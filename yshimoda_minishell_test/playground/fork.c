@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 01:32:30 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/16 23:36:33 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/02/17 04:53:46 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,97 +89,86 @@
 // 	exit (0);
 // }
 
+//#include "playground.h"
+//#include <sys/wait.h>
+//
+//void	pr_exit(int status)
+//{
+//	if (WIFEXITED(status))
+//		printf("normal termination, exit status = %d\n", WEXITSTATUS(status));
+//	else if (WIFSIGNALED(status))
+//		printf("abnormal termination, signal number = %d%s\n", WTERMSIG(status),
+//	#ifdef WCOREDUMP
+//		WCOREDUMP(status) ? " (core file generated)" : "");
+//	#else
+//		"");
+//	#endif
+//	else if (WIFSTOPPED(status))
+//		printf("child stopped, signal number = %d\n", WSTOPSIG(status));
+//}
+//
+//int main(void)
+//{
+//	pid_t		pid;
+//	int			status;
+//
+//	if ((pid = fork()) < 0)
+//		err_sys("fork error");
+//	else if (pid == 0)
+//		exit(7);
+//
+//	if (wait(&status) != pid)
+//		err_sys("wait error");
+//	pr_exit(status);
+//	
+//	if ((pid = fork()) < 0)
+//		err_sys("fork error");
+//	else if (pid == 0)
+//		abort();
+//
+//	if (wait(&status) != pid)
+//		err_sys("wait error");
+//	pr_exit(status);
+//
+//	if ((pid = fork()) < 0)
+//	err_sys("fork error");
+//	else if (pid == 0)
+//		status /= 0;
+//	
+//	if (wait(&status) != pid)
+//		err_sys("wait error");
+//	pr_exit(status);
+//	exit (0);
+//}
+
+
 
 #include "playground.h"
 #include <sys/wait.h>
 
-void	pr_exit(int status)
-{
-	if (WIFEXITED(status))
-		printf("normal termination, exit status = %d\n", WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		printf("abnormal termination, signal number = %d%s\n", WEXITSTATUS(status),
-	#ifdef	WCOREDUMP WCOREDUMP(status) ? " (core file generated)" : "");
-	#else
-				")";
-	#endif
-		else if (WIFSTOPPED(status))
-			printf("child stopped, signal number = %d\n", WSTOPPED(status));
-}
-
-void
-pr_exit(int status)
-{
-if (WIFEXITED(status))
-printf("normal termination, exit status = %d\n",
-WEXITSTATUS(status));
-else if (WIFSIGNALED(status))
-printf("abnormal termination, signal number = %d%s\n",
-WTERMSIG(status),
-#ifdef WCOREDUMP
-8.6 関数 wait と waitpid 229
-WCOREDUMP(status) ? " (core file generated)" : "");
-#else
-"");
-#endif
-else if (WIFSTOPPED(status))
-printf("child stopped, signal number = %d\n",
-WSTOPSIG(status));
-}
-
-
 int main(void)
 {
 	pid_t		pid;
-	int			status;
 
 	if ((pid = fork()) < 0)
 		err_sys("fork error");
 	else if (pid == 0)
-		exit(7);
+	{
+		if ((pid = fork()) < 0)
+			err_sys("fork error");
+		else if (pid > 0)
+			exit(0);
 
-	if (wait(&status) != pid)
-		err_sys("wait error");
-	pr_exit(status);
-	
-	if ((pid = fork()) < 0)
-		err_sys("fork error");
-	else if (pid == 0)
-		abort();
+		sleep(2);
+		printf("second child, parent pid = %ld\n", (long)getppid());
+		exit(0);
+	}
 
-	if (wait(&status) != pid)
-		err_sys("wait error");
-	pr_exit(status);
+	if (waitpid(pid, NULL, 0) != pid)
+		err_sys("waitpid error");
 
-	if ((pid = fork()) < 0)
-	err_sys("fork error");
-	else if (pid == 0)
-		status /= 0;
-	
-	if (wait(&status) != pid)
-		err_sys("wait error");
-	pr_exit(status);
-	exit (0);
+	exit(0);
 }
-
-// abort(); /* SIGABRT を生成 */
-// if (wait(&status) != pid) /* 子を待つ */
-// err_sys("wait error");
-// pr_exit(status); /* その状態を表示 */
-// 
-// if ((pid = fork()) < 0)qpwoalskzmxn5@gmail.com
-// 230 8 プロセスの制御
-// err_sys("fork error");
-// else if (pid == 0) /* 子側 */
-// status /= 0; /* ゼロ除算で SIGFPE を生成 */
-// if (wait(&status) != pid) /* 子を待つ */
-// err_sys("wait error");
-// pr_exit(status); /* その状態を表示 */
-// exit(0);
-// }
-// 
-// 
-
 
 
 
