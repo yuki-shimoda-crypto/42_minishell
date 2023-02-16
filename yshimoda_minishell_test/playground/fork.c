@@ -3,174 +3,218 @@
 /*                                                        :::      ::::::::   */
 /*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 01:32:30 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/11 02:06:47 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/02/16 23:36:33 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+// #include "playground.h"
+
+// int main (void)
+// {
+// 	char	buf[MAXLINE];
+// 	pid_t	pid;
+// 	int		status;
+// 
+// 	printf("%%");
+// 	while (fgets(buf, MAXLINE, stdin) != NULL)
+// 	{
+// 		if (buf[strlen(buf) - 1] == '\n')
+// 			buf[strlen(buf) - 1] = '0';
+// 
+// 		if ((pid = fork()) < 0)
+// 			err_sys("fork error");
+// 		else if (pid == 0)
+// 		{
+// 			execlp(buf, buf, (char *)0);
+// 			err_ret("couldn't execute: %s", buf);
+// 			exit(127);
+// 		}
+// 
+// 		if ((pid = waitpid(pid, &status, 0)) < 0)
+// 			err_sys("waitpid error");
+// 		printf("%%");
+// 	}
+// }
+// 
+
+// #include <stdio.h>
+// 
+// int			globvar = 6;
+// char		buf[] = "a write to stdout\n";
+//
+// int main(void)
+// {
+// 	int		var;
+// 	pid_t	pid;
+// 
+// 	var = 88;
+// 	if (write(STDOUT_FILENO, buf, sizeof(buf) - 1) != sizeof(buf) - 1)
+// 		err_sys("write error");
+// 	printf("before fork\n");
+// 	if (pid == fork() < 0)
+// 		err_sys("fork error");
+// 	else if (pid == 0)
+// 	{
+// 		globvar++;
+// 		var++;
+// 	}
+// 	else
+// 		sleep(2);
+// 	printf("pid = %ld, glog = %d, var = %d\n", (long)getpid(), globvar, var);
+// 	exit(0);
+// }
+// 
+
+// #include "playground.h"
+// 
+// int main(void)
+// {
+// 	int		var;
+// 	pid_t	pid;
+// 
+// 	var = 88;
+// 	printf("before vfork\n");
+// 	if ((pid = vfork()) < 0)
+// 		err_sys("vfork error");
+// 	else if (pid == 0)
+// 	{
+// 		globvar++;
+// 		var++;
+// 		_exit(0);
+// 	}
+// 	printf("pid = %ld, glob = %d, var = %d\n", (long)getpid(), globvar, var);
+// 	exit (0);
+// }
+
+
+#include "playground.h"
 #include <sys/wait.h>
-#include <unistd.h>
-#include "apue.h"
 
-#define MAXLINE 4096
-
-int main (void)
+void	pr_exit(int status)
 {
-	char	buf[MAXLINE];
-	pid_t	pid;
-	int		status;
-
-	printf("%%");
-	while (fgets(buf, MAXLINE, stdin) != NULL)
-	{
-		if (buf[strlen(buf) - 1] == '\n')
-			buf[strlen(buf) - 1] = '0';
-
-		if ((pid = fork()) < 0)
-			err_sys("fork error");
-		else if (pid == 0)
-		{
-			execlp(buf, buf, (char *)0);
-			err_ret("couldn't execute: %s", buf);
-			exit(127);
-		}
-
-		if ((pid = waitpid(pid, &status, 0)) < 0)
-			err_sys("waitpid error");
-		printf("%%");
-	}
+	if (WIFEXITED(status))
+		printf("normal termination, exit status = %d\n", WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		printf("abnormal termination, signal number = %d%s\n", WEXITSTATUS(status),
+	#ifdef	WCOREDUMP WCOREDUMP(status) ? " (core file generated)" : "");
+	#else
+				")";
+	#endif
+		else if (WIFSTOPPED(status))
+			printf("child stopped, signal number = %d\n", WSTOPPED(status));
 }
 
-#include <errno.h>		/* for definition of errno */
-#include <stdarg.h>		/* ISO C variable aruments */
-
-static void	err_doit(int, int, const char *, va_list);
-
-/*
- * Nonfatal error related to a system call.
- * Print a message and return.
- */
 void
-err_ret(const char *fmt, ...)
+pr_exit(int status)
 {
-	va_list		ap;
-
-	va_start(ap, fmt);
-	err_doit(1, errno, fmt, ap);
-	va_end(ap);
+if (WIFEXITED(status))
+printf("normal termination, exit status = %d\n",
+WEXITSTATUS(status));
+else if (WIFSIGNALED(status))
+printf("abnormal termination, signal number = %d%s\n",
+WTERMSIG(status),
+#ifdef WCOREDUMP
+8.6 関数 wait と waitpid 229
+WCOREDUMP(status) ? " (core file generated)" : "");
+#else
+"");
+#endif
+else if (WIFSTOPPED(status))
+printf("child stopped, signal number = %d\n",
+WSTOPSIG(status));
 }
 
-/*
- * Fatal error related to a system call.
- * Print a message and terminate.
- */
-void
-err_sys(const char *fmt, ...)
-{
-	va_list		ap;
 
-	va_start(ap, fmt);
-	err_doit(1, errno, fmt, ap);
-	va_end(ap);
-	exit(1);
+int main(void)
+{
+	pid_t		pid;
+	int			status;
+
+	if ((pid = fork()) < 0)
+		err_sys("fork error");
+	else if (pid == 0)
+		exit(7);
+
+	if (wait(&status) != pid)
+		err_sys("wait error");
+	pr_exit(status);
+	
+	if ((pid = fork()) < 0)
+		err_sys("fork error");
+	else if (pid == 0)
+		abort();
+
+	if (wait(&status) != pid)
+		err_sys("wait error");
+	pr_exit(status);
+
+	if ((pid = fork()) < 0)
+	err_sys("fork error");
+	else if (pid == 0)
+		status /= 0;
+	
+	if (wait(&status) != pid)
+		err_sys("wait error");
+	pr_exit(status);
+	exit (0);
 }
 
-/*
- * Nonfatal error unrelated to a system call.
- * Error code passed as explict parameter.
- * Print a message and return.
- */
-void
-err_cont(int error, const char *fmt, ...)
-{
-	va_list		ap;
+// abort(); /* SIGABRT を生成 */
+// if (wait(&status) != pid) /* 子を待つ */
+// err_sys("wait error");
+// pr_exit(status); /* その状態を表示 */
+// 
+// if ((pid = fork()) < 0)qpwoalskzmxn5@gmail.com
+// 230 8 プロセスの制御
+// err_sys("fork error");
+// else if (pid == 0) /* 子側 */
+// status /= 0; /* ゼロ除算で SIGFPE を生成 */
+// if (wait(&status) != pid) /* 子を待つ */
+// err_sys("wait error");
+// pr_exit(status); /* その状態を表示 */
+// exit(0);
+// }
+// 
+// 
 
-	va_start(ap, fmt);
-	err_doit(1, error, fmt, ap);
-	va_end(ap);
-}
 
-/*
- * Fatal error unrelated to a system call.
- * Error code passed as explict parameter.
- * Print a message and terminate.
- */
-void
-err_exit(int error, const char *fmt, ...)
-{
-	va_list		ap;
 
-	va_start(ap, fmt);
-	err_doit(1, error, fmt, ap);
-	va_end(ap);
-	exit(1);
-}
 
-/*
- * Fatal error related to a system call.
- * Print a message, dump core, and terminate.
- */
-void
-err_dump(const char *fmt, ...)
-{
-	va_list		ap;
 
-	va_start(ap, fmt);
-	err_doit(1, errno, fmt, ap);
-	va_end(ap);
-	abort();		/* dump core and terminate */
-	exit(1);		/* shouldn't get here */
-}
 
-/*
- * Nonfatal error unrelated to a system call.
- * Print a message and return.
- */
-void
-err_msg(const char *fmt, ...)
-{
-	va_list		ap;
 
-	va_start(ap, fmt);
-	err_doit(0, 0, fmt, ap);
-	va_end(ap);
-}
 
-/*
- * Fatal error unrelated to a system call.
- * Print a message and terminate.
- */
-void
-err_quit(const char *fmt, ...)
-{
-	va_list		ap;
 
-	va_start(ap, fmt);
-	err_doit(0, 0, fmt, ap);
-	va_end(ap);
-	exit(1);
-}
 
-/*
- * Print a message and return to caller.
- * Caller specifies "errnoflag".
- */
-static void
-err_doit(int errnoflag, int error, const char *fmt, va_list ap)
-{
-	char	buf[MAXLINE];
 
-	vsnprintf(buf, MAXLINE-1, fmt, ap);
-	if (errnoflag)
-		snprintf(buf+strlen(buf), MAXLINE-strlen(buf)-1, ": %s",
-		  strerror(error));
-	strcat(buf, "\n");
-	fflush(stdout);		/* in case stdout and stderr are the same */
-	fputs(buf, stderr);
-	fflush(NULL);		/* flushes all stdio output streams */
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
