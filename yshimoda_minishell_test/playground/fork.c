@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 01:32:30 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/17 04:53:46 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/02/17 05:43:46 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,35 +143,37 @@
 
 
 
-#include "playground.h"
-#include <sys/wait.h>
+// #include "playground.h"
+// #include <sys/wait.h>
+// 
+// int main(void)
+// {
+// 	pid_t		pid;
+// 
+// 	if ((pid = fork()) < 0)
+// 		err_sys("fork error");
+// 	else if (pid == 0)
+// 	{
+// 		if ((pid = fork()) < 0)
+// 			err_sys("fork error");
+// 		else if (pid > 0)
+// 			exit(0);
+// 
+// 		sleep(2);
+// 		printf("second child, parent pid = %ld\n", (long)getppid());
+// 		exit(0);
+// 	}
+// 
+// 	if (waitpid(pid, NULL, 0) != pid)
+// 		err_sys("waitpid error");
+// 
+// 	exit(0);
+// }
 
-int main(void)
-{
-	pid_t		pid;
-
-	if ((pid = fork()) < 0)
-		err_sys("fork error");
-	else if (pid == 0)
-	{
-		if ((pid = fork()) < 0)
-			err_sys("fork error");
-		else if (pid > 0)
-			exit(0);
-
-		sleep(2);
-		printf("second child, parent pid = %ld\n", (long)getppid());
-		exit(0);
-	}
-
-	if (waitpid(pid, NULL, 0) != pid)
-		err_sys("waitpid error");
-
-	exit(0);
-}
 
 
-
+// #include "playground.h"
+// #include <sys/wait.h>
 
 
 
