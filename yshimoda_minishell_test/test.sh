@@ -1,14 +1,21 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#                                                       :+:      :+:    :+:    #
+#    test.sh                                            :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yshimoda <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/08 21:44:51 by yshimoda          #+#    #+#              #
-#    Updated: 2023/02/10 00:56:34 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/02/18 12:57:29 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# !/bin/bash
+
+cleanup()
+{
+	rm -f cmp out
+}
 
 assert()
 {
@@ -44,3 +51,5 @@ assert ''
 assert "/bin/pwd"
 assert "/bin/echo"
 
+cleanup
+echo 'all OK'

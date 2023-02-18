@@ -6,7 +6,7 @@
 #    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2023/02/09 18:18:53 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/02/18 12:30:55 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ CFLAGS			=	-Wall -Werror -Wextra
 INCLUDE			=	-I include
 
 # SRCS			=	$(shell find src/ -name "*.c")
-SRCS			=	$(shell find . -name "*.c")
+SRCS			=	main.c			\
+
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
