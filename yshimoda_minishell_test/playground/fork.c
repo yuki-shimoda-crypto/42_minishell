@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 01:32:30 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/17 05:43:46 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/02/18 09:05:06 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,10 +170,47 @@
 // 	exit(0);
 // }
 
+#include "playground.h"
+
+static void charatatime (char *);
+
+int	main(void)
+{
+	pid_t		pid;
+
+	TELL_WAIT();
+
+	if ((pid = fork()) < 0)
+		err_sys("fork error");
+	else if (pid == 0)
+	{
+		//WAIT_PARENT();
+		charatatime("output from child\n");
+		TELL_PARENT(getppid());
+	}
+	else
+	{
+		WAIT_CHILD();
+		charatatime("output from parent\n");
+		//TELL_CHILD(pid);
+	}
+	exit (0);
+}
+
+static void	charatatime(char *str)
+{
+	char	*ptr;
+	int		c;
+
+	setbuf(stdout, NULL);
+	for (ptr = str; (c = *ptr++) != 0; )
+		putc(c, stdout);
+}
 
 
-// #include "playground.h"
-// #include <sys/wait.h>
+
+
+
 
 
 
