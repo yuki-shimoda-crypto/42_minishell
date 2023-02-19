@@ -6,7 +6,7 @@
 #    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/08 21:44:51 by yshimoda          #+#    #+#              #
-#    Updated: 2023/02/18 12:57:29 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/02/19 15:58:45 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 cleanup()
 {
-	rm -f cmp out
+	rm -f cmp out a.out
 }
 
 assert()
@@ -48,8 +48,19 @@ assert()
 assert ''
 
 # Absolute path commands without arg
-assert "/bin/pwd"
-assert "/bin/echo"
+assert '/bin/pwd'
+assert '/bin/echo'
+assert '/bin/ls'
+
+# Search command path without args
+assert 'pwd'
+assert 'echo'
+assert 'ls'
+assert './a.out'
+
+## no such command
+assert 'a.out'
+assert 'nosuchfile'
 
 cleanup
 echo 'all OK'

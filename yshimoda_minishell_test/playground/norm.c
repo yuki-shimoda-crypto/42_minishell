@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   norm.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 12:36:34 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/18 13:30:39 by yshimoda         ###   ########.fr       */
+/*   Created: 2023/02/19 16:30:38 by yshimoda          #+#    #+#             */
+/*   Updated: 2023/02/19 16:31:12 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHEll_H
-# define MINISHEll_H
-
-#include <readline/readline.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
-# endif
+int	main(void)
+{
+	pid_t		pid;
+
+	if ((pid = fork()) < 0)
+		exit(1);
+	return (0);
+}
