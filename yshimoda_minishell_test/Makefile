@@ -6,7 +6,7 @@
 #    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2023/02/18 12:30:55 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/02/20 17:22:58 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@
 
 NAME			=	minishell
 CC				=	cc
-CFLAGS			=	-Wall -Werror -Wextra
+CFLAGS			=
+# CFLAGS			=	-Wall -Werror -Wextra
 # CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=leak -fsanitize=undefined
 INCLUDE			=	-I include
 

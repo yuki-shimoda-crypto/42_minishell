@@ -6,18 +6,23 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:48:14 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/19 16:58:07 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:58:45 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#define PATH_MAX 100
 
-void	fatal_error(const char *msg) __attribute__((noreturn));
-
-void	validate_access(const char *path, const char *filename)
+void	fatal_error(const char *msg)
 {
-	if (!path)
-		err
+	dprintf(STDERR_FILENO, "Fatal Error: %s\n", msg);
+	exit(1);
+}
+
+void	err_exit(const char *location, const char *msg, int status)
+{
+	dprintf(STDERR_FILENO, "minishell: %s: %s \n", location, msg);
+	exit(status);
 }
 
 char	*search_path(const char *filename)
@@ -55,11 +60,20 @@ char	*search_path(const char *filename)
 	return (NULL);
 }
 
+void	validate_access(const char *path, const char *filename)
+{
+	if (!path)
+		err_exit(filename, "command not found", 127);
+	if (access(path, F_OK) < 0)
+		err_exit(filename, "command not found", 127);
+}
+
 int	exec(char *argv[])
 {
 	extern char	**environ;
 	const char	*path = argv[0];
 	pid_t		pid;
+	int			wstatus;
 
 	pid = fork();
 	if (pid < 0)
@@ -68,30 +82,8 @@ int	exec(char *argv[])
 	{
 		if (strchr(path, '/') == NULL)
 			path = search_path(path);
-	}
-	else
-		
-}
-
-
-void	fatal_error(const char *msg)
-{
-	dprintf(STDERR_FILENO, "Fatal Error: %s\n", msg);
-	exit(1);
-}
-
-int	interpret(char *line)
-{
-	extern char **environ;
-	char		*argv[] = {line, NULL};
-	pid_t		pid;
-	int			wstatus;
-
-	if ((pid = fork()) < 0)
-		fatal_error("fork");
-	else if (pid == 0)
-	{
-		execve(line, argv, environ);
+		validate_access(path, argv[0]);
+		execve(path, argv, environ);
 		fatal_error("execve");
 	}
 	else
@@ -99,6 +91,15 @@ int	interpret(char *line)
 		wait(&wstatus);
 		return (WEXITSTATUS(wstatus));
 	}
+}
+
+int	interpret(const char *line)
+{
+	int			status;
+	char		*argv[] = {line, NULL};
+
+	status = exec(argv);
+	return (status);
 }
 
 int main(void)
@@ -139,3 +140,10 @@ int main(void)
 //		printf("child stopped, signal number = %d\n", WSTOPSIG(status));
 //}
 //
+
+#include <unistd.h>
+
+void	ft_putchar(int c*)
+{
+	write(1, ^c, 1);
+}
