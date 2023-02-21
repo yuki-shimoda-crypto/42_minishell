@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 14:12:06 by enogawa           #+#    #+#             */
-/*   Updated: 2022/12/17 17:02:19 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/02/20 16:52:48 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parser(char *input)
+int	parser(t_token_list	*token)
 {
-	(void)input;
+	(void)token;
 	return (0);
 }

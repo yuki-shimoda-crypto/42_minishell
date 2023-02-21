@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:13:24 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/02/14 19:07:35 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/02/21 17:19:45 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_token_list *new_token(char *word, t_tk_kind kind)
 {
-	t_token_list *tk_list;
+	t_token_list	*tk_list;
 
 	tk_list = calloc(1, sizeof(*tk_list));
 	// if (tk_list == NULL)
@@ -48,12 +48,22 @@ static t_token_list *word_into_list(char **rest, char *input)
 	start = input;
 	while (*input && *input != ' ' && *input != '|')
 	{
+		if (*input == '<' || *input == '>')
+			break ;
 		if (*input == '\'')
+		{
 			input = skip_quot(input, '\'');
+			break ;
+		}
 		else if (*input == '"')
+		{
 			input = skip_quot(input, '"');
+			break ;
+		}
 		else
 			input++;
+		if (*input == '\'' || *input == '"')
+			break ;
 	}
 	word = ft_strndup(start, input - start);
 	// if (!word)
@@ -79,6 +89,31 @@ static void skip_space(char **rest, char *input)
 	}
 }
 
+static t_token_list	*ope_into_list(char **rest, char *input)
+{
+	char	*start;
+	char	*word;
+
+	start = input;
+	while (*input == '<')
+	{
+		input++;
+		if (*input == '>')
+			exit (2);//error処理
+	}
+	while (*input == '>')
+	{
+		input++;
+		if (*input == '<')
+			exit (2);//error処理
+	}
+	word = ft_strndup(start, input - start);
+	// if (!word)
+	// 	fatal_error("strndup");
+	*rest = input;
+	return (new_token(word, TK_OP));
+}
+
 static t_token_list *tokenize(char *input)
 {
 	t_token_list head;
@@ -100,6 +135,17 @@ static t_token_list *tokenize(char *input)
 			tk_list->next = word_into_list(&input, input);
 			tk_list = tk_list->next;
 		}
+		if (*input == '<' || *input == '>')
+		{
+			tk_list->next = ope_into_list(&input, input);
+			tk_list = tk_list->next;
+			// if (!ope_into_list(&input, input))
+			// {
+			// 	write(2, "error: <, >", 11);
+			// 	exit(2);
+			// 	// syntax_error("redirect");
+			// }
+		}
 	}
 	tk_list->next = new_token(NULL, TK_EOF);
 	return (head.next);
@@ -107,32 +153,22 @@ static t_token_list *tokenize(char *input)
 
 static bool check_quoted(char *token)
 {
-	// printf("token = %s\n",token);
-
-	// printf("%d %d\n", token[0] == '\"', token[ft_strlen(token-1)] == '\"');
 	if (!token)
 		return (false);
-	if (token[0] == '\'' && token[ft_strlen(token) - 1] == '\'')
-	{
-
+	if ((token[0] == '\'' && token[ft_strlen(token) - 1] == '\'')
+		|| (token[0] == '"' && token[ft_strlen(token) - 1] == '"'))
 		return (true);
-	}
-	if (token[0] == '"' && token[ft_strlen(token) - 1] == '"')
-	{
-		return (true);
-	}
 	return (false);
 }
 
 static void remove_quot(t_token_list *tk_list)
 {
-	char *tmp;
+	char	*tmp;
 
 	if (tk_list->kind == TK_EOF)
-		return;
+		return ;
 	if (tk_list->kind == TK_WORD)
 	{
-		// printf("bool %d\n",check_quoted(tk_list->token));
 		if (check_quoted(tk_list->token))
 		{
 			tmp = ft_substr(tk_list->token, 1, ft_strlen(tk_list->token) - 2);
@@ -151,7 +187,7 @@ static void expand(t_token_list *tk_list)
 
 t_token_list *lexer(char *input)
 {
-	t_token_list *tk_list;
+	t_token_list	*tk_list;
 
 	tk_list = tokenize(input);
 	expand(tk_list);

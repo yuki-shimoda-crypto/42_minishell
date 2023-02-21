@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:53:27 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/14 18:09:13 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/02/20 16:42:12 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "libft.h"
 # include "ft_printf.h"
 
@@ -45,6 +47,7 @@ enum e_tk_kind
 {
 	TK_WORD,
 	TK_PIPE,
+	TK_OP,
 	TK_EOF,
 };
 typedef enum e_tk_kind	t_tk_kind;
@@ -77,7 +80,7 @@ typedef struct s_env_list
 // void		split_by_space(t_lexer_utils *split_box, t_cmd_lst *separated);
 void			error_func(const char *str);
 // int				lexer(char *input);
-int				parser(char *input);
+int				parser(t_token_list	*token);
 void			minishell_signal(void);
 void			make_env_list(char **envp);
 void			free_env(t_env_list **env_box, int flag);
@@ -93,5 +96,6 @@ int				unset(char **del_target, t_env_list *env_box);
 int				cd(char **destination, t_env_list *env_box);
 // t_token_list	*tokenize(char *input);
 t_token_list	*lexer(char *input);
+void			exe(t_token_list *tk_list);
 
 #endif

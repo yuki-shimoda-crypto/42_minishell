@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:52:04 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/14 18:35:37 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/02/20 16:52:39 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ int	main(int argc, char const *argv[], char **envp)
 			if (ft_strlen(input))
 				add_history(input);
 			tk_list = lexer(input);
-			while (tk_list->kind != TK_EOF)
-			{
-				printf("%s\n", tk_list->token);
-				tk_list = tk_list->next;
-			}
-			// parser(input);
+			// parser(tk_list);
+			if (tk_list->token)
+				exe(tk_list);
+			// while (tk_list->kind != TK_EOF)
+			// {
+			// 	printf("%s\n", tk_list->token);
+			// 	tk_list = tk_list->next;
+			// }
 		}
 		free(input);
 	}
