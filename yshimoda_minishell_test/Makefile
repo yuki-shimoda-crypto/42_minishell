@@ -6,7 +6,7 @@
 #    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2023/02/21 12:15:46 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/02/21 16:56:47 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,16 @@
 
 NAME			=	minishell
 CC				=	cc
-CFLAGS			= $(INCLUDE)
-# CFLAGS			=	-Wall -Werror -Wextra
+CFLAGS			=	-Wall -Werror -Wextra $(INCLUDE)
 # CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=leak -fsanitize=undefined
 INCLUDE			=	-I include
 
 # SRCS			=	$(shell find src/ -name "*.c")
-SRCS			=	main.c			\
+SRCS			=	destructor.c		\
+					error.c				\
+					main.c				\
+					tokenize.c
+
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
