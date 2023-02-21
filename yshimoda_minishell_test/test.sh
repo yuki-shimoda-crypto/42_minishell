@@ -6,7 +6,7 @@
 #    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/08 21:44:51 by yshimoda          #+#    #+#              #
-#    Updated: 2023/02/19 15:58:45 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/02/21 12:16:35 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,6 +61,11 @@ assert './a.out'
 ## no such command
 assert 'a.out'
 assert 'nosuchfile'
+
+# Tokenize
+assert 'ls /'
+assert 'echo hello    world     '
+assert 'nosuchfile\n\n'
 
 cleanup
 echo 'all OK'

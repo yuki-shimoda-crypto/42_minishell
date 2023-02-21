@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:48:14 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/20 19:58:45 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/02/21 12:09:13 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,10 +140,3 @@ int main(void)
 //		printf("child stopped, signal number = %d\n", WSTOPSIG(status));
 //}
 //
-
-#include <unistd.h>
-
-void	ft_putchar(int c*)
-{
-	write(1, ^c, 1);
-}

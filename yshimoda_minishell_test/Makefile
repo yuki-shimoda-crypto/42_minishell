@@ -6,7 +6,7 @@
 #    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2023/02/20 17:22:58 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/02/21 12:15:46 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,14 +16,13 @@
 
 NAME			=	minishell
 CC				=	cc
-CFLAGS			=
+CFLAGS			= $(INCLUDE)
 # CFLAGS			=	-Wall -Werror -Wextra
 # CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=leak -fsanitize=undefined
 INCLUDE			=	-I include
 
 # SRCS			=	$(shell find src/ -name "*.c")
 SRCS			=	main.c			\
-
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
@@ -35,7 +34,7 @@ LIBS			=	$(LIBFT_LIB) -lreadline
 
 $(OBJ_DIR)/%.o:%.c
 				@mkdir -p $(@D)
-				$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@  
+				$(CC) $(CFLAGS) -c $< -o $@  
 
 $(NAME):		$(OBJS) $(LIBFT_LIB)
 				$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
@@ -77,7 +76,7 @@ leak:			all
 
 PHONY			+=	test
 test:			all
-				./$(NAME) < test.txt
+				bash ./test.sh
 
 .PHONY:			$(PHONY)
 
