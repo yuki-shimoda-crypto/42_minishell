@@ -10,3 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+void	free_tok(t_token *tok)
+{
+	if (tok == NULL)
+		return ;
+	if (tok->word)
+		free(tok->word);
+	free(tok->next);
+	free(tok);
+}
+
+void	free_argv(char **argv)
+{
+	int	i;
+
+	if (argv == NULL)
+		return ;
+	i = 0;
+	while (argv[i])
+	{
+		free(argv[i]);
+		i++;
+	}
+	free(argv);
+}
+

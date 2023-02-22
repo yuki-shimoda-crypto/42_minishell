@@ -6,11 +6,14 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:32:03 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/21 16:44:45 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/02/22 09:03:13 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void	assert_error(const char *msg)
 {
@@ -32,6 +35,6 @@ void	fatal_error(const char *msg)
 
 void	todo(const char *msg)
 {
-	dpritf(STDERR_FILENO, "TODO: %s\n", msg);
+	dprintf(STDERR_FILENO, "TODO: %s\n", msg);
 	exit(255);
 }

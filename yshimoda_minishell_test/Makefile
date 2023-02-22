@@ -50,7 +50,7 @@ all:			$(NAME)
 
 PHONY			+=	clean
 clean:			
-				make fclean -C $(LIBFT_DIR)
+#				 make fclean -C $(LIBFT_DIR)
 				$(RM) -r $(OBJ_DIR)
 
 PHONY			+=	fclean

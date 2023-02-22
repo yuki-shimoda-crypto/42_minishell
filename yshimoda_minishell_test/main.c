@@ -11,6 +11,10 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/readline.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #define PATH_MAX 100
 
 char	*search_path(const char *filename)
@@ -79,12 +83,13 @@ int	exec(char *argv[])
 		wait(&wstatus);
 		return (WEXITSTATUS(wstatus));
 	}
+	return (0);
 }
 
 void	interpret(char *line, int *stat_loc)
 {
 	t_token	*tok;
-	char	**argv
+	char	**argv;
 
 	tok = tokenize(line);
 	if (tok->kind == TK_EOF)
@@ -135,4 +140,5 @@ int main(void)
 //	else if (WIFSTOPPED(status))
 //		printf("child stopped, signal number = %d\n", WSTOPSIG(status));
 //}
+//
 //

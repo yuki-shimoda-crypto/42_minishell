@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 12:36:34 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/21 17:03:54 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/02/22 09:02:53 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,8 @@
 
 # include <stdbool.h>
 
-typedef struct s_token		t_token;
+// tokenize.c
 typedef enum e_token_kind	t_token_kind;
-
-struct s_token
-{
-	char			*word;
-	t_token_kind	kind;
-	t_token			*next;
-};
-
 enum e_token_kind
 {
 	TK_WORD,
@@ -33,9 +25,25 @@ enum e_token_kind
 	TK_EOF,
 };
 
+typedef struct s_token		t_token;
+struct s_token
+{
+	char			*word;
+	t_token_kind	kind;
+	t_token			*next;
+};
+
+t_token	*tokenize(char *line);
+char	**token_list_to_argv(t_token *tok);
+
+// destructor.c
+void	free_tok(t_token *tok);
+void	free_argv(char **argv);
+
 // error.c
+void	assert_error(const char *msg);
 void	err_exit(const char *location, const char *msg, int status);
 void	fatal_error(const char *msg);
 
-
 # endif
+

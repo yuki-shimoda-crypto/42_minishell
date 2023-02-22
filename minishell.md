@@ -4,8 +4,17 @@
 - [github_issue](https://github.com/yuki-shimoda-crypto/42_minishell/issues)
 
 ## Flow
-1. input
-1. Lexer
+1. Input
+    1. readline 
+    1. add_history
+1. Tokenize
+    1. consume_blank
+    1. is_operator
+    1. is_word
+1. exec
+    1. search_path
+    1. validate_access
+    1. execve
 1. Parser
 
 ## Rule
@@ -87,4 +96,20 @@
 - 挿入モードでctrl + bインデント追加
 - manを見たい時にはShift+kでカーソルのmanを見ることができる。man 2 に飛びたい時は、2 Shift+kにする
 - カーソルをヘッダーファイルの上にしてから、gfを押すとヘッダーファイルに飛ぶことができる ctrl-oで閉じる。Ctrl-w gfで開いて、gfをすれば良いタブの動き方はgt
+- set lines=100
+- set columns=300
+- {count}ctrl-w + '+' ウィンドウの高さを広げる
+- {count}ctrl-w + '-' ウィンドウの高さを狭める
+- ctrl-w + '_' ウィンドウの高さを最大にする
+- ctrl-w + '>' ウィンドウの幅を広げる
+- ctrl-w + '<' ウィンドウの幅を狭める
+- ctrl-w + '|' ウィンドウの幅を最大に広げる
+- vertical resize {count}
+- vert res {count}
+- z{count}
+- ctrl + '=' ウィンドウのサイズを揃える
+
+
+
+
 
