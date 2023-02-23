@@ -113,6 +113,17 @@ t_token	*word(char **rest, char *line)
 			}
 			line++;
 		}
+		else if (*line == DOUBLE_QUOTE_CHAR)
+		{
+			line++;
+			while (*line != DOUBLE_QUOTE_CHAR)
+			{
+				if (*line == '\0')
+					todo("Unclosed double quote");
+				line++;
+			}
+			line++;
+		}
 		else
 			line++;
 	}

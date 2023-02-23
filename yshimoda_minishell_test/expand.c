@@ -52,7 +52,18 @@ void	quote_removal(t_token *tok)
 			while (*p != SINGLE_QUOTE_CHAR)
 			{
 				if (*p == '\0')
-					todo("Unclosed single quote");
+					assert_error("Unclosed single quote");
+				append_char(&new_word, *p++);
+			}
+			p++;
+		}
+		else if (*p == DOUBLE_QUOTE_CHAR)
+		{
+			p++;
+			while (*p != DOUBLE_QUOTE_CHAR)
+			{
+				if (*p == '\0')
+					assert_error("Unclosed double quote");
 				append_char(&new_word, *p++);
 			}
 			p++;

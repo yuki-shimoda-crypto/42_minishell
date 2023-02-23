@@ -34,7 +34,7 @@ cleanup()
 assert()
 {
 	# show test case
-	printf '%-50s:' "\"$1\""
+	printf '%-50s:' "[$1]"
 
 	# save bash output to cmp
 	echo -n -e "$1" | bash >cmp 2>&-
@@ -86,8 +86,14 @@ assert 'nosuchfile\n\n'
 assert "./print_args 'hello  world' '42Tokyo'"
 assert "echo '\"hello  world\"' '42Tokyo'"
 
+## double quote
+assert './print_args "hello   world" "42Tokyo"'
+assert 'echo "hello    world" "42Tokyo"'
+assert "echo \"'hello    world'\" \"42Tokyo\""
+
 ## combinatio
 assert "echo hello'      world'"
+assert "echo hello'      world '\" 42%okyo \""
 
 cleanup
 echo 'all OK'

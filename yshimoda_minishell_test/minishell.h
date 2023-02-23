@@ -17,7 +17,7 @@
 
 // tokenize.c
 #define SINGLE_QUOTE_CHAR '\''
-#define DOUBLE_QUOTE_CHAR '\"'
+#define DOUBLE_QUOTE_CHAR '"'
 
 typedef enum e_token_kind	t_token_kind;
 enum e_token_kind
