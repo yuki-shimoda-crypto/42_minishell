@@ -16,6 +16,9 @@
 # include <stdbool.h>
 
 // tokenize.c
+#define SINGLE_QUOTE_CHAR '\''
+#define DOUBLE_QUOTE_CHAR '\"'
+
 typedef enum e_token_kind	t_token_kind;
 enum e_token_kind
 {
@@ -35,6 +38,9 @@ struct s_token
 
 t_token	*tokenize(char *line);
 char	**token_list_to_argv(t_token *tok);
+bool	is_operator(const char *s);
+bool	is_metacharacter(char c);
+
 
 // destructor.c
 void	free_tok(t_token *tok);
@@ -44,6 +50,11 @@ void	free_argv(char **argv);
 void	assert_error(const char *msg);
 void	err_exit(const char *location, const char *msg, int status);
 void	fatal_error(const char *msg);
+void	todo(const char *msg);
+
+// expand.c
+void	expand(t_token *tok);
+
 
 # endif
 

@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 17:24:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/21 18:38:14 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/02/23 18:49:21 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,21 @@ t_token	*word(char **rest, char *line)
 	char		*word;
 
 	while (*line && !is_metacharacter(*line))
-		line++;
+	{
+		if (*line == SINGLE_QUOTE_CHAR)
+		{
+			line++;
+			while (*line != SINGLE_QUOTE_CHAR)
+			{
+				if (*line == '\0')
+					todo("Unclosed single quote");
+				line++;
+			}
+			line++;
+		}
+		else
+			line++;
+	}
 	word = strndup(start, line - start);
 	if (word == NULL)
 		fatal_error("strndup");

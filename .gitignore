@@ -3,6 +3,8 @@ minishell
 .vscode/
 log.txt
 tmp
+*.swp
+.*.swp
 
 # Prerequisites
 *.d

@@ -23,6 +23,7 @@ INCLUDE			=	-I include
 # SRCS			=	$(shell find src/ -name "*.c")
 SRCS			=	destructor.c		\
 					error.c				\
+					expand.c			\
 					main.c				\
 					tokenize.c
 
