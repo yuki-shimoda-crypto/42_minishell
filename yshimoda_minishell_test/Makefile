@@ -25,11 +25,7 @@ SRCS			=	destructor.c		\
 					error.c				\
 					expand.c			\
 					main.c				\
-					tokenize.c			\
-					ft_strlcat.c		\
-					ft_strlen.c			\
-					ft_strlcpy.c
-
+					tokenize.c
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 

@@ -33,11 +33,11 @@ char	*search_path(const char *filename)
 		bzero(path, PATH_MAX);
 		end = strchr(value, ':');
 		if (end)
-			ft_strlcpy(path, value, end - value);
+			strncpy(path, value, end - value);
 		else
-			ft_strlcpy(path, value, PATH_MAX);
-		ft_strlcat(path, "/", PATH_MAX);
-		ft_strlcat(path, filename, PATH_MAX);
+			strlcpy(path, value, PATH_MAX);
+		strlcat(path, "/", PATH_MAX);
+		strlcat(path, filename, PATH_MAX);
 		if (access(path, X_OK) == 0)
 		{
 			char	*dup;

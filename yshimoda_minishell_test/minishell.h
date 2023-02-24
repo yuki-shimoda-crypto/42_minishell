@@ -60,9 +60,9 @@ void	tokenize_error(const char *location, char **rest, char *line);
 void	expand(t_token *tok);
 
 // libft
-size_t	ft_strlen(const char *s);
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+// size_t	ft_strlen(const char *s);
+// size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+// size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 
 # endif
