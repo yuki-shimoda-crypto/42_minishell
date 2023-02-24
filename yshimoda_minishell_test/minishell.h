@@ -47,10 +47,13 @@ void	free_tok(t_token *tok);
 void	free_argv(char **argv);
 
 // error.c
+# define ERROR_TOKENIZE 258
+extern bool	syntax_error;
 void	assert_error(const char *msg);
 void	err_exit(const char *location, const char *msg, int status);
 void	fatal_error(const char *msg);
 void	todo(const char *msg);
+void	tokenize_error(const char *location, char **rest, char *line);
 
 // expand.c
 void	expand(t_token *tok);
