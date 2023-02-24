@@ -164,9 +164,19 @@ t_token	*tokenize(char *line)
 
 char	**tail_recursive(t_token *tok, int nargs, char **argv)
 {
+	char	**new_argv;
+
 	if (tok == NULL || tok->kind == TK_EOF)
 		return (argv);
-	argv = reallocf(argv, (nargs + 2) * sizeof(char *));
+	new_argv = realloc(argv, (nargs + 2) * sizeof(char *));
+	if (new_argv != NULL)
+		argv = new_argv;
+	else
+	{
+		free(argv);
+		argv = NULL;
+		fatal_error("realloc");
+	}
 	argv[nargs] = strdup(tok->word);
 	if (argv[nargs] == NULL)
 		fatal_error("strdup");

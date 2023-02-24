@@ -12,8 +12,10 @@
 
 #include "minishell.h"
 #include <readline/readline.h>
+#include <readline/history.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #define PATH_MAX 100
 
@@ -31,11 +33,11 @@ char	*search_path(const char *filename)
 		bzero(path, PATH_MAX);
 		end = strchr(value, ':');
 		if (end)
-			strncpy(path, value, end - value);
+			ft_strlcpy(path, value, end - value);
 		else
-			strlcpy(path, value, PATH_MAX);
-		strlcat(path, "/", PATH_MAX);
-		strlcat(path, filename, PATH_MAX);
+			ft_strlcpy(path, value, PATH_MAX);
+		ft_strlcat(path, "/", PATH_MAX);
+		ft_strlcat(path, filename, PATH_MAX);
 		if (access(path, X_OK) == 0)
 		{
 			char	*dup;
@@ -94,6 +96,8 @@ void	interpret(char *line, int *stat_loc)
 	tok = tokenize(line);
 	if (tok->kind == TK_EOF)
 		;
+	else if (syntax_error)
+		*stat_loc = ERROR_TOKENIZE;
 	else
 	{
 		expand(tok);
