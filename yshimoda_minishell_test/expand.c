@@ -34,8 +34,43 @@ void	append_char(char **s, char c)
 	*s = new;
 }
 
-#include <stdio.h>
-void	quote_removal(t_token *tok)
+void	remove_sigle_quote(char **dst, char **rest, char *p)
+{
+	if (*p == SINGLE_QUOTE_CHAR)
+	{
+		p++;
+		while (*p != SINGLE_QUOTE_CHAR)
+		{
+			if (*p == '\0')
+				assert_error("Unclosed single quote");
+			append_char(dst, *p++);
+		}
+		p++;
+		*rest = p;
+	}
+	else
+		assert_error("Expected single quote");
+}
+
+void	remove_double_quote(char **dst, char **rest, char *p)
+{
+	if (*p == DOUBLE_QUOTE_CHAR)
+	{
+		p++;
+		while (*p != DOUBLE_QUOTE_CHAR)
+		{
+			if (*p == '\0')
+				assert_error("Unclosed double quote");
+			append_char(dst, *p++);
+		}
+		p++;
+		*rest = p;
+	}
+	else
+		assert_error("Expected double quote");
+}
+
+void	remove_quote(t_token *tok)
 {
 	char	*new_word;	
 	char	*p;
@@ -47,40 +82,27 @@ void	quote_removal(t_token *tok)
 	while (*p && !is_metacharacter(*p))
 	{
 		if (*p == SINGLE_QUOTE_CHAR)
-		{
-			p++;
-			while (*p != SINGLE_QUOTE_CHAR)
-			{
-				if (*p == '\0')
-					assert_error("Unclosed single quote");
-				append_char(&new_word, *p++);
-			}
-			p++;
-		}
+			remove_sigle_quote(&new_word, &p, p);
 		else if (*p == DOUBLE_QUOTE_CHAR)
-		{
-			p++;
-			while (*p != DOUBLE_QUOTE_CHAR)
-			{
-				if (*p == '\0')
-					assert_error("Unclosed double quote");
-				append_char(&new_word, *p++);
-			}
-			p++;
-		}
+			remove_double_quote(&new_word, &p, p);
 		else
 			append_char(&new_word, *p++);
 	}
 	free(tok->word);
 	tok->word = new_word;
-	quote_removal(tok->next);
+	remove_quote(tok->next);
 }
 
-
-
-void	expand(t_token *tok)
+void	expand_quote_removal(t_node *node)
 {
-	quote_removal(tok);
+	if (node == NULL)
+		return ;
+	remove_quote(node->args);
+	expand_quote_removal(node->next);
 }
 
+void	expand(t_node *node)
+{
+	expand_quote_removal(node);
+}
 

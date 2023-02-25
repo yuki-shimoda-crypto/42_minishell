@@ -25,7 +25,8 @@ SRCS			=	destructor.c		\
 					error.c				\
 					expand.c			\
 					main.c				\
-					tokenize.c
+					tokenize.c			\
+					parse.c
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
