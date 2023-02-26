@@ -33,16 +33,21 @@ cleanup()
 
 assert()
 {
-	# show test case
-	printf '%-50s:' "[$1]"
+	COMMAND="$1"	
+	shift
+	printf '%-50s:' "[$COMMAND]"
 
 	# save bash output to cmp
-	echo -n -e "$1" | bash >cmp 2>&-
+	echo -n -e "$COMMAND" | bash >cmp 2>&-
 	#save bash exit status to expected
 	expected=$?
 
 	# save minishell output to out
-	echo -n -e "$1" | ./minishell >out 2>&-
+	for arg in "$@"
+	do
+		mv "$arg" "$arg"".cmp"
+	done
+	echo -n -e "$COMMAND" | ./minishell >out 2>&-
 	#save minishell exit status to actual
 	actual=$?
 
@@ -55,6 +60,12 @@ assert()
 	else
 		echo -n "  status NG, expected $expected but got $actual"
 	fi
+	for arg in "$@"
+	do
+		echo -n "	[$arg] "
+		diff "$arg"".cmp" "$arg"".out" > /dev/null && echo -e -n "$OK" || echo -e -n "NG"
+		rm -f "$arg"".cmp" "$arg"".out"
+	done
 	echo
 }
 
@@ -94,6 +105,11 @@ assert "echo \"'hello    world'\" \"42Tokyo\""
 ## combinatio
 assert "echo hello'      world'"
 assert "echo hello'      world '\" 42%okyo \""
+
+# Redirect
+## Redirecting output
+assert 'echo hello > hello.txt' 'hello.txt'
+
 
 cleanup
 echo 'all OK'

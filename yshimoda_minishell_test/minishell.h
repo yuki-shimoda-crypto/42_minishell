@@ -59,9 +59,16 @@ enum e_node_kind
 
 struct s_node
 {
-	t_token		*args;
 	t_node_kind	kind;
 	t_node		*next;
+	// CMD
+	t_token		*args;
+	t_node		*redirects;
+	// REDIR
+	int			targetfd;
+	t_token		*filename;
+	int			filefd;
+	int			stashed_targetfd;
 };
 
 t_token	*tokenize(char *line);
@@ -86,6 +93,11 @@ bool	at_eof(t_token *tok);
 t_node	*new_node(t_node_kind kind);
 void	append_tok(t_token **tokens, t_token *tok);
 t_token	*tokdup(t_token *tok);
+
+// redirect.c
+void	open_redir_file(t_node *redirects);
+void	do_redirect(t_node *redirects);
+void	reset_redirect(t_node *redirects);
 
 // libft
 // size_t	ft_strlen(const char *s);
