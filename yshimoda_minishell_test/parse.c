@@ -43,7 +43,7 @@ bool	at_eof(t_token *tok)
 	return (tok->kind == TK_EOF);
 }
 
-bool	equal_op(t_token *tok)
+bool	equal_op(t_token *tok, char *op)
 {
 	if (tok->kind != TK_OP)
 		return (false);

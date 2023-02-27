@@ -1,0 +1,4 @@
+git: git diff, git diff [file], git diff --cached
+vim: ワーキングディレクトリで'ctags **/*.c **/*.h'をshellで実行した後に、関数の上にカーソルを置いて、CTRL-]を打てばその関数の定義のところに移動できる。
+詳しくは vimで:help tagsを使って見てみてください。
+shell: strings [binary file]を使って、バイナリーファイルの中にあるprintable charactersの文字列を表す。
