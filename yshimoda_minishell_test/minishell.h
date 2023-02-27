@@ -55,6 +55,7 @@ struct s_token
 enum e_node_kind
 {
 	ND_SIMPLE_CMD,
+	ND_REDIR_OUT,
 };
 
 struct s_node
@@ -89,10 +90,14 @@ void	expand(t_node *node);
 
 // parse.c
 t_node	*parse(t_token *tok);
+t_node	*redirect_out(t_token **rest, t_token *tok);
+void	append_command_element(t_node *command, t_token **rest, t_token *tok);
 bool	at_eof(t_token *tok);
+bool	equal_op(t_token *tok);
 t_node	*new_node(t_node_kind kind);
-void	append_tok(t_token **tokens, t_token *tok);
 t_token	*tokdup(t_token *tok);
+void	append_tok(t_token **tok, t_token *elm);
+void	append_node(t_node **node, t_node *elm);
 
 // redirect.c
 void	open_redir_file(t_node *redirects);
@@ -106,4 +111,5 @@ void	reset_redirect(t_node *redirects);
 
 
 # endif
+
 

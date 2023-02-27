@@ -1,5 +1,6 @@
-#include "minishell.h"
 #include <fcntl.h>
+#include <unistd.h>
+#include "minishell.h"
 
 int	stashfd(int fd)
 {
@@ -25,7 +26,7 @@ void	open_redir_file(t_node *redir)
 	open_redir_file(redir->next);
 }
 
-void	do_redirect(t_node *(redir)
+void	do_redirect(t_node *redir)
 {
 	if (redir == NULL)
 		return ;

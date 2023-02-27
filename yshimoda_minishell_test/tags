@@ -1,0 +1,43 @@
+Mmain	main.c	/^int main(void)$/
+Mtmp	tmp.c	/^int main(void)$/
+append_char	expand.c	/^void	append_char(char **s, char c)$/
+append_tok	parse.c	/^void	append_tok(t_token **tokens, t_token *tok)$/
+assert_error	error.c	/^void	assert_error(const char *msg)$/
+at_eof	parse.c	/^bool	at_eof(t_token *tok)$/
+consume_blank	tokenize.c	/^bool	consume_blank(char	**rest, char *line)$/
+err_exit	error.c	/^void	err_exit(const char *location, const char *ms/
+exec	main.c	/^int	exec(t_node *node)$/
+exec_cmd	main.c	/^int	exec_cmd(t_node *node)$/
+expand	expand.c	/^void	expand(t_node *node)$/
+expand_quote_removal	expand.c	/^void	expand_quote_removal(t_node *node)$/
+fatal_error	error.c	/^void	fatal_error(const char *msg)$/
+free_argv	destructor.c	/^void	free_argv(char **argv)$/
+free_node	destructor.c	/^void	free_node(t_node *node)$/
+free_tok	destructor.c	/^void	free_tok(t_token *tok)$/
+interpret	main.c	/^void	interpret(char *line, int *stat_loc)$/
+is_blank	tokenize.c	/^bool	is_blank(char c)$/
+is_metacharacter	tokenize.c	/^bool	is_metacharacter(char c)$/
+is_operator	tokenize.c	/^bool	is_operator(const char *s)$/
+is_word	tokenize.c	/^bool	is_word(const char *s)$/
+new_node	parse.c	/^t_node	*new_node(t_node_kind kind)$/
+new_token	tokenize.c	/^t_token	*new_token(char *word, t_token_kind kind)$/
+open_redir_file	redirect.c	/^void	open_redir_file(t_node *redir)$/
+operator	tokenize.c	/^t_token	*operator(char **rest, char *line)$/
+parse	parse.c	/^t_node	*parse(t_token *tok)$/
+parse_error	error.c	/^void	parse_error(const char *location, t_token **r/
+perror_prefix	error.c	/^static void	perror_prefix(void)$/
+remove_double_quote	expand.c	/^void	remove_double_quote(char **dst, char **rest, /
+remove_quote	expand.c	/^void	remove_quote(t_token *tok)$/
+remove_sigle_quote	expand.c	/^void	remove_sigle_quote(char **dst, char **rest, c/
+search_path	main.c	/^char	*search_path(const char *filename)$/
+startswith	tokenize.c	/^bool	startswith(const char *s, const char *keyword/
+stashfd	redirect.c	/^int	stashfd(int fd)$/
+tail_recursive	tokenize.c	/^char	**tail_recursive(t_token *tok, int nargs, cha/
+todo	error.c	/^void	todo(const char *msg)$/
+tokdup	parse.c	/^t_token	*tokdup(t_token *tok)$/
+token_list_to_argv	tokenize.c	/^char	**token_list_to_argv(t_token *tok)$/
+tokenize	tokenize.c	/^t_token	*tokenize(char *line)$/
+tokenize_error	error.c	/^void	tokenize_error(const char *location, char **r/
+validate_access	main.c	/^void	validate_access(const char *path, const char /
+word	tokenize.c	/^t_token	*word(char **rest, char *line)$/
+xperror	error.c	/^void	xperror(const char *location)$/

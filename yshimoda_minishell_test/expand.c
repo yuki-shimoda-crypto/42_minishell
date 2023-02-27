@@ -34,7 +34,7 @@ void	append_char(char **s, char c)
 	*s = new;
 }
 
-void	remove_sigle_quote(char **dst, char **rest, char *p)
+void	remove_single_quote(char **dst, char **rest, char *p)
 {
 	if (*p == SINGLE_QUOTE_CHAR)
 	{
@@ -82,7 +82,7 @@ void	remove_quote(t_token *tok)
 	while (*p && !is_metacharacter(*p))
 	{
 		if (*p == SINGLE_QUOTE_CHAR)
-			remove_sigle_quote(&new_word, &p, p);
+			remove_single_quote(&new_word, &p, p);
 		else if (*p == DOUBLE_QUOTE_CHAR)
 			remove_double_quote(&new_word, &p, p);
 		else
