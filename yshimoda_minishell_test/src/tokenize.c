@@ -151,7 +151,7 @@ t_token	*tokenize(char *line)
 	{
 		if (consume_blank(&line, line))
 			continue ;
-		else if (is_operator(line))
+		else if (is_metacharacter(*line))
 			tok = tok->next = operator(&line, line);
 		else if (is_word(line))
 			tok = tok->next = word(&line, line);

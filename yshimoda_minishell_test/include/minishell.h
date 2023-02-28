@@ -16,6 +16,8 @@
 # include <stdbool.h>
 # include <stddef.h>
 
+# define LINUX
+
 # define ERROR_TOKENIZE 258
 # define ERROR_PARSE 258
 # define SINGLE_QUOTE_CHAR '\''
@@ -93,7 +95,7 @@ t_node	*parse(t_token *tok);
 t_node	*redirect_out(t_token **rest, t_token *tok);
 void	append_command_element(t_node *command, t_token **rest, t_token *tok);
 bool	at_eof(t_token *tok);
-bool	equal_op(t_token *tok);
+bool	equal_op(t_token *tok, char *op);
 t_node	*new_node(t_node_kind kind);
 t_token	*tokdup(t_token *tok);
 void	append_tok(t_token **tok, t_token *elm);
@@ -105,9 +107,11 @@ void	do_redirect(t_node *redirects);
 void	reset_redirect(t_node *redirects);
 
 // libft
-// size_t	ft_strlen(const char *s);
-// size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
-// size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+#ifdef LINUX
+size_t	strlcat(char *dst, const char *src, size_t dstsize);
+size_t	strlcpy(char *dst, const char *src, size_t dstsize);
+#endif
+
 
 
 # endif

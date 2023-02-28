@@ -21,13 +21,15 @@ CFLAGS			=	-Wall -Werror -Wextra $(INCLUDE)
 INCLUDE			=	-I include
 
 # SRCS			=	$(shell find src/ -name "*.c")
-SRCS			=	destructor.c		\
+SRC				=	destructor.c		\
 					error.c				\
 					expand.c			\
 					main.c				\
 					tokenize.c			\
 					parse.c				\
 					redirect.c
+
+SRCS			= 	$(addprefix src/,$(SRC))
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
@@ -36,6 +38,11 @@ OBJ_DIR			=	obj
 
 # LIBFT_LIB		=	$(addprefix $(LIBFT_DIR),/libft.a)
 LIBS			=	$(LIBFT_LIB) -lreadline 
+
+ifeq ($(shell uname), Linux)
+SRC				+=	strlcpy.c	\
+					strlcat.c
+endif
 
 $(OBJ_DIR)/%.o:%.c
 				@mkdir -p $(@D)
@@ -82,6 +89,10 @@ leak:			all
 PHONY			+=	test
 test:			all
 				bash ./test.sh
+
+PHONY			+=	echo
+echo:			
+				echo $(OBJS)
 
 .PHONY:			$(PHONY)
 

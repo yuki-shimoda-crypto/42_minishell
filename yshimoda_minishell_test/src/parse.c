@@ -1,6 +1,8 @@
 #include "minishell.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 
 t_node	*parse(t_token *tok)
 {
@@ -17,10 +19,10 @@ t_node	*redirect_out(t_token **rest, t_token *tok)
 {
 	t_node	*node;
 
-	node = new_node(ND_SIMPLE_CMD);
-	append_command_element(node, &tok, tok);
-	while (tok && !at_eof(tok))
-		append_command_element(node, &tok, tok);
+	node = new_node(ND_REDIR_OUT);
+	node->filename = tokdup(tok->next);
+	node->targetfd = STDOUT_FILENO;
+	*rest = tok->next->next;
 	return (node);
 }
 
@@ -85,7 +87,7 @@ void	append_node(t_node **node, t_node *elm)
 {
 	if (*node == NULL)
 	{
-		*node == elm;
+		*node = elm;
 		return ;
 	}
 	append_node(&(*node)->next, elm);
