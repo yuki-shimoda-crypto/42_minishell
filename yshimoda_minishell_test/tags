@@ -90,8 +90,9 @@ free_node	src/destructor.c	/^void	free_node(t_node *node)$/;"	f	typeref:typename
 free_tok	src/destructor.c	/^void	free_tok(t_token *tok)$/;"	f	typeref:typename:void
 interpret	src/main.c	/^void	interpret(char *line, int *stat_loc)$/;"	f	typeref:typename:void
 is_blank	src/tokenize.c	/^bool	is_blank(char c)$/;"	f	typeref:typename:bool
+is_control_operator	src/tokenize.c	/^bool	is_control_operator(const char *s)$/;"	f	typeref:typename:bool
 is_metacharacter	src/tokenize.c	/^bool	is_metacharacter(char c)$/;"	f	typeref:typename:bool
-is_operator	src/tokenize.c	/^bool	is_operator(const char *s)$/;"	f	typeref:typename:bool
+is_redirection_operator	src/tokenize.c	/^bool	is_redirection_operator(const char *s)$/;"	f	typeref:typename:bool
 is_word	src/tokenize.c	/^bool	is_word(const char *s)$/;"	f	typeref:typename:bool
 kind	include/minishell.h	/^	t_node_kind	kind;$/;"	m	struct:s_node	typeref:typename:t_node_kind
 kind	include/minishell.h	/^	t_token_kind	kind;$/;"	m	struct:s_token	typeref:typename:t_token_kind
@@ -105,6 +106,7 @@ operator	src/tokenize.c	/^t_token	*operator(char **rest, char *line)$/;"	f	typer
 parse	src/parse.c	/^t_node	*parse(t_token *tok)$/;"	f	typeref:typename:t_node *
 parse_error	src/error.c	/^void	parse_error(const char *location, t_token **rest, t_token *tok)$/;"	f	typeref:typename:void
 perror_prefix	src/error.c	/^static void	perror_prefix(void)$/;"	f	typeref:typename:void	file:
+print_node	src/test_func.c	/^void	print_node(t_node *node)$/;"	f	typeref:typename:void
 redirect_out	src/parse.c	/^t_node	*redirect_out(t_token **rest, t_token *tok)$/;"	f	typeref:typename:t_node *
 redirects	include/minishell.h	/^	t_node		*redirects;$/;"	m	struct:s_node	typeref:typename:t_node *
 remove_double_quote	src/expand.c	/^void	remove_double_quote(char **dst, char **rest, char *p)$/;"	f	typeref:typename:void

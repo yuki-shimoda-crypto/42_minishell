@@ -1,0 +1,150 @@
+diff --git a/include/minishell.h b/include/minishell.h
+index 609ef65..af4116a 100644
+--- a/include/minishell.h
++++ b/include/minishell.h
+@@ -6,6 +6,7 @@
+ 
+ # define ERROR_TOKENIZE 258
+ # define ERROR_PARSE 258
++# define ERROR_OPEN_REDIR 1
+ # define SINGLE_QUOTE_CHAR '\''
+ # define DOUBLE_QUOTE_CHAR '"'
+ 
+@@ -45,6 +46,7 @@ struct s_token {
+ enum e_node_kind {
+ 	ND_SIMPLE_CMD,
+ 	ND_REDIR_OUT,
++	ND_REDIR_IN,
+ };
+ typedef enum e_node_kind	t_node_kind;
+ 
+@@ -101,7 +103,7 @@ void	append_tok(t_token **tokens, t_token *tok);
+ t_token	*tokdup(t_token *tok);
+ 
+ // redirect.c
+-void	open_redir_file(t_node *redirects);
++int		open_redir_file(t_node *redirects);
+ void	do_redirect(t_node *redirects);
+ void	reset_redirect(t_node *redirects);
+ 
+diff --git a/src/main.c b/src/main.c
+index 03f47ec..d0f328f 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -85,7 +85,9 @@ int	exec_cmd(t_node *node)
+ int	exec(t_node *node)
+ {
+ 	int	status;
+-	open_redir_file(node->redirects);
++
++	if (open_redir_file(node->redirects) < 0)
++		return (ERROR_OPEN_REDIR);
+ 	do_redirect(node->redirects);
+ 	status = exec_cmd(node);
+ 	reset_redirect(node->redirects);
+diff --git a/src/parse.c b/src/parse.c
+index 233197d..eba404f 100644
+--- a/src/parse.c
++++ b/src/parse.c
+@@ -35,6 +35,17 @@ t_node	*redirect_out(t_token **rest, t_token *tok)
+ 	return (node);
+ }
+ 
++t_node	*redirect_in(t_token **rest, t_token *tok)
++{
++	t_node	*node;
++
++	node = new_node(ND_REDIR_IN);
++	node->filename = tokdup(tok->next);
++	node->targetfd = STDIN_FILENO;
++	*rest = tok->next->next;
++	return (node);
++}
++
+ void	append_command_element(t_node *command, t_token **rest, t_token *tok)
+ {
+ 	if (tok->kind == TK_WORD)
+@@ -44,6 +55,8 @@ void	append_command_element(t_node *command, t_token **rest, t_token *tok)
+ 	}
+ 	else if (equal_op(tok, ">") && tok->next->kind == TK_WORD)
+ 		append_node(&command->redirects, redirect_out(&tok, tok));
++	else if (equal_op(tok, "<") && tok->next->kind == TK_WORD)
++		append_node(&command->redirects, redirect_in(&tok, tok));
+ 	else
+ 		todo("append_command_element");
+ 	*rest = tok;
+diff --git a/src/redirect.c b/src/redirect.c
+index 871856d..20d4d59 100644
+--- a/src/redirect.c
++++ b/src/redirect.c
+@@ -14,27 +14,36 @@ int	stashfd(int fd)
+ 	return (stashfd);
+ }
+ 
+-void	open_redir_file(t_node *redir)
++int	open_redir_file(t_node *redir)
+ {
+ 	if (redir == NULL)
+ 	if (redir->kind == ND_REDIR_OUT)
+ 		redir->filefd = open(redir->filename->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
++	else if (redir->kind == ND_REDIR_IN)
++		redir->filefd = open(redir->filename->word, O_RDONLY);
+ 	else
+ 		todo("open_redir_file");
++	if (redir->filefd < 0)
++	{
++		xperror(redir->filename->word);
++		return (-1);
++	}
+ 	redir->filefd = stashfd(redir->filefd);
+-	open_redir_file(redir->next);
++	return (open_redir_file(redir->next));
+ }
+ 
+ void	do_redirect(t_node *redir)
+ {
+ 	if (redir == NULL)
+ 		return ;
+-	if (redir->kind == ND_REDIR_OUT)
++	if (redir->kind == ND_REDIR_OUT || redir->kind == ND_REDIR_IN)
+ 	{
+ 		redir->stashed_targetfd = stashfd(redir->targetfd);
+ 		dup2(redir->filefd, redir->targetfd);
+ 	}
++	else
++		todo("do_redirect");
+ 	do_redirect(redir->next);
+ }
+ 
+@@ -44,10 +53,12 @@ void	reset_redirect(t_node *redir)
+ 	if (redir == NULL)
+ 		return ;
+ 	reset_redirect(redir->next);
+-	if (redir->kind == ND_REDIR_OUT)
++	if (redir->kind == ND_REDIR_OUT || redir->kind == ND_REDIR_IN)
+ 	{
+ 		close(redir->filefd);
+ 		close(redir->targetfd);
+ 		dup2(redir->stashed_targetfd, redir->targetfd);
+ 	}
++	else
++		todo("reset_redirect");
+ }
+diff --git a/test.sh b/test.sh
+index 27f183a..9db8f44 100755
+--- a/test.sh
++++ b/test.sh
+@@ -99,4 +99,13 @@ assert "echo hello'  world  '\"  42Tokyo  \""
+ assert 'echo hello >hello.txt' 'hello.txt'
+ assert 'echo hello >f1>f2>f3' 'f1' 'f2' 'f3'
+ 
++## Redirecting input
++assert 'cat <Makefile'
++echo hello >f1
++echo world >f2
++echo 42Tokyo >f3
++assert 'cat <f1<f2<f3'
++rm -f f1 f2 f3
++assert 'cat <hoge'
++
+ cleanup
