@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:53:27 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/20 16:42:12 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/02/28 21:39:36 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@
 
 
 // # define PROMPT "kimochiiii# "
-# define PROMPT "きぃぃもちぃぃぃぃいい# "
+// # define PROMPT "きぃぃもちぃぃぃぃいい# "
 // # define PROMPT "脳汁# "
+# define PROMPT "激アツ# "
 
 // typedef struct s_cmd_lst
 // {
@@ -46,6 +47,7 @@
 enum e_tk_kind
 {
 	TK_WORD,
+	TK_FILE,
 	TK_PIPE,
 	TK_OP,
 	TK_EOF,
@@ -57,8 +59,13 @@ typedef struct s_token_list
 	char				*token;
 	t_tk_kind			kind;
 	struct s_token_list	*next;
-	// struct s_token_list	*prev;
 }		t_token_list;
+
+typedef struct s_fd_list
+{
+	int					fd;
+	struct s_fd_list	*next;
+}		t_fd_list;
 
 typedef struct s_env_list
 {
@@ -97,5 +104,7 @@ int				cd(char **destination, t_env_list *env_box);
 // t_token_list	*tokenize(char *input);
 t_token_list	*lexer(char *input);
 void			exe(t_token_list *tk_list);
+void			redirection(t_token_list	*tk_list);
+char			**make_array(t_token_list	*tk_list);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:13:24 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/02/21 17:19:45 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/02/28 23:19:38 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ t_token_list *new_token(char *word, t_tk_kind kind)
 	return (tk_list);
 }
 
-static char *skip_quot(char *input, char quot)
+static char *skip_quote(char *input, char quote)
 {
 	input++;
-	while (*input != quot)
+	while (*input != quote)
 	{
 		if (*input == '\0')
 		{
@@ -52,12 +52,12 @@ static t_token_list *word_into_list(char **rest, char *input)
 			break ;
 		if (*input == '\'')
 		{
-			input = skip_quot(input, '\'');
+			input = skip_quote(input, '\'');
 			break ;
 		}
 		else if (*input == '"')
 		{
-			input = skip_quot(input, '"');
+			input = skip_quote(input, '"');
 			break ;
 		}
 		else
@@ -110,9 +110,24 @@ static t_token_list	*ope_into_list(char **rest, char *input)
 	word = ft_strndup(start, input - start);
 	// if (!word)
 	// 	fatal_error("strndup");
+	if (ft_strlen(word) > 2)
+		exit (2);//error処理
 	*rest = input;
 	return (new_token(word, TK_OP));
 }
+
+// static t_token_list	*get_cmd(char **rest, char *input)
+// {
+// 	char	*word;
+// 	char	*start;
+
+// 	start = input;
+// 	while (*input != ' ')
+// 		input++;
+// 	word = ft_strndup(start, input - start);
+// 	*rest = input;
+// 	return (new_token(word, TK_WORD));
+// }
 
 static t_token_list *tokenize(char *input)
 {
@@ -121,7 +136,10 @@ static t_token_list *tokenize(char *input)
 
 	head.next = NULL;
 	tk_list = &head;
-	while (*input)
+	// skip_space(&input, input);//
+	// tk_list->next = get_cmd(&input, input);//
+	// tk_list = tk_list->next;//
+	while (*input != '\0')
 	{
 		skip_space(&input, input);
 		if (is_pipe(input))
@@ -132,8 +150,14 @@ static t_token_list *tokenize(char *input)
 		}
 		if (*input != '|' && *input != ' ')
 		{
+			// if (tk_list->kind == TK_PIPE)
+			// {
+			// 	tk_list->next = get_cmd(&input, input);//
+			// 	tk_list = tk_list->next;//
+			// }
 			tk_list->next = word_into_list(&input, input);
 			tk_list = tk_list->next;
+			skip_space(&input, input);
 		}
 		if (*input == '<' || *input == '>')
 		{
@@ -145,6 +169,13 @@ static t_token_list *tokenize(char *input)
 			// 	exit(2);
 			// 	// syntax_error("redirect");
 			// }
+		}
+		if (tk_list->kind == TK_OP)
+		{
+			skip_space(&input, input);
+			tk_list->next = word_into_list(&input, input);
+			tk_list = tk_list->next;
+			tk_list->kind = TK_FILE;
 		}
 	}
 	tk_list->next = new_token(NULL, TK_EOF);
@@ -161,7 +192,7 @@ static bool check_quoted(char *token)
 	return (false);
 }
 
-static void remove_quot(t_token_list *tk_list)
+static void remove_quote(t_token_list *tk_list)
 {
 	char	*tmp;
 
@@ -177,12 +208,12 @@ static void remove_quot(t_token_list *tk_list)
 		}
 	}
 	tk_list = tk_list->next;
-	remove_quot(tk_list);
+	remove_quote(tk_list);
 }
 
 static void expand(t_token_list *tk_list)
 {
-	remove_quot(tk_list);
+	remove_quote(tk_list);
 }
 
 t_token_list *lexer(char *input)
