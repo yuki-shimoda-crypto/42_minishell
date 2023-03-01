@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:52:04 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/01 11:28:33 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/02/28 23:22:24 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 int	main(int argc, char const *argv[], char **envp)
 {
-	char	*input;
+	char			*input;
+	t_token_list	*tk_list;
 
 	(void)argc;
-	(void)envp;
+	(void)argv;
 	minishell_signal();
+	make_env_list(envp);
 	while (1)
 	{
 		input = readline(PROMPT);
@@ -31,13 +33,18 @@ int	main(int argc, char const *argv[], char **envp)
 		{
 			if (ft_strlen(input))
 				add_history(input);
-			lexer(input);
-			parser(input);
+			tk_list = lexer(input);
+			parser(tk_list);
+			if (tk_list->token)
+				exe(tk_list);
+			// while (tk_list->kind != TK_EOF)//
+			// {
+			// 	printf("%d\n", tk_list->kind);
+			// 	tk_list = tk_list->next;
+			// }//
 		}
-		ft_printf("%s\n", input);
 		free(input);
 	}
-	ft_printf("%s\n", argv[0]);
 	return (0);
 }
 
