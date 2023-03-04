@@ -11,11 +11,77 @@
     1. consume_blank
     1. is_operator
     1. is_word
+        1. if (c == single quote || c == double quote) つぎのクォートまでインプット
+1. parse
+    1. remove sigle quote
+    1. remove double quote
+    1. redirect
 1. exec
     1. search_path
     1. validate_access
     1. execve
-1. Parser
+
+## struct
+```
+typedef enum e_tk_kind t_tk_kind;
+enum e_tk_kind
+{
+    TK_WORD,
+    TK_OPERATOR,
+    TK_EOF,
+};
+```
+
+```
+typedef struct s_tk t_tk;
+struct s_tk
+{
+    char			*word;
+	t_tk_kind		kind;
+    struct s_token	*next;
+};
+```
+
+```
+typedef enum e_node_kind t_node_kind;
+enum e_node_kind
+{
+    ND_PIPE,
+    ND_SIMPLE_CMD,
+    ND_REDIRECT_OUT,
+    ND_REDIRECT_IN,
+    ND_REDIRECT_APPEND,
+    ND_REDIRECT_HEREDOC,
+}
+```
+
+```
+typedef struct s_node t_node;
+struct s_node
+{
+	t_node_kind	kind;
+    t_node		*next;
+    // CMD
+	t_node	*command;
+    // REDIRECT
+	t_node	*redirect;
+	t_token	*filename;
+	t_token	*delimiter;
+	int		filefd;
+}
+```
+
+```
+typedef struct s_env t_env;
+struct s_env
+{
+	char		*key;
+	char		*value;
+	t_env		*pre;
+	t_env		*next;
+}
+```
+
 
 ## Rule
 - Only if original function exists add "ft" at head of the function
