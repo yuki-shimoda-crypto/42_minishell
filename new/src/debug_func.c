@@ -13,12 +13,28 @@
 #include "minishell.h"
 #include <stdio.h>
 
+const char	*print_t_tk_kind(int kind)
+{
+	if (kind == TK_WORD)
+		return ("TK_WORD");
+	if (kind == TK_REDIRECT)
+		return ("TK_REDIRECT");
+	if (kind == TK_PIPE)
+		return ("TK_PIPE");
+	if (kind == TK_EOF)
+		return ("TK_EOF");
+	return (NULL);
+}
+
 void	print_t_tk(t_tk	*token)
 {
+	if (token)
+		printf("%s\n", "----------");
 	while (token)
 	{
 		printf("%s\n", token->word);
-		printf("%d\n", token->kind);
+		printf("\t%s\n", print_t_tk_kind(token->kind));
+		printf("%s\n", "----------");
 		token = token->next;
 	}
 }

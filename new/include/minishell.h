@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/06 17:57:52 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/06 22:19:28 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ struct s_tk
 {
     char			*word;
 	t_tk_kind		kind;
-    struct s_tk     *next;
+    t_tk			*next;
 };
 
 enum e_node_kind
@@ -90,7 +90,7 @@ void	assert_error(const char *msg);
 t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token);
 t_tk	*word_into_list(char **skipped, char *line);
 t_tk	*token_new(char *word, t_tk_kind kind);
-t_tk	*redirect_into_list(char **skipped, char *line, const char c);
+t_tk	*redirect_into_list(char **skipped, char *line, const char c, t_tk *token);
 t_tk	*quoted_into_list(char **skipped, char *line, const char c);
 bool	is_blank(char c);
 void	skip_blank(char **skipped, char *line);

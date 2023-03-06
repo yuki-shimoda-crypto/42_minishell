@@ -14,6 +14,7 @@
 #include <stdio.h>//
 #include <unistd.h>//
 
+// ok
 void	syntax_error(const char *msg, char **skipped, char *line)
 {
 	if (msg)
@@ -23,6 +24,7 @@ void	syntax_error(const char *msg, char **skipped, char *line)
 	*skipped = line;
 }
 
+// ok
 void	assert_error(const char *msg)
 {
 	if (msg)
@@ -30,12 +32,17 @@ void	assert_error(const char *msg)
 	exit(1);
 }
 
+// ok_yshimoda
 t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token)
 {
 	char	*word;
 
-	if (token->kind == TK_PIPE)
-		syntax_error("bash: syntax error near unexpected token '|'", &line, line);
+	word = NULL;
+	if (token && token->kind == TK_PIPE)
+	{
+		syntax_error("bash: syntax error near unexpected token '|'\n", skipped, line);
+		g_return_error.tokenize_error = true;
+	}
 	else
 	{
 		word = strndup(line, 1);
@@ -44,7 +51,7 @@ t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token)
 		line++;
 		*skipped = line;
 	}
-	return (0);
+	return (token_new(word, TK_PIPE));
 }
 
 t_tk	*word_into_list(char **skipped, char *line)
@@ -55,16 +62,17 @@ t_tk	*word_into_list(char **skipped, char *line)
 	start = line;
 	while (*line)
 	{
-		if (is_blank(*line) && is_quote(*line)
-			&& is_redirect(*line, skipped, line) && is_pipe(*line))
+		if (is_blank(*line) || is_quote(*line)
+			|| is_redirect(*line, skipped, line) || is_pipe(*line))
 			break ;
 		line++;
 	}
-	word = strndup(line, line - start);
+	word = strndup(start, line - start);
 	*skipped = line;
 	return (token_new(word, TK_WORD));
 }
 
+// ok_yshimoda
 t_tk	*token_new(char *word, t_tk_kind kind)
 {
 	t_tk	*token;
@@ -78,27 +86,29 @@ t_tk	*token_new(char *word, t_tk_kind kind)
 	return (token);
 }
 
-t_tk	*redirect_into_list(char **skipped, char *line, const char c)
+t_tk	*redirect_into_list(char **skipped, char *line, const char c, t_tk *token)
 {
-	char	*word;
 	char	*start;
+	char	*word;
 
-	start = line;
-	while (*line)
+	if (token && token->kind == TK_REDIRECT)
 	{
-		if (*line != c)
-		line++;
+		syntax_error("bash: syntax error near unexpected token < or >\n", skipped, line);
+		g_return_error.tokenize_error = true;
+		word = NULL;
 	}
-	if (line - start > 2)
-		return (word_into_list(&line, line));
 	else
 	{
+		start = line;
+		while (*line == c)
+			line++;
 		word = strndup(start, line - start);
 		*skipped = line;
 	}
 	return (token_new(word, TK_REDIRECT));
 }
 
+// ok
 t_tk	*quoted_into_list(char **skipped, char *line, const char c)
 {
 	char	*start;
@@ -134,7 +144,6 @@ bool	is_quote(char c)
 	return (c == '\'' || c == '"');
 }
 
-
 // ok
 bool	is_quoted(char c, char *line)
 {
@@ -150,19 +159,20 @@ bool	is_quoted(char c, char *line)
 	return (false);
 }
 
+// ok_yshimoda
 bool	is_redirect_error(char *line)
 {
-	if (!strncmp(line, ">>>", 3))
+	if (!strncmp(line, "<>", 2))
 		return (true);
-	else if (!strncmp(line, "<<<", 3))
+	else if (!strncmp(line, "><", 2))
+		return (true);
+	else if (!strncmp(line, ">>>", 3))
 		return (true);
 	else if (!strncmp(line, ">><", 3))
 		return (true);
+	else if (!strncmp(line, "<<<", 3))
+		return (true);
 	else if (!strncmp(line, "<<>", 3))
-		return (true);
-	else if (!strncmp(line, "<>", 2))
-		return (true);
-	else if (!strncmp(line, "><", 2))
 		return (true);
 	return (false);
 }
@@ -171,8 +181,9 @@ bool	is_redirect(char c, char **skipped, char *line)
 {
 	if (is_redirect_error(line))
 	{
-		syntax_error("bash: syntax error near unexpected token ", skipped, line);
+		syntax_error("bash: syntax error near unexpected token < or >\n", skipped, line);
 		g_return_error.tokenize_error = true;
+		return (false);
 	}
 	else if (!strncmp(line, ">>", 2) || !strncmp(line, "<<", 2))
 		return (true);
@@ -187,13 +198,12 @@ bool	is_pipe(char c)
 
 t_tk	*tokenize(char *line)
 {
+	t_tk	head;
 	t_tk	*token;
-	t_tk	*head;
 
-	token = calloc(1, sizeof(t_tk));
-	if (!token)
-		assert_error("calloc");
-	head = token;
+	token = &head;
+	token->word = NULL;
+	token->kind = TK_WORD;
 	token->next = NULL;
 	while (*line)
 	{
@@ -204,26 +214,24 @@ t_tk	*tokenize(char *line)
 			token->next = quoted_into_list(&line, line, *line);
 			token = token->next;
 		}
-//		else if (is_redirect(*line, &line, line))
-//		{
-//			token->next = redirect_into_list(&line, line, *line);
-//			token = token->next;
-//		}
-//		else if (is_pipe(*line))
-//		{
-//			token->next = pipe_into_list(&line, line, token);
-//			token = token->next;
-//		}
-//		else
-//		{
-//			token->next = word_into_list(&line, line);
-//			token = token->next;
-//		}
+		else if (is_redirect(*line, &line, line))
+		{
+			token->next = redirect_into_list(&line, line, *line, token);
+			token = token->next;
+		}
+		else if (is_pipe(*line))
+		{
+			token->next = pipe_into_list(&line, line, token);
+			token = token->next;
+		}
 		else
-			line++;
+		{
+			token->next = word_into_list(&line, line);
+			token = token->next;
+		}
 	}
 	token->next = NULL;
-	return (head->next);
+	return (head.next);
 }
 
 //#include <stdio.h>
@@ -242,4 +250,3 @@ t_tk	*tokenize(char *line)
 //	// 	printf("%s\n", "NG");
 //	return (0);
 //}
-//
