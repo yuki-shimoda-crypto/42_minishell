@@ -15,12 +15,16 @@
 #include <readline/history.h>
 #include <unistd.h>
 
+t_return_error	g_return_error;
+
 void	interpret(const char *line)
 {
-	t_token	*token;
+	t_tk	*token;
 
 	token = NULL;
 	tokenize(&token, line);
+	if (g_return_error)
+		return ;
 }
 
 int	main(int argc, char const *argv[], char **envp)
@@ -32,6 +36,9 @@ int	main(int argc, char const *argv[], char **envp)
 	(void)envp;
 	while (1)
 	{
+		g_return_error.tokenize_error = false;
+		g_return_error.parse_error = false;
+		g_return_error.reurn_value = false;
 		line = readline("minishell#");
 		if (!line)
 		{
