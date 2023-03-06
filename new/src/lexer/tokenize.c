@@ -12,6 +12,46 @@
 
 #include "minishell.h"
 
+void	assert_error(const char *msg)
+{
+	if (msg)
+		write(STDERR_FILENO, msg, strlen(msg));
+	exit(1);
+}
+
+			// token->next = pipe_into_list(&line, line);
+t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token)
+{
+	char	*word;
+	char	*start;
+
+	if (token->t_tk_kind == TK_PIPE)
+		/* code */
+	start = line;
+	word = strnup(line, 1);
+	if (!word)
+		assert_error("strndup");
+}
+
+t_tk	*word_into_list(char **skipped, char *line)
+{
+	char *word;
+	char *start;
+
+	start = line;
+	while (*line)
+	{
+		if (is_blank(*line) && is_quote(*line)
+			&& is_redirect(*line, line, skipped) && is_pipe(*line))
+			break ;
+		line++;
+	}
+	word = strndup(line, line - start);
+	*skipped = line;
+	return (token_new(word, TK_WORD));
+}
+
+
 t_tk	*token_new(char *word, t_tk_kind kind)
 {
 	t_tk	*token;
@@ -36,13 +76,13 @@ t_tk	*redirect_into_list(char **skipped, char *line, const char c)
 		line++;
 	}
 	if (line - start > 2)
-		return (word_into_list());
+		return (word_into_list(&line, line));
 	else
 	{
 		word = strndup(start, line - start);
 		*skipped = line;
 	}
-	return (token_new(word, TK_OPERATOR));
+	return (token_new(word, TK_REDIRECT));
 }
 
 t_tk	*quoted_into_list(char **skipped, char *line, const char c)
@@ -73,6 +113,12 @@ void	skip_blank(char **skipped, char *line)
 		line++;
 	*skipped = line;
 }
+
+bool	is_quote(char c)
+{
+	return (c == '\'' || c == '"');
+}
+
 
 // ok
 bool	is_quoted(char c, char *line)
@@ -110,7 +156,7 @@ bool	is_redirect(char c, char *line, char **skipped)
 {
 	if (is_redirect_error(line))
 	{
-		syntax_error("bash: syntax error near unexpected token `%c'", *line);
+		// syntax_error("bash: syntax error near unexpected token `%c'", *line);
 		while (*line)
 			line++;
 		*skipped = line;
@@ -121,13 +167,18 @@ bool	is_redirect(char c, char *line, char **skipped)
 	return (c == '>' | c == '<');
 }
 
-bool	is_pipe(char c)
+bool	is_pipe(char *line)
 {
-	return (c == '|');
+	return (*line == '|');
 }
 
-void	tokenize(t_tk *token, char *line)
+t_tk	*tokenize(char *line)
 {
+	t_tk	token;
+	t_tk	*head;
+
+	head = token;
+	token->next = NULL;
 	while (*line)
 	{
 		if (is_blank(*line))
@@ -137,14 +188,14 @@ void	tokenize(t_tk *token, char *line)
 			token->next = quoted_into_list(&line, line, *line);
 			token = token->next;
 		}
-		else if (is_redirect(*line, line))
+		else if (is_redirect(*line, line, &line))
 		{
-			token->next = redirect_into_list(&line, line);
+			token->next = redirect_into_list(&line, line, *line);
 			token = token->next;
 		}
 		else if (is_pipe(*line))
 		{
-			token->next = pipe_into_list(&line, line);
+			token->next = pipe_into_list(&line, line, token);
 			token = token->next;
 		}
 		else
@@ -154,7 +205,7 @@ void	tokenize(t_tk *token, char *line)
 		}
 	}
 	token->next = token_new(NULL, TK_EOF);
-	token = token->next;
+	return (head->next);
 }
 
 //#include <stdio.h>

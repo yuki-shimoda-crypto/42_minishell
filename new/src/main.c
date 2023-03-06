@@ -17,14 +17,21 @@
 
 t_return_error	g_return_error;
 
-void	interpret(const char *line)
+void	init_return_error(void)
+{
+	g_return_error.tokenize_error = false;
+	g_return_error.parse_error = false;
+	g_return_error.return_value = 0;
+}
+
+void	interpret(char *line)
 {
 	t_tk	*token;
 
-	token = NULL;
-	tokenize(&token, line);
-	if (g_return_error)
+	token = tokenize(line);
+	if (g_return_error.tokenize_error)
 		return ;
+	print_t_tk(token);
 }
 
 int	main(int argc, char const *argv[], char **envp)
@@ -36,9 +43,7 @@ int	main(int argc, char const *argv[], char **envp)
 	(void)envp;
 	while (1)
 	{
-		g_return_error.tokenize_error = false;
-		g_return_error.parse_error = false;
-		g_return_error.reurn_value = false;
+		init_return_error();
 		line = readline("minishell#");
 		if (!line)
 		{
@@ -47,7 +52,6 @@ int	main(int argc, char const *argv[], char **envp)
 		}
 		if (*line)
 			add_history(line);
-		printf("%s\n", line);
 		interpret(line);
 	}
 }

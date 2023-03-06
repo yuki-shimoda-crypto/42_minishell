@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/06 15:09:02 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/06 16:16:43 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,18 @@
 # include <string.h>
 # include <stdlib.h>
 
-extern  t_return_error    g_return_error;
-
 typedef enum	e_tk_kind t_tk_kind;
 typedef struct	s_tk t_tk;
 typedef enum	e_node_kind t_node_kind;
 typedef struct	s_node t_node;
 typedef struct	s_env t_env;
-typedef struct  s_return_error t_return_error;
+typedef struct	s_return_error t_return_error;
 
 enum e_tk_kind
 {
     TK_WORD,
-    TK_OPERATOR,
+    TK_REDIRECT,
+    TK_PIPE,
     TK_EOF,
 };
 
@@ -38,7 +37,7 @@ struct s_tk
 {
     char			*word;
 	t_tk_kind		kind;
-    struct s_token	*next;
+    struct s_tk     *next;
 };
 
 enum e_node_kind
@@ -84,6 +83,6 @@ struct s_return_error
 void	print_t_tk(t_tk	*token);
 
 // tokenize.c
-void	tokenize(t_tk *token, char *line)
+t_tk	*tokenize(char *line);
 
 #endif
