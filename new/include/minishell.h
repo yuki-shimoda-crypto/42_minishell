@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/06 22:19:28 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/07 00:27:49 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,24 +81,28 @@ struct s_return_error
 
 extern t_return_error   g_return_error;
 
+// error.c
+void	assert_error(const char *msg);
+void	syntax_error(const char *msg, char **skipped, char *line);
+
 // debug_func.c
 void	print_t_tk(t_tk	*token);
 
 // tokenize.c
-void	syntax_error(const char *msg, char **skipped, char *line);
-void	assert_error(const char *msg);
 t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token);
 t_tk	*word_into_list(char **skipped, char *line);
-t_tk	*token_new(char *word, t_tk_kind kind);
 t_tk	*redirect_into_list(char **skipped, char *line, const char c, t_tk *token);
 t_tk	*quoted_into_list(char **skipped, char *line, const char c);
-bool	is_blank(char c);
+t_tk	*token_new(char *word, t_tk_kind kind);
+t_tk	*tokenize(char *line);
 void	skip_blank(char **skipped, char *line);
+
+// is.c
+bool	is_blank(char c);
 bool	is_quote(char c);
 bool	is_quoted(char c, char *line);
 bool	is_redirect_error(char *line);
 bool	is_redirect(char c, char **skipped, char *line);
 bool	is_pipe(char c);
-t_tk	*tokenize(char *line);
 
 #endif

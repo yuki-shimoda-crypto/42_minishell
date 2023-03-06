@@ -27,10 +27,12 @@ void	init_return_error(void)
 void	interpret(char *line)
 {
 	t_tk	*token;
+	t_node	*node;
 
 	token = tokenize(line);
 	if (g_return_error.tokenize_error)
 		return ;
+	node = parse
 	print_t_tk(token);
 }
 

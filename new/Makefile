@@ -20,6 +20,7 @@ INCLUDE			=	-I include
 
 SRCS			=	src/main.c				\
 					src/debug_func.c		\
+					src/error/error.c		\
 					src/lexer/tokenize.c
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)

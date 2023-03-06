@@ -11,26 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>//
-#include <unistd.h>//
-
-// ok
-void	syntax_error(const char *msg, char **skipped, char *line)
-{
-	if (msg)
-		write(STDERR_FILENO, msg, strlen(msg));
-	while (*line)
-		line++;
-	*skipped = line;
-}
-
-// ok
-void	assert_error(const char *msg)
-{
-	if (msg)
-		write(STDERR_FILENO, msg, strlen(msg));
-	exit(1);
-}
+#include <stdio.h>
+#include <unistd.h>
 
 // ok_yshimoda
 t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token)
@@ -124,77 +106,6 @@ t_tk	*quoted_into_list(char **skipped, char *line, const char c)
 	return (token_new(word, TK_WORD));
 }
 
-// ok
-bool	is_blank(char c)
-{
-	return (c == ' ' || c == '\t');
-}
-
-// ok
-void	skip_blank(char **skipped, char *line)
-{
-	while (is_blank(*line))
-		line++;
-	*skipped = line;
-}
-
-// ok
-bool	is_quote(char c)
-{
-	return (c == '\'' || c == '"');
-}
-
-// ok
-bool	is_quoted(char c, char *line)
-{
-	if (c == '\'' || c == '"')
-	{
-		while (*line)
-		{
-			line++;
-			if (*line == c)
-				return (true);
-		}
-	}
-	return (false);
-}
-
-// ok_yshimoda
-bool	is_redirect_error(char *line)
-{
-	if (!strncmp(line, "<>", 2))
-		return (true);
-	else if (!strncmp(line, "><", 2))
-		return (true);
-	else if (!strncmp(line, ">>>", 3))
-		return (true);
-	else if (!strncmp(line, ">><", 3))
-		return (true);
-	else if (!strncmp(line, "<<<", 3))
-		return (true);
-	else if (!strncmp(line, "<<>", 3))
-		return (true);
-	return (false);
-}
-
-bool	is_redirect(char c, char **skipped, char *line)
-{
-	if (is_redirect_error(line))
-	{
-		syntax_error("bash: syntax error near unexpected token < or >\n", skipped, line);
-		g_return_error.tokenize_error = true;
-		return (false);
-	}
-	else if (!strncmp(line, ">>", 2) || !strncmp(line, "<<", 2))
-		return (true);
-	return (c == '>' || c == '<');
-}
-
-// ok
-bool	is_pipe(char c)
-{
-	return (c == '|');
-}
 
 t_tk	*tokenize(char *line)
 {
@@ -208,7 +119,7 @@ t_tk	*tokenize(char *line)
 	while (*line)
 	{
 		if (is_blank(*line))
-			skip_blank(&line, line);//ok
+			skip_blank(&line, line);
 		else if (is_quoted(*line, line))
 		{
 			token->next = quoted_into_list(&line, line, *line);
