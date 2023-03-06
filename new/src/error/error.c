@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 23:26:00 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/07 00:08:46 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/07 02:33:21 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@
 void	assert_error(const char *msg)
 {
 	if (msg)
+	{
+		write(STDERR_FILENO, ERROR_ASSERT, strlen(ERROR_ASSERT));
 		write(STDERR_FILENO, msg, strlen(msg));
+	}
 	exit(1);
 }
 
@@ -26,7 +29,10 @@ void	assert_error(const char *msg)
 void	syntax_error(const char *msg, char **skipped, char *line)
 {
 	if (msg)
+	{
+		write(STDERR_FILENO, ERROR_SYNTAX, strlen(ERROR_SYNTAX));
 		write(STDERR_FILENO, msg, strlen(msg));
+	}
 	while (*line)
 		line++;
 	*skipped = line;

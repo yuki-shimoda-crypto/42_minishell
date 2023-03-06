@@ -10,17 +10,20 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC				=	cc
-
 NAME			=	minishell
-# CFLAGS			=	-Wall -Werror -Wextra
-CFLAGS			=	-Wall -Wextra
-CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=leak -fsanitize=undefined
+
+CC				=	cc
+CFLAGS			=	-Wall -Werror -Wextra
+CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=undefined
+
 INCLUDE			=	-I include
 
 SRCS			=	src/main.c				\
 					src/debug_func.c		\
 					src/error/error.c		\
+					src/lexer/into_list.c	\
+					src/lexer/is_01.c		\
+					src/lexer/is_02.c		\
 					src/lexer/tokenize.c
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
@@ -28,6 +31,10 @@ OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 OBJ_DIR			=	obj
 
 LIBS			=	-lreadline
+
+ifeq ($(shell uname), Linux)
+CFLAGS_DEBUG	+=	-fsanitize=leak
+endif
 
 $(OBJ_DIR)/%.o:%.c
 				@mkdir -p $(@D)
