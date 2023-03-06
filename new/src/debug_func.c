@@ -22,4 +22,3 @@ void	print_t_tk(t_tk	*token)
 		token = token->next;
 	}
 }
-

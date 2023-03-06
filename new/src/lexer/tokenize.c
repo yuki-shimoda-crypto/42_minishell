@@ -14,8 +14,6 @@
 #include <stdio.h>//
 #include <unistd.h>//
 
-t_return_error	g_return_error;
-
 void	syntax_error(const char *msg, char **skipped, char *line)
 {
 	if (msg)
@@ -25,7 +23,6 @@ void	syntax_error(const char *msg, char **skipped, char *line)
 	*skipped = line;
 }
 
-
 void	assert_error(const char *msg)
 {
 	if (msg)
@@ -33,7 +30,6 @@ void	assert_error(const char *msg)
 	exit(1);
 }
 
-			// token->next = pipe_into_list(&line, line);
 t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token)
 {
 	char	*word;
@@ -68,7 +64,6 @@ t_tk	*word_into_list(char **skipped, char *line)
 	*skipped = line;
 	return (token_new(word, TK_WORD));
 }
-
 
 t_tk	*token_new(char *word, t_tk_kind kind)
 {
@@ -227,7 +222,7 @@ t_tk	*tokenize(char *line)
 		else
 			line++;
 	}
-	token->next = token_new(NULL, TK_EOF);
+	token->next = NULL;
 	return (head->next);
 }
 
