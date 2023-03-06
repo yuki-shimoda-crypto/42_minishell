@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/06 16:16:43 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/06 17:37:56 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdint.h>
 # include <string.h>
 # include <stdlib.h>
+# include <unistd.h>
 
 typedef enum	e_tk_kind t_tk_kind;
 typedef struct	s_tk t_tk;
@@ -83,6 +84,20 @@ struct s_return_error
 void	print_t_tk(t_tk	*token);
 
 // tokenize.c
+void	syntax_error(const char *msg, char **skipped, char *line);
+void	assert_error(const char *msg);
+t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token);
+t_tk	*word_into_list(char **skipped, char *line);
+t_tk	*token_new(char *word, t_tk_kind kind);
+t_tk	*redirect_into_list(char **skipped, char *line, const char c);
+t_tk	*quoted_into_list(char **skipped, char *line, const char c);
+bool	is_blank(char c);
+void	skip_blank(char **skipped, char *line);
+bool	is_quote(char c);
+bool	is_quoted(char c, char *line);
+bool	is_redirect_error(char *line);
+bool	is_redirect(char c, char **skipped, char *line);
+bool	is_pipe(char c);
 t_tk	*tokenize(char *line);
 
 #endif

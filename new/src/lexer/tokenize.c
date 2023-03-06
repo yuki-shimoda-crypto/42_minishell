@@ -11,6 +11,20 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>//
+#include <unistd.h>//
+
+t_return_error	g_return_error;
+
+void	syntax_error(const char *msg, char **skipped, char *line)
+{
+	if (msg)
+		write(STDERR_FILENO, msg, strlen(msg));
+	while (*line)
+		line++;
+	*skipped = line;
+}
+
 
 void	assert_error(const char *msg)
 {
@@ -23,14 +37,18 @@ void	assert_error(const char *msg)
 t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token)
 {
 	char	*word;
-	char	*start;
 
-	if (token->t_tk_kind == TK_PIPE)
-		/* code */
-	start = line;
-	word = strnup(line, 1);
-	if (!word)
-		assert_error("strndup");
+	if (token->kind == TK_PIPE)
+		syntax_error("bash: syntax error near unexpected token '|'", &line, line);
+	else
+	{
+		word = strndup(line, 1);
+		if (!word)
+			assert_error("strndup");
+		line++;
+		*skipped = line;
+	}
+	return (0);
 }
 
 t_tk	*word_into_list(char **skipped, char *line)
@@ -42,7 +60,7 @@ t_tk	*word_into_list(char **skipped, char *line)
 	while (*line)
 	{
 		if (is_blank(*line) && is_quote(*line)
-			&& is_redirect(*line, line, skipped) && is_pipe(*line))
+			&& is_redirect(*line, skipped, line) && is_pipe(*line))
 			break ;
 		line++;
 	}
@@ -61,6 +79,7 @@ t_tk	*token_new(char *word, t_tk_kind kind)
 		assert_error("calloc");
 	token->word = word;
 	token->kind = kind;
+	token->next = NULL;
 	return (token);
 }
 
@@ -114,6 +133,7 @@ void	skip_blank(char **skipped, char *line)
 	*skipped = line;
 }
 
+// ok
 bool	is_quote(char c)
 {
 	return (c == '\'' || c == '"');
@@ -152,31 +172,32 @@ bool	is_redirect_error(char *line)
 	return (false);
 }
 
-bool	is_redirect(char c, char *line, char **skipped)
+bool	is_redirect(char c, char **skipped, char *line)
 {
 	if (is_redirect_error(line))
 	{
-		// syntax_error("bash: syntax error near unexpected token `%c'", *line);
-		while (*line)
-			line++;
-		*skipped = line;
+		syntax_error("bash: syntax error near unexpected token ", skipped, line);
 		g_return_error.tokenize_error = true;
 	}
 	else if (!strncmp(line, ">>", 2) || !strncmp(line, "<<", 2))
 		return (true);
-	return (c == '>' | c == '<');
+	return (c == '>' || c == '<');
 }
 
-bool	is_pipe(char *line)
+// ok
+bool	is_pipe(char c)
 {
-	return (*line == '|');
+	return (c == '|');
 }
 
 t_tk	*tokenize(char *line)
 {
-	t_tk	token;
+	t_tk	*token;
 	t_tk	*head;
 
+	token = calloc(1, sizeof(t_tk));
+	if (!token)
+		assert_error("calloc");
 	head = token;
 	token->next = NULL;
 	while (*line)
@@ -188,21 +209,23 @@ t_tk	*tokenize(char *line)
 			token->next = quoted_into_list(&line, line, *line);
 			token = token->next;
 		}
-		else if (is_redirect(*line, line, &line))
-		{
-			token->next = redirect_into_list(&line, line, *line);
-			token = token->next;
-		}
-		else if (is_pipe(*line))
-		{
-			token->next = pipe_into_list(&line, line, token);
-			token = token->next;
-		}
+//		else if (is_redirect(*line, &line, line))
+//		{
+//			token->next = redirect_into_list(&line, line, *line);
+//			token = token->next;
+//		}
+//		else if (is_pipe(*line))
+//		{
+//			token->next = pipe_into_list(&line, line, token);
+//			token = token->next;
+//		}
+//		else
+//		{
+//			token->next = word_into_list(&line, line);
+//			token = token->next;
+//		}
 		else
-		{
-			token->next = word_into_list(&line, line);
-			token = token->next;
-		}
+			line++;
 	}
 	token->next = token_new(NULL, TK_EOF);
 	return (head->next);

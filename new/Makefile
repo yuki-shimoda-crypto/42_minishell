@@ -13,7 +13,8 @@
 CC				=	cc
 
 NAME			=	minishell
-CFLAGS			=	-Wall -Werror -Wextra
+# CFLAGS			=	-Wall -Werror -Wextra
+CFLAGS			=	-Wall -Wextra
 CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=leak -fsanitize=undefined
 INCLUDE			=	-I include
 
