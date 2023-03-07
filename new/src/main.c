@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/07 04:35:12 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:12:33 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,20 @@ void	init_return_error(void)
 void	interpret(char *line)
 {
 	t_tk	*token;
-//	t_node	*node;
+	t_node	*node;
 
 	token = tokenize(line);
 	if (g_return_error.tokenize_error)
+	{
+		free_token(&token);
 		return ;
-//	node = parse(token);
-//	if (g_return_error.parse_error)
-//		return ;
-//	exec_cmd();
-	print_t_tk(token);
+	}
+	node = parse(token);
+	if (g_return_error.parse_error)
+		return ;
+	// exec_cmd();
+	// print_t_tk(token);
+	print_node(node, 0);
 	free_token(&token);
 }
 
@@ -72,5 +76,6 @@ int	main(int argc, char const *argv[], char **envp)
 		if (*line)
 			add_history(line);
 		interpret(line);
+		free(line);
 	}
 }

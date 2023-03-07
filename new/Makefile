@@ -24,7 +24,8 @@ SRCS			=	src/main.c				\
 					src/lexer/into_list.c	\
 					src/lexer/is_01.c		\
 					src/lexer/is_02.c		\
-					src/lexer/tokenize.c
+					src/lexer/tokenize.c	\
+					src/parse/parse.c
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 

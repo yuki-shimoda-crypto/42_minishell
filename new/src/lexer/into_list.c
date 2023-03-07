@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   into_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 02:26:51 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/07 02:36:47 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/07 15:32:54 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token)
 	char	*word;
 
 	word = NULL;
-	if (token && token->kind == TK_PIPE)
+	if (token && (token->kind == TK_PIPE || token->kind == TK_REDIRECT))
 	{
 		syntax_error("'|'\n", skipped, line);
 		g_return_error.tokenize_error = true;
@@ -81,12 +81,12 @@ t_tk	*quoted_into_list(char **skipped, char *line, const char c)
 	char	*start;
 	char	*word;
 
-	line++;
 	start = line;
+	line++;
 	while (*line != c)
 		line++;
-	word = strndup(start, line - start);
 	line++;
+	word = strndup(start, line - start);
 	*skipped = line;
 	return (token_new(word, TK_WORD));
 }

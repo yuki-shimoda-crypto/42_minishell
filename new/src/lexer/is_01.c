@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_01.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 00:28:31 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/07 01:55:09 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/07 15:13:11 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	is_quote(char c)
 }
 
 // ok
-bool	is_quoted(char c, char *line)
+bool	is_quoted(char c, char **skipped, char *line)
 {
 	if (c == '\'' || c == '"')
 	{
@@ -35,6 +35,8 @@ bool	is_quoted(char c, char *line)
 			if (*line == c)
 				return (true);
 		}
+		syntax_error("\" or '\n", skipped, line);
+		g_return_error.tokenize_error = true;
 	}
 	return (false);
 }

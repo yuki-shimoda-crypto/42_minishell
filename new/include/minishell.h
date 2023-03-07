@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/07 03:17:23 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:20:10 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,27 @@ struct s_tk
 
 enum e_node_kind
 {
-	ND_PIPE,
 	ND_SIMPLE_CMD,
 	ND_REDIRECT_OUT,
 	ND_REDIRECT_IN,
 	ND_REDIRECT_APPEND,
 	ND_REDIRECT_HEREDOC,
+	ND_PIPE,
 };
 
 struct s_node
 {
 	t_node_kind	kind;
-	t_node		*next;
 	// CMD
-	t_node		*command;
+	t_tk		*token;
 	// REDIRECT
 	t_node		*redirect;
-	t_tk		*filename;
-	t_tk		*delimiter;
+	char		*filename;
 	int			filefd;
+	// PIPE
+	int			inpipe[2];
+	int			outpipe[2];
+	t_node		*pipe;
 };
 
 struct s_env
@@ -92,6 +94,7 @@ void	syntax_error(const char *msg, char **skipped, char *line);
 
 // debug_func.c
 void	print_t_tk(t_tk	*token);
+void	print_node(t_node *node, int i);
 
 // tokenize.c
 t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token);
@@ -105,8 +108,18 @@ t_tk	*tokenize(char *line);
 // is.c
 bool	is_blank(char c);
 bool	is_quote(char c);
-bool	is_quoted(char c, char *line);
+bool	is_quoted(char c, char **skipped, char *line);
 bool	is_redirect(char c, char **skipped, char *line);
 bool	is_pipe(char c);
+
+// parse.c
+void	new_node_redirect(t_node *node, t_tk *token);
+int		judge_nd_kind(char *redirect);
+t_node	*new_node(t_node_kind kind);
+void	make_redirect(t_node *node, t_tk *token);
+t_tk	*dup_token(char *word);
+t_tk	*dup_simple_command_token(t_tk **skipped, t_tk *token);
+void	make_simple_command(t_node *node, t_tk **skipped, t_tk *token);
+t_node	*parse(t_tk *token);
 
 #endif

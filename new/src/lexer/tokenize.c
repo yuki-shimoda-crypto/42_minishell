@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:52:17 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/07 02:32:47 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:46:41 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_tk	*tokenize(char *line)
 	{
 		if (is_blank(*line))
 			skip_blank(&line, line);
-		else if (is_quoted(*line, line))
+		else if (is_quoted(*line, &line, line))
 		{
 			token->next = quoted_into_list(&line, line, *line);
 			token = token->next;
@@ -70,6 +70,19 @@ t_tk	*tokenize(char *line)
 			token = token->next;
 		}
 	}
-	token->next = NULL;
+	if (!g_return_error.tokenize_error)
+	{
+		if (token && token->kind == TK_REDIRECT)
+		{
+			syntax_error("< or >\n", &line, line);
+			g_return_error.tokenize_error = true;
+		}
+		else if (token && token->kind == TK_PIPE)
+		{
+			syntax_error("|\n", &line, line);
+			g_return_error.tokenize_error = true;
+		}
+	}
+	token->next = token_new(NULL, TK_EOF);
 	return (head.next);
 }
