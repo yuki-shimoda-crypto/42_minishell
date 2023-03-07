@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:04:47 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/07 20:13:58 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/07 21:34:24 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static const char	*print_t_node_kind(int kind)
 void	print_node(t_node *node, int i)
 {
 	printf("%s\n", "----------");
-	printf("rank = %d\n", i);
-	printf("node_kind\t%s", print_t_node_kind(node->kind));
+	printf("rank\t\t%d\n", i);
+	printf("node_kind\t%s\n", print_t_node_kind(node->kind));
 	if (node->filename)
 		printf("node_filename\t%s\n", node->filename);
 	print_t_tk(node->token);
@@ -60,13 +60,10 @@ const char	*print_t_tk_kind(int kind)
 
 void	print_t_tk(t_tk	*token)
 {
-	if (token)
-		printf("%s\n", "----------");
 	while (token && token->kind != TK_EOF)
 	{
-		printf("%s\n", token->word);
-		printf("\t%s\n", print_t_tk_kind(token->kind));
-		printf("%s\n", "----------");
+		printf("token_word\t%s\n", token->word);
+		printf("token_kind\t%s\n", print_t_tk_kind(token->kind));
 		token = token->next;
 	}
 }

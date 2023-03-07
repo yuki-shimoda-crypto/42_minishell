@@ -46,7 +46,7 @@ t_node	*new_node(t_node_kind kind)
 	t_node	*node;
 
 	node = calloc(1, sizeof(t_node));
-	if (!node->redirect)
+	if (!node)
 		assert_error("calloc\n");
 	node->kind = kind;
 	return (node);
@@ -56,7 +56,7 @@ void	make_redirect(t_node *node, t_tk *token)
 {
 	char	*filename;
 
-	while (token->kind != TK_EOF || token->kind != TK_PIPE)
+	while (token->kind != TK_EOF && token->kind != TK_PIPE)
 	{
 		if (token->kind == TK_REDIRECT)
 		{
@@ -93,16 +93,14 @@ t_tk	*dup_simple_command_token(t_tk **skipped, t_tk *token)
 	new_token->word = NULL;
 	new_token->kind = TK_WORD;
 	new_token->next = NULL;
-	while (token->kind != TK_EOF || token->kind != TK_PIPE)
+	while (token->kind != TK_EOF && token->kind != TK_PIPE)
 	{
 		if (token->kind == TK_REDIRECT)
 			token = token->next->next;
 		else
 		{
 			new_token->next = dup_token(token->word);
-			new_token =
-			
-			new_token->next;
+			new_token = new_token->next;
 			token = token->next;
 		}
 	}
