@@ -63,7 +63,7 @@ re:				fclean all
 PHONY			+=	debug
 debug:			CFLAGS += $(CFLAGS_DEBUG)
 debug:			re
-debug:			./$(NAME)
+				./$(NAME)
 
 PHONY			+=	valgrind
 valgrind:		all
@@ -81,5 +81,11 @@ leak:			all
 PHONY			+=	test
 test:			all
 				./$(NAME) < test.txt
+
+PHONY			+=	no_flag
+no_flags:		CFLAGS =
+no_flags:		re
+
+
 
 .PHONY:			$(PHONY)

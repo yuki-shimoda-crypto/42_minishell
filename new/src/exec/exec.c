@@ -15,6 +15,27 @@
 #include <stdio.h>
 #include <sys/wait.h>
 
+char	*strjoin_three(char const *s1, char const *s2, char const *s3)
+{
+	char	*ptr;
+	char	*save;
+
+	if (!s1 || !s2 || !s3)
+		return (NULL);
+	ptr = (char *)malloc(strlen(s1) + strlen(s2) + strlen(s3) + 1);
+	if (!ptr)
+		return (NULL);
+	save = ptr;
+	while (*s1)
+		*ptr++ = *s1++;
+	while (*s2)
+		*ptr++ = *s2++;
+	while (*s3)
+		*ptr++ = *s3++;
+	*ptr = 0;
+	return (save);
+}
+
 char	*strjoin(char const *s1, char const *s2)
 {
 	char	*ptr;
@@ -39,14 +60,14 @@ char	*strjoin(char const *s1, char const *s2)
 }
 
 
-bool	is_file_executable(char *pathname)
+bool	is_file_executable(const char *pathname)
 {
 	if (!access(pathname, X_OK))
 		return (true);
 	return (false);
 }
 
-bool	is_file_exist(char *pathname)
+bool	is_file_exist(const char *pathname)
 {
 	if (!access(pathname, F_OK))
 		return (true);
@@ -65,12 +86,22 @@ char	*find_env_path(char **envp)
 		{
 			path = strdup(&envp[i][5]);
 			if (!path)
-				assert_error("strdup");
+				assert_error("strdup\n");
 			return (path);
 		}
 		i++;
 	}
 	return (NULL);
+}
+
+bool	is_file(const char *pathname)
+{
+	size_t	len;
+
+	len = strlen(pathname);
+	if (len != 0 && pathname[len - 1] == '/')
+		return (false);
+	return (true);
 }
 
 char	*make_absolute_path(t_node *node)
@@ -80,8 +111,10 @@ char	*make_absolute_path(t_node *node)
 	pathname = strdup(node->token->word);
 	if (!pathname)
 		assert_error("strdup\n");
-	if (!is_file_exist(pathname))
-		file_exec_error(node->token->word, ": is not exist\n");
+	if (!is_file(pathname))
+		file_exec_error(node->token->word, ": is a directory\n");
+	else if (!is_file_exist(pathname))
+		file_exec_error(node->token->word, ": no such file or directory\n");
 	else if (!is_file_executable(pathname))
 		file_exec_error(node->token->word, ": is not executable\n");
 	return (pathname);
@@ -93,29 +126,35 @@ char	*make_relative_path(t_node *node, char **envp)
 	char	*head;
 	char	*tail;
 	char	*env_path;
+	char	*env_path_head;
 	char	*pathname;
 	char	*tmp;
 
 	env_path = find_env_path(envp);
+	env_path_head = env_path;
 	while (env_path && *env_path)
 	{
 		head = env_path;
 		tail = strchr(env_path, ':');
-		if (!tail)
+		if (tail)
 			pathname = strndup(head, tail - head);
 		else
 			pathname = strdup(head);
 		if (!pathname)
 			assert_error("strndup\n");
-		tmp = strjoin(pathname, node->token->word);
+		tmp = strjoin_three(pathname, "/", node->token->word);
 		free(pathname);
 		pathname = tmp;
 		if (is_file_exist(pathname) && is_file_executable(pathname))
 			break ;
+		if (tail == NULL)
+			break ;
 		env_path = tail + 1;
 	}
-	free(env_path);
-	if (!is_file_exist(pathname))
+	free(env_path_head);
+	if (!is_file(pathname))
+		file_exec_error(node->token->word, ": is a directory\n");
+	else if (!is_file_exist(pathname))
 		file_exec_error(node->token->word, ": command not found\n");
 	else if (!is_file_executable(pathname))
 		file_exec_error(node->token->word, ": is not executable\n");
@@ -148,29 +187,27 @@ size_t	argv_len(t_tk *token)
 	return (len);
 }
 
-
-char	**make_argv(t_node *node)
+char	**make_argv(t_tk *token)
 {
 	size_t	i;
 	size_t	len;
 	char	**argv;
-	t_tk	*token;
 
-	if (!node->token)
+	if (!token)
 		return (NULL);
 	i = 0;
-	len = argv_len(node->token);
-	argv = malloc(sizeof(char *) * (len + 1));
-	token = node->token;
+	len = argv_len(token);
+	argv = calloc(len + 1, sizeof(char *));
+	if (!argv)
+		assert_error("malloc\n");
 	while (token->kind != TK_EOF)
 	{
-		argv[i] = strdup(node->token->word);
+		argv[i] = strdup(token->word);
 		if (!argv[i])
-			assert_error("strdup");
+			assert_error("strdup\n");
 		token = token->next;
 		i++;
 	}
-	argv[i] = NULL;
 	return (argv);
 }
 
@@ -181,11 +218,11 @@ void	exec(char *pathname, char **argv, char **envp)
 
 	pid = fork();
 	if (pid == -1)
-		assert_error("fork");
+		assert_error("fork\n");
 	else if (pid == 0)
 	{
 		execve(pathname, argv, envp);
-		assert_error("execve");
+		assert_error("execve\n");
 	}
 	else
 	{
@@ -265,11 +302,10 @@ void	exec_cmd(t_node *node, char **envp)
 	while (node)
 	{
 		pathname = make_pathname(node, envp);
-		argv = make_argv(node);
+		argv = make_argv(node->token);
 		node = node->pipe;
 		if (g_return_error.exec_error)
 			continue ;
-		// argv = NULL;
 		// if (is_builtin(argv))
 		// 	exec_builtin();
 		// else

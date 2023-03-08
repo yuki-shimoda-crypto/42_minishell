@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/08 20:00:34 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/08 21:25:06 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char const *argv[], char **envp)
 		line = readline(PROMPT);
 		if (!line)
 		{
-			write (STDOUT_FILENO, "exit\n", 5);
+			write (STDOUT_FILENO, "exit\n", strlen("exit\n"));
 			break ;
 		}
 		if (*line)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 23:26:00 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/08 20:00:36 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/08 20:55:57 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	syntax_error(const char *msg, char **skipped, char *line)
 
 void	file_exec_error(const char *word, const char *msg)
 {
+    write(STDERR_FILENO, ERROR_EXEC, strlen(ERROR_EXEC));
     write(STDERR_FILENO, word, strlen(word));
     write(STDERR_FILENO, msg, strlen(msg));
     g_return_error.exec_error = true;

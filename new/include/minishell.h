@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/08 20:00:33 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/08 22:11:35 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define ERROR_ASSERT "minishell: assert error "
-# define ERROR_SYNTAX "minishell: syntax error near unexpected token "
-# define PROMPT "minishell$ "
+# define PROMPT			"\x1b[1m\x1b[32mminishell\x1b[0m$ "
+# define ERROR_ASSERT	"minishell: assert error "
+# define ERROR_EXEC		"minishell: "
+# define ERROR_SYNTAX	"minishell: syntax error near unexpected token "
 
 # include <stdbool.h>
 # include <stdint.h>
@@ -126,17 +127,16 @@ t_node	*parse(t_tk *token);
 
 // exec.c
 char	*strjoin(char const *s1, char const *s2);
-bool	is_file_executable(char *pathname);
-bool	is_file_exist(char *pathname);
+bool	is_file_executable(const char *pathname);
+bool	is_file_exist(const char *pathname);
+bool	is_file(const char *pathname);
 char	*find_env_path(char **envp);
 char	*make_absolute_path(t_node *node);
 char	*make_relative_path(t_node *node, char **envp);
 char	*make_pathname(t_node *node, char **envp);
 size_t	argv_len(t_tk *token);
-char	**make_argv(t_node *node);
+char	**make_argv(t_tk *token);
 void	exec(char *pathname, char **argv, char **envp);
 void	exec_cmd(t_node *node, char **envp);
-
-
 
 #endif
