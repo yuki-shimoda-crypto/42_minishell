@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/07 20:20:10 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/08 19:59:32 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ struct s_return_error
 {
 	bool	tokenize_error;
 	bool	parse_error;
+	bool	exec_error;
 	int		return_value;
 };
 
@@ -91,6 +92,7 @@ extern t_return_error	g_return_error;
 // error.c
 void	assert_error(const char *msg);
 void	syntax_error(const char *msg, char **skipped, char *line);
+void	file_exec_error(const char *word, const char *msg);
 
 // debug_func.c
 void	print_t_tk(t_tk	*token);
@@ -121,5 +123,20 @@ t_tk	*dup_token(char *word);
 t_tk	*dup_simple_command_token(t_tk **skipped, t_tk *token);
 void	make_simple_command(t_node *node, t_tk **skipped, t_tk *token);
 t_node	*parse(t_tk *token);
+
+// exec.c
+char	*strjoin(char const *s1, char const *s2);
+bool	is_file_executable(char *pathname);
+bool	is_file_exist(char *pathname);
+char	*find_env_path(char **envp);
+char	*make_absolute_path(t_node *node);
+char	*make_relative_path(t_node *node, char **envp);
+char	*make_pathname(t_node *node, char **envp);
+size_t	argv_len(t_tk *token);
+char	**make_argv(t_node *node);
+void	exec(char *pathname, char **argv, char **envp);
+void	exec_cmd(t_node *node, char **envp);
+
+
 
 #endif

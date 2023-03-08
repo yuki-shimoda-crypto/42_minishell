@@ -25,7 +25,8 @@ SRCS			=	src/main.c				\
 					src/lexer/is_01.c		\
 					src/lexer/is_02.c		\
 					src/lexer/tokenize.c	\
-					src/parse/parse.c
+					src/parse/parse.c		\
+					src/exec/exec.c
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
@@ -62,6 +63,7 @@ re:				fclean all
 PHONY			+=	debug
 debug:			CFLAGS += $(CFLAGS_DEBUG)
 debug:			re
+debug:			./$(NAME)
 
 PHONY			+=	valgrind
 valgrind:		all

@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/07 22:35:27 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/08 19:59:33 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ void	init_return_error(void)
 {
 	g_return_error.tokenize_error = false;
 	g_return_error.parse_error = false;
+	g_return_error.exec_error = false;
 	g_return_error.return_value = 0;
 }
 
-void	interpret(char *line)
+void	interpret(char *line, char **envp)
 {
 	t_tk	*token;
 	t_node	*node;
@@ -51,9 +52,9 @@ void	interpret(char *line)
 	node = parse(token);
 	if (g_return_error.parse_error)
 		return ;
-	// exec_cmd();
+	exec_cmd(node, envp);
 	// print_t_tk(token);
-	print_node(node, 0);
+	// print_node(node, 0);
 	free_token(&token);
 }
 
@@ -63,7 +64,7 @@ int	main(int argc, char const *argv[], char **envp)
 
 	(void)argc;
 	(void)argv;
-	(void)envp;
+	// (void)envp;
 	while (1)
 	{
 		init_return_error();
@@ -75,7 +76,7 @@ int	main(int argc, char const *argv[], char **envp)
 		}
 		if (*line)
 			add_history(line);
-		interpret(line);
+		interpret(line, envp);
 		free(line);
 	}
 }
