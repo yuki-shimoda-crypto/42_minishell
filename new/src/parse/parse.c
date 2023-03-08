@@ -127,11 +127,9 @@ t_node	*parse(t_tk *token)
 	while (token && token->kind != TK_EOF)
 	{
 		make_redirect(node, token);
-		if (token->kind == TK_REDIRECT)
-			token = token->next->next;
-		else if (token->kind != TK_PIPE && token->kind != TK_REDIRECT)
+		if (token->kind != TK_PIPE)
 			make_simple_command(node, &token, token);
-		else if (token->kind == TK_PIPE)
+		if (token->kind == TK_PIPE)
 		{
 			node->pipe = new_node(ND_PIPE);
 			node = node->pipe;
