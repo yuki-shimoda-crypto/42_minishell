@@ -26,7 +26,10 @@ SRCS			=	src/main.c				\
 					src/lexer/is_02.c		\
 					src/lexer/tokenize.c	\
 					src/parse/parse.c		\
-					src/exec/exec.c
+					src/exec/exec.c			\
+					src/exec/is.c			\
+					src/exec/make_path.c	\
+					src/redirect/redirect.c
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 

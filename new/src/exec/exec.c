@@ -60,120 +60,6 @@ char	*strjoin(char const *s1, char const *s2)
 }
 
 
-bool	is_file_executable(const char *pathname)
-{
-	if (!access(pathname, X_OK))
-		return (true);
-	return (false);
-}
-
-bool	is_file_exist(const char *pathname)
-{
-	if (!access(pathname, F_OK))
-		return (true);
-	return (false);
-}
-
-char	*find_env_path(char **envp)
-{
-	size_t	i;
-	char	*path;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (strncmp("PATH=", envp[i], 5) == 0)
-		{
-			path = strdup(&envp[i][5]);
-			if (!path)
-				assert_error("strdup\n");
-			return (path);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-bool	is_file(const char *pathname)
-{
-	size_t	len;
-
-	len = strlen(pathname);
-	if (len != 0 && pathname[len - 1] == '/')
-		return (false);
-	return (true);
-}
-
-char	*make_absolute_path(t_node *node)
-{
-	char	*pathname;
-
-	pathname = strdup(node->token->word);
-	if (!pathname)
-		assert_error("strdup\n");
-	if (!is_file(pathname))
-		file_exec_error(node->token->word, ": is a directory\n");
-	else if (!is_file_exist(pathname))
-		file_exec_error(node->token->word, ": no such file or directory\n");
-	else if (!is_file_executable(pathname))
-		file_exec_error(node->token->word, ": is not executable\n");
-	return (pathname);
-}
-
-
-char	*make_relative_path(t_node *node, char **envp)
-{
-	char	*head;
-	char	*tail;
-	char	*env_path;
-	char	*env_path_head;
-	char	*pathname;
-	char	*tmp;
-
-	env_path = find_env_path(envp);
-	env_path_head = env_path;
-	while (env_path && *env_path)
-	{
-		head = env_path;
-		tail = strchr(env_path, ':');
-		if (tail)
-			pathname = strndup(head, tail - head);
-		else
-			pathname = strdup(head);
-		if (!pathname)
-			assert_error("strndup\n");
-		tmp = strjoin_three(pathname, "/", node->token->word);
-		free(pathname);
-		pathname = tmp;
-		if (is_file_exist(pathname) && is_file_executable(pathname))
-			break ;
-		if (tail == NULL)
-			break ;
-		env_path = tail + 1;
-	}
-	free(env_path_head);
-	if (!is_file(pathname))
-		file_exec_error(node->token->word, ": is a directory\n");
-	else if (!is_file_exist(pathname))
-		file_exec_error(node->token->word, ": command not found\n");
-	else if (!is_file_executable(pathname))
-		file_exec_error(node->token->word, ": is not executable\n");
-	return (pathname);
-}
-
-char	*make_pathname(t_node *node, char **envp)
-{
-	char	*pathname;
-
-	if (!node->token || !node->token->word)
-		return (NULL);
-	if (node->token->word[0] == '/')
-		pathname = make_absolute_path(node);
-	else
-		pathname = make_relative_path(node, envp);
-	return (pathname);
-}
-
 size_t	argv_len(t_tk *token)
 {
 	size_t	len;
@@ -231,6 +117,17 @@ void	exec(char *pathname, char **argv, char **envp)
 	}
 }
 
+void	free_argv(char **argv)
+{
+	size_t	i;
+
+	if (!argv)
+		return ;
+	i = 0;
+	while (argv[i])
+		free(argv[i++]);
+}
+
 // bool	is_builtin(char **argv)
 // {
 // 	if (strncmp("cd", argv[0], 2))
@@ -250,46 +147,6 @@ void	exec(char *pathname, char **argv, char **envp)
 // 	else
 // 		return (false);
 // 	return (true);
-	
-// }
-
-// int	open_redir_file(t_node *redir)
-// {
-// 	int	fd;
-
-// 	if (redir->kind == ND_REDIRECT_OUT)
-// 		fd = open (redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-// 	else if (redir->kind == ND_REDIRECT_APPEND)
-// 		fd = open (redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
-// 	else if (redir->kind == ND_REDIRECT_IN)
-// 		fd = open (redir->filename, O_RDONLY);
-// 	else if (redir->kind == ND_REDIRECT_HEREDOC)
-// 		return (heredoc);
-// 	return (fd);
-// }
-
-// void	redirect_fd_list(t_node *node)
-// {
-// 	t_node	*redir;
-
-// 	redir = node->redirect;
-// 	while (redir->filename)
-// 	{
-// 		redir->filefd = open_redir_file(redir);
-// 		redir = redir->redirect;
-// 	}
-// }
-
-// void	do_redirect(t_node *node)
-// {
-// 	t_node	*redir;
-// 	int		old_fd;
-
-// 	redir = node;
-// 	while (1)
-// 	{
-		
-// 	}
 // }
 
 void	exec_cmd(t_node *node, char **envp)
@@ -297,23 +154,26 @@ void	exec_cmd(t_node *node, char **envp)
 	char	*pathname;
 	char	**argv;
 
-//	redirect_fd_list();
-//	do_redirect();
 	while (node)
 	{
 		pathname = make_pathname(node, envp);
 		argv = make_argv(node->token);
-		node = node->pipe;
+		redirect_fd_list(node->redirect);
+		do_redirect(node->redirect);
 		if (g_return_error.exec_error)
+		{
+			free(pathname);
+			free_argv(argv);
+			node = node->pipe;
 			continue ;
+		}
 		// if (is_builtin(argv))
 		// 	exec_builtin();
 		// else
-		// printf("%s\n", pathname);
-		// printf("%p\n", pathname);
-		// for (int i = 0; argv[i]; i++)
-			// printf("%s\n", argv[i]);
-		// printf("%p\n", argv);
 		exec(pathname, argv, envp);
+		reset_redirect(node->redirect);
+		node = node->pipe;
+		free(pathname);
+		free_argv(argv);
 	}
 }

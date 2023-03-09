@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/08 22:11:35 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/09 17:20:35 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ struct s_node
 	t_node		*redirect;
 	char		*filename;
 	int			filefd;
+	int			savefd;
 	// PIPE
 	int			inpipe[2];
 	int			outpipe[2];
@@ -127,6 +128,7 @@ t_node	*parse(t_tk *token);
 
 // exec.c
 char	*strjoin(char const *s1, char const *s2);
+char	*strjoin_three(char const *s1, char const *s2, char const *s3);
 bool	is_file_executable(const char *pathname);
 bool	is_file_exist(const char *pathname);
 bool	is_file(const char *pathname);
@@ -138,5 +140,11 @@ size_t	argv_len(t_tk *token);
 char	**make_argv(t_tk *token);
 void	exec(char *pathname, char **argv, char **envp);
 void	exec_cmd(t_node *node, char **envp);
+
+// redirect.c
+int		open_redir_file(t_node *redir);
+void	redirect_fd_list(t_node *node);
+void	do_redirect(t_node *redir);
+void	reset_redirect(t_node *redir);
 
 #endif
