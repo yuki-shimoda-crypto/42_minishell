@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/09 16:52:41 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/11 17:21:24 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	interpret(char *line, char **envp)
 		return ;
 	exec_cmd(node, envp);
 	// print_t_tk(token);
-	// print_node(node, 0);
+	print_node(node, 0);
 	free_token(&token);
 	free_node(&node);
 }

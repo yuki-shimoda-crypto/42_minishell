@@ -41,7 +41,7 @@ int	judge_nd_kind(char *redirect)
 	return (0);
 }
 
-t_node	*new_node(t_node_kind kind)
+t_node	*new_node(t_node_kind kind, t_node *node_pre)
 {
 	t_node	*node;
 
@@ -49,6 +49,7 @@ t_node	*new_node(t_node_kind kind)
 	if (!node)
 		assert_error("calloc\n");
 	node->kind = kind;
+	node->redirect_pre = node_pre;
 	return (node);
 }
 
@@ -60,7 +61,7 @@ void	make_redirect(t_node *node, t_tk *token)
 	{
 		if (token->kind == TK_REDIRECT)
 		{
-			node->redirect = new_node(judge_nd_kind(token->word));
+			node->redirect = new_node(judge_nd_kind(token->word), node);
 			filename = strdup(token->next->word);
 			if (!filename)
 				assert_error("strdup\n");
@@ -131,7 +132,7 @@ t_node	*parse(t_tk *token)
 			make_simple_command(node, &token, token);
 		if (token->kind == TK_PIPE)
 		{
-			node->pipe = new_node(ND_PIPE);
+			node->pipe = new_node(ND_PIPE, NULL);
 			node = node->pipe;
 			token = token->next;
 		}

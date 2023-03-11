@@ -6,14 +6,20 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/09 17:20:35 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/11 17:15:04 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// prompt name
 # define PROMPT			"\x1b[1m\x1b[32mminishell\x1b[0m$ "
+
+// max file descriptor ulimit -n
+# define FD_MAX			255
+
+// error
 # define ERROR_ASSERT	"minishell: assert error "
 # define ERROR_EXEC		"minishell: "
 # define ERROR_SYNTAX	"minishell: syntax error near unexpected token "
@@ -64,6 +70,7 @@ struct s_node
 	t_tk		*token;
 	// REDIRECT
 	t_node		*redirect;
+	t_node		*redirect_pre;
 	char		*filename;
 	int			filefd;
 	int			savefd;
@@ -119,7 +126,8 @@ bool	is_pipe(char c);
 // parse.c
 void	new_node_redirect(t_node *node, t_tk *token);
 int		judge_nd_kind(char *redirect);
-t_node	*new_node(t_node_kind kind);
+// t_node	*new_node(t_node_kind kind);
+t_node	*new_node(t_node_kind kind, t_node *node_pre);
 void	make_redirect(t_node *node, t_tk *token);
 t_tk	*dup_token(char *word);
 t_tk	*dup_simple_command_token(t_tk **skipped, t_tk *token);

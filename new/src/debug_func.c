@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_func.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:04:47 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/07 21:34:24 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/11 17:23:06 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	print_node(t_node *node, int i)
 	if (node->filename)
 		printf("node_filename\t%s\n", node->filename);
 	print_t_tk(node->token);
+	printf("node_ptr\t%p\n", node);
+	printf("node_redirect_pre\t%p\n", node->redirect_pre);
 	printf("%s\n", "----------");
 	if (node->redirect)
 		print_node(node->redirect, i + 1);
