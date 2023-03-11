@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/11 22:46:30 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/12 00:10:56 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,5 +152,6 @@ int		open_redir_file(t_node *redir);
 void	redirect_fd_list(t_node *node);
 void	do_redirect(t_node *redir);
 void	reset_redirect(t_node *redir);
+int		heredoc(char *delimiter);
 
 #endif

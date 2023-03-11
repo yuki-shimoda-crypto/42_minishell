@@ -6,11 +6,12 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/09 19:43:56 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/12 00:10:56 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
 
 char	*find_env_path(char **envp)
 {
@@ -71,6 +72,8 @@ char	*make_relative_path(t_node *node, char **envp)
 			assert_error("strndup\n");
 		tmp = strjoin_three(pathname, "/", node->token->word);
 		free(pathname);
+		if (!tmp)
+			assert_error("malloc\n");
 		pathname = tmp;
 		if (is_file_exist(pathname) && is_file_executable(pathname))
 			break ;

@@ -12,22 +12,6 @@
 
 #include "minishell.h"
 
-// void	new_node_redirect(t_node *node, t_tk *token)
-// {
-// 	t_tk	*tmp;
-
-// 	tmp = token->next->next;
-// 	node->redirect = calloc(1, sizeof(t_node));
-// 	if (!node->redirect)
-// 		assert_error("calloc");
-// 	node->redirect->filename = token->next->word;
-// 	free(token->word);
-// 	free(token->next->word);
-// 	free(token);
-// 	free(token->next)
-// 	return (token->next->next);
-// }
-
 int	judge_nd_kind(char *redirect)
 {
 	if (!strncmp(redirect, ">>", 2))

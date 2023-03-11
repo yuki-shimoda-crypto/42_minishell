@@ -29,7 +29,8 @@ SRCS			=	src/main.c				\
 					src/exec/exec.c			\
 					src/exec/is.c			\
 					src/exec/make_path.c	\
-					src/redirect/redirect.c
+					src/redirect/redirect.c	\
+					src/redirect/heredoc.c
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 

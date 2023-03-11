@@ -27,13 +27,13 @@ void	reset_redirect(t_node *redir)
 		last = redir->redirect;
 	while (1)
 	{
-		close(last->fd_target);
-		if (dup2(last->fd_save, last->fd_target) == -1)
-			assert_error("dup2\n");
-		close(last->fd_save);
-		if (last == redir)
-			break ;
-		last = last->redirect_pre;
+			close(last->fd_target);
+			if (dup2(last->fd_save, last->fd_target) == -1)
+				assert_error("dup2\n");
+			close(last->fd_save);
+			if (last == redir)
+				break ;
+			last = last->redirect_pre;
 	}
 }
 
@@ -47,8 +47,8 @@ int	open_redir_file(t_node *redir)
 		fd = open (redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else if (redir->kind == ND_REDIRECT_IN)
 		fd = open (redir->filename, O_RDONLY);
-	// else if (redir->kind == ND_REDIRECT_HEREDOC)
-	// 	return (heredoc(redir->filename));
+	else if (redir->kind == ND_REDIRECT_HEREDOC)
+		return (heredoc(redir->filename));
 	return (fd);
 }
 
@@ -69,13 +69,13 @@ void	do_redirect(t_node *redir)
 		return ;
 	while (redir)
 	{
-		redir->fd_save = dup(redir->fd_target);
-		if (redir->fd_save == -1)
-			assert_error("dup\n");
-		close(redir->fd_target);
-		if (dup2(redir->fd_file, redir->fd_target) == -1)
-			assert_error("dup2\n");
-		close(redir->fd_file);
-		redir = redir->redirect;
+			redir->fd_save = dup(redir->fd_target);
+			if (redir->fd_save == -1)
+				assert_error("dup\n");
+			close(redir->fd_target);
+			if (dup2(redir->fd_file, redir->fd_target) == -1)
+				assert_error("dup2\n");
+			close(redir->fd_file);
+			redir = redir->redirect;
 	}
 }
