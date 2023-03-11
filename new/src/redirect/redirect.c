@@ -20,15 +20,17 @@ void	reset_redirect(t_node *redir)
 {
 	if (!redir)
 		return ;
-	while (redir)
-	{
-		close(redir->filefd);
-		if (!redir->redirect)
-			dup2(STDOUT_FILENO, redir->filefd);
-		else
-			dup2(redir->savefd, redir->filefd);
-		redir = redir->redirect;
-	}
+	dup2(redir->savefd, STDOUT_FILENO);
+	// close(redir->savefd);
+	// while (redir)
+	// {
+	// 	close(redir->filefd);
+	// 	if (!redir->redirect)
+	// 		dup2(STDOUT_FILENO, redir->filefd);
+	// 	else
+	// 		dup2(redir->savefd, redir->filefd);
+	// 	redir = redir->redirect;
+	// }
 }
 
 int	open_redir_file(t_node *redir)
@@ -62,13 +64,13 @@ void	do_redirect(t_node *redir)
 	int	old_fd;
 
 	old_fd = STDOUT_FILENO;
+	redir->savefd = dup2(old_fd, redir->savefd);
 	while (1)
 	{
 		if (!redir)
 			break ;
 		dup2(redir->filefd, old_fd);
-		close(redir->filefd);//
-		redir->savefd = old_fd;
+		close(redir->filefd);
 		redir = redir->redirect;
 	}
 }

@@ -12,20 +12,20 @@ int	main(void)
 	int	fd;
 	int	fd2;
 	int	fd_dup;
-	int	stdout;
+	int	stdout_1;
 
-	stdout = STDOUT_FILENO;
+	stdout_1 = 0;
 	fd = open("eiki.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	// fd_dup = fcntl(STDOUT_FILENO, F_DUPFD, 10);
-	fd_dup = dup2((STDOUT_FILENO + 10), STDOUT_FILENO);
-	close(STDOUT_FILENO);
+	stdout_1 = dup2(STDOUT_FILENO, stdout_1);
+	// close(STDOUT_FILENO);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	write(1, "redirect\n", 9);
 	// printf("test1\n");
 /////////////////////////////////////
-	dup2(fd_dup, STDOUT_FILENO);
-	close(fd_dup);
+	dup2(stdout_1, STDOUT_FILENO);
+	close(stdout_1);
 	write(1, "reset\n", 5);
 	// printf("test2\n");
 	return (0);
