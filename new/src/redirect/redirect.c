@@ -67,6 +67,7 @@ void	do_redirect(t_node *redir)
 		if (!redir)
 			break ;
 		dup2(redir->filefd, old_fd);
+		close(redir->filefd);//
 		redir->savefd = old_fd;
 		redir = redir->redirect;
 	}

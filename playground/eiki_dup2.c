@@ -15,20 +15,18 @@ int	main(void)
 	int	stdout;
 
 	stdout = STDOUT_FILENO;
-
 	fd = open("eiki.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	fd_dup = fcntl(stdout, F_DUPFD, 10);
-	// fd2 = fcntl(fd, F_DUPFD, 10);
-	// fd2 = dup2(fd + 10, fd);
-	// fd_dup = dup2(stdout + 10, stdout);
-	// close(stdout);
-	dup2(fd, stdout);
+	// fd_dup = fcntl(STDOUT_FILENO, F_DUPFD, 10);
+	fd_dup = dup2((STDOUT_FILENO + 10), STDOUT_FILENO);
+	close(STDOUT_FILENO);
+	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	printf("redirect");
+	write(1, "redirect\n", 9);
+	// printf("test1\n");
 /////////////////////////////////////
-	// dup2(fd_dup, fd2);
-	dup2(STDOUT_FILENO, fd_dup);
+	dup2(fd_dup, STDOUT_FILENO);
 	close(fd_dup);
-	printf("reset");
+	write(1, "reset\n", 5);
+	// printf("test2\n");
 	return (0);
 }
