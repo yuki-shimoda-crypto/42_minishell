@@ -55,24 +55,46 @@
 //		fatal_error("close");
 //	return (stashfd);
 //}
+// #include <limits.h>
+// 
+// int main(void)
+// {
+// //	int		fd;
+// 	int		old_fd;
+// 	int		save;
+// 
+// //	fd = open("yshimoda.txt",  O_RDWR | O_CREAT | O_TRUNC, 0644);
+// //	if (fd < 0)
+// //		return (dprintf(STDERR_FILENO, "error\n"));
+// 	old_fd = STDOUT_FILENO;
+// 	save = dup2(old_fd, 1048575);
+// 	if (save == -1)
+// 	{
+// 		printf("%s\n", "error");
+// 		exit(1);
+// 	}
+// 	close(old_fd);
+// 	write(STDOUT_FILENO, "dupped\n", strlen("dupped\n"));
+// 	dup2(save, STDOUT_FILENO);
+// 	close(save);
+// 	write(STDOUT_FILENO, "end\n", strlen("end\n"));
+// 	return (0);
+// }
+// 
+
+#include <stdio.h>
 
 int main(void)
 {
-	int		fd;
-	int		old_fd;
 	int		save;
+	int		fd;
 
-	fd = open("yshimoda.txt",  O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-		return (dprintf(STDERR_FILENO, "error\n"));
-	old_fd = STDOUT_FILENO;
-	save = dup2(old_fd + 10, old_fd);
-	close(old_fd);
-	dup2(STDOUT_FILENO, fd);
-	close(fd);
-	printf("dupped\n");
-	dup2(STDOUT_FILENO, save);
-	close(save);
-	printf("end\n");
+	write(STDOUT_FILENO, "test1\n", strlen("test1\n"));
+	save = dup(STDOUT_FILENO);
+	dup2(fd, STDOUT_FILENO);
+	write(STDOUT_FILENO, "test2\n", strlen("test2\n"));
+	dup2(save, STDOUT_FILENO);
+	close(STDOUT_FILENO);
+	close(STDOUT_FILENO);
 	return (0);
 }

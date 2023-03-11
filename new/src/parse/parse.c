@@ -49,6 +49,10 @@ t_node	*new_node(t_node_kind kind, t_node *node_pre)
 	if (!node)
 		assert_error("calloc\n");
 	node->kind = kind;
+	if (node->kind == ND_REDIRECT_OUT || node->kind == ND_REDIRECT_APPEND)
+		node->fd_target = STDOUT_FILENO;
+	else if (node->kind == ND_REDIRECT_IN)
+		node->fd_target = STDIN_FILENO;
 	node->redirect_pre = node_pre;
 	return (node);
 }

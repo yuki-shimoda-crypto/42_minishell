@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/11 17:15:04 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/11 22:46:30 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 // prompt name
 # define PROMPT			"\x1b[1m\x1b[32mminishell\x1b[0m$ "
-
-// max file descriptor ulimit -n
-# define FD_MAX			255
 
 // error
 # define ERROR_ASSERT	"minishell: assert error "
@@ -72,8 +69,9 @@ struct s_node
 	t_node		*redirect;
 	t_node		*redirect_pre;
 	char		*filename;
-	int			filefd;
-	int			savefd;
+	int			fd_file;
+	int			fd_save;
+	int			fd_target;
 	// PIPE
 	int			inpipe[2];
 	int			outpipe[2];
