@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/12 20:31:03 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/13 02:49:33 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,5 +165,19 @@ int		wrap_dup2(int oldfd, int newfd);
 pid_t	wrap_fork(void);
 int		wrap_pipe(int pipefd[2]);
 ssize_t wrap_write(int fd, const void *buf, size_t count);
+
+// expand.c
+bool	is_special_charactor(char *line);
+bool	is_variable(char *line);
+bool	is_expand(char *line);
+bool	is_alpha_under(char c);
+bool	is_alpha_num_under(char c);
+char	*expand_variable(char **skipped, char *word, char *new_word);
+char	*expand_double_quote(char **skipped, char *word, char *new_word);
+char	*expand_single_quote(char **skipped, char *word, char *new_word);
+char	*expand_word(char *word);
+void	expand_token(t_tk *token);
+void	expand(t_node *node);
+char	*append_char(const char c, char *new_word);
 
 #endif

@@ -1,4 +1,4 @@
-# minishell
+minishell
 
 ## Issue
 - [github_issue](https://github.com/yuki-shimoda-crypto/42_minishell/issues)
@@ -20,6 +20,15 @@
     1. search_path
     1. validate_access
     1. execve
+1. expand
+    1. single_quote
+        1. 次のsingle quoteまでをinput
+    1. double_quote
+        1. 次のdouble quoteまでをinput
+        1. if $WORD expand $WORD
+    1. $WORD
+        1. $?
+        1. expand $WORD
 
 ## struct
 ```
@@ -136,6 +145,9 @@ struct s_env
 - $の時のレキサーの処理
 	- $?の時のレキサーの処理
 - なぜ、test.shのassert()内で、echo -nをつけて、最後にechoをしているのか
+- pipeのときのredirectを優先するときの判定を見てもらいたい。しっかりとつながっているのか`
+		if (!is_redirect_out_exist(node))
+		if (!is_redirect_in_exist(node))
 
 
 ## vim 

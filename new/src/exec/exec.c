@@ -168,6 +168,7 @@ void	exec_cmd(t_node *node, char **envp)
 
 	pipe_num = count_pipe_num(node);
 	input_pipefd(node, NULL);
+	expand(node);
 	while (node)
 	{
 		pathname = make_pathname(node, envp);

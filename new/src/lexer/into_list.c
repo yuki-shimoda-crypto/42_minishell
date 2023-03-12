@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 02:26:51 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/07 15:32:54 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/13 02:24:47 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,22 @@ t_tk	*word_into_list(char **skipped, char *line)
 {
 	char	*word;
 	char	*start;
+	char	quote;
 
 	start = line;
-	while (*line)
+	while (*line && !is_blank(*line) && !is_redirect(*line, &line, line)
+		&& !is_pipe(*line))
 	{
-		if (is_blank(*line) || is_quote(*line)
-			|| is_redirect(*line, skipped, line) || is_pipe(*line))
-			break ;
-		line++;
+		if (is_quoted(*line, &line, line))
+		{
+			quote = *line;
+			line++;
+			while (*line != quote)
+				line++;
+			line++;
+		}
+		else
+			line++;
 	}
 	word = strndup(start, line - start);
 	*skipped = line;
@@ -80,12 +88,27 @@ t_tk	*quoted_into_list(char **skipped, char *line, const char c)
 {
 	char	*start;
 	char	*word;
+	char	quote;
 
 	start = line;
 	line++;
 	while (*line != c)
 		line++;
 	line++;
+	while (*line && !is_blank(*line) && !is_redirect(*line, &line, line)
+		&& !is_pipe(*line))
+	{
+		if (is_quoted(*line, &line, line))
+		{
+			quote = *line;
+			line++;
+			while (*line != quote)
+				line++;
+			line++;
+		}
+		else
+			line++;
+	}
 	word = strndup(start, line - start);
 	*skipped = line;
 	return (token_new(word, TK_WORD));

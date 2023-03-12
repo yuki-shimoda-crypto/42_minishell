@@ -37,16 +37,6 @@ void	reset_redirect(t_node *redir)
 	}
 }
 
-// void	reset_redirect(t_node *redir)
-// {
-// 	if (!redir)
-// 		return ;
-// 	reset_redirect(redir->redirect);
-// 	close(redir->fd_target);
-// 	dup2(redir->fd_save, redir->fd_target);
-// 	close(redir->fd_save);
-// }
-
 int	open_redir_file(t_node *redir)
 {
 	int	fd;

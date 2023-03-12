@@ -37,7 +37,8 @@ SRCS			=	src/main.c				\
 					src/wrap/dup.c			\
 					src/wrap/fork.c			\
 					src/wrap/pipe.c			\
-					src/wrap/write.c
+					src/wrap/write.c		\
+					src/expand/expand.c
 
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
