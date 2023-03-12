@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/12 15:31:34 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:30:51 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,13 @@ int		heredoc(char *delimiter);
 // pipe.c
 void	input_pipefd(t_node *node, int *inpipe);
 void	connect_pipe(t_node *node);
-void	wrap_close(int fd);
-void	wrap_dup2(int oldfd, int newfd);
+
+// wrap
+int		wrap_close(int fd);
+int		wrap_dup(int oldfd);
+int		wrap_dup2(int oldfd, int newfd);
+pid_t	wrap_fork(void);
+int		wrap_pipe(int pipefd[2]);
+ssize_t wrap_write(int fd, const void *buf, size_t count);
 
 #endif

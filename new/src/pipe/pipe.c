@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 14:43:45 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/12 17:09:15 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:31:56 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,4 @@ void	connect_pipe(t_node *node)
 		else
 			wrap_close(node->inpipe[0]);
 	}
-}
-
-void	wrap_close(int fd)
-{
-	if (close(fd) == -1)
-		assert_error("close\n");
-}
-
-void	wrap_dup2(int oldfd, int newfd)
-{
-	if (dup2(oldfd, newfd) == -1)
-		assert_error("dup2\n");
 }
