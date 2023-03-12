@@ -109,6 +109,15 @@ void	make_simple_command(t_node *node, t_tk **skipped, t_tk *token)
 	node->token = dup_simple_command_token(skipped, token);
 }
 
+void	init_node(t_node *node)
+{
+	node->inpipe[0] = INT_MAX;
+	node->inpipe[1] = INT_MAX;
+	node->outpipe[0] = INT_MAX;
+	node->outpipe[1] = INT_MAX;
+	node->kind = ND_SIMPLE_CMD;
+}
+
 t_node	*parse(t_tk *token)
 {
 	t_node	*head;
@@ -118,6 +127,7 @@ t_node	*parse(t_tk *token)
 	if (!node)
 		assert_error("calloc");
 	head = node;
+	init_node(node);
 	while (token && token->kind != TK_EOF)
 	{
 		make_redirect(node, token);

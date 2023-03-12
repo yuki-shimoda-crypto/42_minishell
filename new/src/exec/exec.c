@@ -145,6 +145,7 @@ void	free_argv(char **argv)
 // 		return (false);
 // 	return (true);
 // }
+
 size_t	count_pipe_num(t_node *node)
 {
 	size_t	num;
@@ -188,18 +189,12 @@ void	exec_cmd(t_node *node, char **envp)
 			if (pathname && argv)
 				exec(pathname, argv, envp, node);
 		// }
-
 		reset_redirect(node->redirect);
-		//if (node->inpipe[0] != INT_MAX)
-		//{
-		//	wrap_close(node->inpipe[0]);
-		//	wrap_close(node->inpipe[1]);
-		//}
-		//if (node->outpipe[0] != INT_MAX)
-		//{
-		//	wrap_close(node->outpipe[0]);
-		//	wrap_close(node->outpipe[1]);
-		//}
+		if (node->inpipe[0] != INT_MAX)
+		{
+			wrap_close(node->inpipe[0]);
+			wrap_close(node->inpipe[1]);
+		}
 		node = node->pipe;
 		free(pathname);
 		free_argv(argv);
