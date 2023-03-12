@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/12 00:10:56 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/12 10:18:18 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ char	*make_relative_path(t_node *node, char **envp)
 			break ;
 		if (tail == NULL)
 			break ;
+		free(pathname);
 		env_path = tail + 1;
 	}
 	free(env_path_head);

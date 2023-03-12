@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/12 00:10:56 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/12 10:10:23 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	free_node(t_node **node)
 	if ((*node)->token)
 		free_token(&(*node)->token);
 	free((*node)->filename);
+	free(*node);
 }
 
 void	init_return_error(void)

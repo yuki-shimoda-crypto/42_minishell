@@ -126,6 +126,7 @@ void	free_argv(char **argv)
 	i = 0;
 	while (argv[i])
 		free(argv[i++]);
+	free(argv);
 }
 
 // bool	is_builtin(char **argv)
@@ -170,7 +171,8 @@ void	exec_cmd(t_node *node, char **envp)
 		// if (is_builtin(argv))
 		// 	exec_builtin();
 		// else
-		exec(pathname, argv, envp);
+		if (pathname && argv && envp)
+			exec(pathname, argv, envp);
 		reset_redirect(node->redirect);
 		node = node->pipe;
 		free(pathname);
