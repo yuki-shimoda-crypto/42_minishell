@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 11:04:57 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/12 13:11:47 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/12 13:24:16 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,13 @@ void	assert_error(const char *msg)
 int main(int argc)
 {
 	int		pipefd_1[2];
+	int		pipefd_2[2];
 	int		pid_1;
 	int		pid_2;
+	int		pid_3;
 	char	*argv_1[] = {"ls", NULL};
 	char	*argv_2[] = {"wc", "-l", NULL};
+	char	*argv_3[] = {"wc", NULL};
 	extern char **environ;
 
 	if (pipe(pipefd_1) == -1)
@@ -131,6 +134,8 @@ int main(int argc)
 	else
 		;
 	
+	if (pipe(pipefd_2) == -1)
+		assert_error("pipe\n");
 	// process 2
 	pid_2 = fork();
 	if (pid_2 == -1)
@@ -146,7 +151,41 @@ int main(int argc)
 			if (close(pipefd_1[0]) == -1)
 				assert_error("close\n");
 		}
+		if (close(pipefd_2[0]) == -1)
+			assert_error("close\n");
+		if (pipefd_2[1] != STDOUT_FILENO)
+		{
+			if (dup2(pipefd_2[1], STDOUT_FILENO) == -1)
+				assert_error("dup2\n");
+			if (close(pipefd_2[1]) == -1)
+				assert_error("close\n");
+		}
 		execve("/bin/wc", argv_2, environ);
+		assert_error("execve\n");
+	}
+	else
+		;
+
+	// process 3
+	pid_3 = fork();
+	if (pid_3 == -1)
+		assert_error("fork\n");
+	else if (pid_3 == 0)
+	{
+		if (close(pipefd_1[0]) == -1)
+			assert_error("close\n");
+		if (close(pipefd_1[1]) == -1)
+			assert_error("close\n");
+		if (close(pipefd_2[1]) == -1)
+			assert_error("close\n");
+		if (pipefd_2[0] != STDIN_FILENO)
+		{
+			if (dup2(pipefd_2[0], STDIN_FILENO) == -1)
+				assert_error("dup2\n");
+			if (close(pipefd_2[0]) == -1)
+				assert_error("close\n");
+		}
+		execve("/bin/wc", argv_3, environ);
 		assert_error("execve\n");
 	}
 	else
@@ -156,6 +195,12 @@ int main(int argc)
 		assert_error("close\n");
 	if (close(pipefd_1[1]) == -1)
 		assert_error("close\n");
+	if (close(pipefd_2[0]) == -1)
+		assert_error("close\n");
+	if (close(pipefd_2[1]) == -1)
+		assert_error("close\n");
+	if (wait(NULL) == -1)
+		assert_error("wait\n");
 	if (wait(NULL) == -1)
 		assert_error("wait\n");
 	if (wait(NULL) == -1)
