@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <limits.h>
 
 int	judge_nd_kind(char *redirect)
 {
@@ -38,6 +39,10 @@ t_node	*new_node(t_node_kind kind, t_node *node_pre)
 	else if (node->kind == ND_REDIRECT_IN)
 		node->fd_target = STDIN_FILENO;
 	node->redirect_pre = node_pre;
+	node->inpipe[0] = INT_MAX;
+	node->inpipe[1] = INT_MAX;
+	node->outpipe[0] = INT_MAX;
+	node->outpipe[1] = INT_MAX;
 	return (node);
 }
 

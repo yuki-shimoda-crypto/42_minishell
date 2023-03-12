@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/12 00:10:56 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/12 15:31:34 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ char	*make_relative_path(t_node *node, char **envp);
 char	*make_pathname(t_node *node, char **envp);
 size_t	argv_len(t_tk *token);
 char	**make_argv(t_tk *token);
-void	exec(char *pathname, char **argv, char **envp);
+void	exec(char *pathname, char **argv, char **envp, t_node *node);
 void	exec_cmd(t_node *node, char **envp);
 
 // redirect.c
@@ -153,5 +153,11 @@ void	redirect_fd_list(t_node *node);
 void	do_redirect(t_node *redir);
 void	reset_redirect(t_node *redir);
 int		heredoc(char *delimiter);
+
+// pipe.c
+void	input_pipefd(t_node *node, int *inpipe);
+void	connect_pipe(t_node *node);
+void	wrap_close(int fd);
+void	wrap_dup2(int oldfd, int newfd);
 
 #endif

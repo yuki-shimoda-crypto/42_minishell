@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
+#include <limits.h>
 
 char	*strjoin_three(char const *s1, char const *s2, char const *s3)
 {
@@ -97,23 +98,18 @@ char	**make_argv(t_tk *token)
 	return (argv);
 }
 
-void	exec(char *pathname, char **argv, char **envp)
+void	exec(char *pathname, char **argv, char **envp, t_node *node)
 {
 	pid_t	pid;
-	int		wstatus;
 
 	pid = fork();
 	if (pid == -1)
 		assert_error("fork\n");
 	else if (pid == 0)
 	{
+		connect_pipe(node);
 		execve(pathname, argv, envp);
 		assert_error("execve\n");
-	}
-	else
-	{
-		wait(&wstatus);
-		(void)wstatus;
 	}
 }
 
@@ -149,12 +145,28 @@ void	free_argv(char **argv)
 // 		return (false);
 // 	return (true);
 // }
+size_t	count_pipe_num(t_node *node)
+{
+	size_t	num;
+
+	num = 0;
+	while (node)
+	{
+		node = node->pipe;
+		num++;
+	}
+	return (num);
+}
 
 void	exec_cmd(t_node *node, char **envp)
 {
 	char	*pathname;
 	char	**argv;
+	size_t	i;
+	size_t	pipe_num;
 
+	pipe_num = count_pipe_num(node);
+	input_pipefd(node, NULL);
 	while (node)
 	{
 		pathname = make_pathname(node, envp);
@@ -171,11 +183,31 @@ void	exec_cmd(t_node *node, char **envp)
 		// if (is_builtin(argv))
 		// 	exec_builtin();
 		// else
-		if (pathname && argv && envp)
-			exec(pathname, argv, envp);
+		// {
+			// connect_pipe(node);
+			if (pathname && argv)
+				exec(pathname, argv, envp, node);
+		// }
+
 		reset_redirect(node->redirect);
+		//if (node->inpipe[0] != INT_MAX)
+		//{
+		//	wrap_close(node->inpipe[0]);
+		//	wrap_close(node->inpipe[1]);
+		//}
+		//if (node->outpipe[0] != INT_MAX)
+		//{
+		//	wrap_close(node->outpipe[0]);
+		//	wrap_close(node->outpipe[1]);
+		//}
 		node = node->pipe;
 		free(pathname);
 		free_argv(argv);
+	}
+	i = 0;
+	while (i < pipe_num)
+	{
+		wait(NULL);
+		i++;
 	}
 }

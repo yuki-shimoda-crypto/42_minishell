@@ -48,7 +48,7 @@ int	open_redir_file(t_node *redir)
 	else if (redir->kind == ND_REDIRECT_IN)
 		fd = open (redir->filename, O_RDONLY);
 	else if (redir->kind == ND_REDIRECT_HEREDOC)
-		return (heredoc(redir->filename));
+		fd = heredoc(redir->filename);
 	return (fd);
 }
 
