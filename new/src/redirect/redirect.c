@@ -24,18 +24,28 @@ void	reset_redirect(t_node *redir)
 		return ;
 	last = redir;
 	while (last->redirect)
-		last = redir->redirect;
+		last = last->redirect;
 	while (1)
 	{
-			close(last->fd_target);
-			if (dup2(last->fd_save, last->fd_target) == -1)
-				assert_error("dup2\n");
-			close(last->fd_save);
-			if (last == redir)
-				break ;
-			last = last->redirect_pre;
+		wrap_close(last->fd_target);
+		if (dup2(last->fd_save, last->fd_target) == -1)
+			assert_error("dup2\n");
+		wrap_close(last->fd_save);
+		if (last == redir)
+			break ;
+		last = last->redirect_pre;
 	}
 }
+
+// void	reset_redirect(t_node *redir)
+// {
+// 	if (!redir)
+// 		return ;
+// 	reset_redirect(redir->redirect);
+// 	close(redir->fd_target);
+// 	dup2(redir->fd_save, redir->fd_target);
+// 	close(redir->fd_save);
+// }
 
 int	open_redir_file(t_node *redir)
 {
@@ -69,13 +79,13 @@ void	do_redirect(t_node *redir)
 		return ;
 	while (redir)
 	{
-			redir->fd_save = dup(redir->fd_target);
-			if (redir->fd_save == -1)
-				assert_error("dup\n");
-			close(redir->fd_target);
-			if (dup2(redir->fd_file, redir->fd_target) == -1)
-				assert_error("dup2\n");
-			close(redir->fd_file);
-			redir = redir->redirect;
+		redir->fd_save = dup(redir->fd_target);
+		if (redir->fd_save == -1)
+			assert_error("dup\n");
+		close(redir->fd_target);
+		if (dup2(redir->fd_file, redir->fd_target) == -1)
+			assert_error("dup2\n");
+		close(redir->fd_file);
+		redir = redir->redirect;
 	}
 }
