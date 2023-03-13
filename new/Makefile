@@ -37,6 +37,7 @@ SRCS			=	src/main.c				\
 					src/wrap/dup.c			\
 					src/wrap/fork.c			\
 					src/wrap/pipe.c			\
+					src/wrap/read.c			\
 					src/wrap/write.c		\
 					src/expand/expand.c		\
 					src/expand/is_01.c		\
@@ -54,7 +55,7 @@ CFLAGS_DEBUG	+=	-fsanitize=leak
 SHELL			=	/bin/bash
 endif
 
-ifeq ($(shell command -v ccache), /usr/bin/ccache)
+ifneq ($(shell command -v ccache), )
 CCACHE			=	ccache
 endif
 
