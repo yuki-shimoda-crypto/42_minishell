@@ -29,6 +29,7 @@ RUN		apt update			\
 		&&	apt install -y	\
 			bc				\
 			bash-completion	\
+			ccache			\
 			clang			\
 			curl			\
 			gcc				\

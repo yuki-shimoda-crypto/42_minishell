@@ -53,12 +53,16 @@ ifeq ($(shell uname), Linux)
 CFLAGS_DEBUG	+=	-fsanitize=leak
 endif
 
+ifneq ($(shell command -v ccache),)
+CCACHE			=	ccache
+endif
+
 $(OBJ_DIR)/%.o:%.c
 				@mkdir -p $(@D)
-				$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@  
+				$(CCACHE) $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@  
 
 $(NAME):		$(OBJS)
-				$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+				$(CCACHE) $(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 PHONY			=	all
 all:			$(NAME)	
@@ -100,7 +104,5 @@ test:			all
 PHONY			+=	no_flag
 no_flags:		CFLAGS =
 no_flags:		re
-
-
 
 .PHONY:			$(PHONY)
