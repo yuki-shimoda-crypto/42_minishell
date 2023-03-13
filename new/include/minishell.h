@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/13 16:09:35 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/13 18:26:28 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,4 +181,9 @@ bool	is_alpha_under(char c);
 bool	is_alpha_num_under(char c);
 bool	is_special_charactor(char *line);
 
+//builtin
+
+void	echo(char **argv);
+void	recognize_builtin(char **argv);
+bool	is_builtin(char **argv);
 #endif
