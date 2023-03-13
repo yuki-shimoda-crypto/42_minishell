@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 15:54:58 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/12 00:10:56 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/13 17:44:18 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <readline/readline.h>
+
+t_return_error	g_return_error;
 
 int	heredoc(char *delimiter)
 {
@@ -25,6 +27,11 @@ int	heredoc(char *delimiter)
 		input = readline("> ");
 		if (input == NULL)
 			break ;
+		if (g_return_error.g_sig)///
+		{
+			free(input);
+			break ;
+		}///
 		if (!strcmp(input, delimiter))
 		{
 			free(input);

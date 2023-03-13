@@ -125,26 +125,25 @@ void	free_argv(char **argv)
 	free(argv);
 }
 
-// bool	is_builtin(char **argv)
-// {
-// 	if (strncmp("cd", argv[0], 2))
-// 		cd();
-// 	else if (strncmp("echo", argv[0], 4))
-// 		echo();
-// 	else if (strncmp("env", argv[0], 3))
-// 		env();
-// 	else if (strncmp("exit", argv[0], 4))
-// 		exit();
-// 	else if (strncmp("export", argv[0], 6))
-// 		export();
-// 	else if (strncmp("pwd", argv[0], 3))
-// 		pwd();
-// 	else if (strncmp("unset", argv[0], 5))
-// 		unset();
-// 	else
-// 		return (false);
-// 	return (true);
-// }
+bool	is_builtin(char *argv[0])
+{
+	if (!strncmp("cd", argv[0], 2))
+		return (true);
+	else if (!strncmp("echo", argv[0], 4))
+		return (true);
+	else if (!strncmp("env", argv[0], 3))
+		return (true);
+	else if (!strncmp("exit", argv[0], 4))
+		return (true);
+	else if (!strncmp("export", argv[0], 6))
+		return (true);
+	else if (!strncmp("pwd", argv[0], 3))
+		return (true);
+	else if (!strncmp("unset", argv[0], 5))
+		return (true);
+	else
+		return (false);
+}
 
 size_t	count_pipe_num(t_node *node)
 {
@@ -191,14 +190,14 @@ void	exec_cmd(t_node *node, char **envp)
 			g_return_error.exec_error = false;
 			continue ;
 		}
-		// if (is_builtin(argv))
-		// 	exec_builtin();
-		// else
-		// {
+		if (is_builtin(argv))
+			recognize_builtin(argv);
+		else
+		{
 			// connect_pipe(node);
 			if (pathname && argv)
 				exec(pathname, argv, envp, node);
-		// }
+		}
 		reset_redirect(node->redirect);
 		if (node->inpipe[0] != INT_MAX)
 		{

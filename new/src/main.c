@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/13 16:10:05 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/13 18:53:16 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	signal_hook(void)
 	return (0);
 }
 
-void setup_signal(void)
+void	setup_signal(void)
 {
 	rl_event_hook = signal_hook;
 	rl_outstream = stderr;
