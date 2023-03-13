@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/13 18:26:28 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 03:29:22 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define ERROR_ASSERT	"minishell: assert error "
 # define ERROR_EXEC		"minishell: "
 # define ERROR_SYNTAX	"minishell: syntax error near unexpected token "
+# define ERROR_EXPORT	"minishell: export: `%s': not a valid identifier\n"
 
 # include <stdbool.h>
 # include <stdint.h>
@@ -94,6 +95,8 @@ struct s_return_error
 	bool	exec_error;
 	int		g_sig;
 	int		return_value;
+	//fix
+	bool	export_error;
 };
 
 extern t_return_error	g_return_error;
@@ -106,9 +109,6 @@ void	assert_error(const char *msg);
 void	syntax_error(const char *msg, char **skipped, char *line);
 void	file_exec_error(const char *word, const char *msg);
 
-// debug_func.c
-void	print_t_tk(t_tk	*token);
-void	print_node(t_node *node, int i);
 
 // tokenize.c
 t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token);
@@ -182,8 +182,25 @@ bool	is_alpha_num_under(char c);
 bool	is_special_charactor(char *line);
 
 //builtin
-
-void	echo(char **argv);
-void	recognize_builtin(char **argv);
+void	builtin_echo(char **argv);
+int		builtin_export(char **argv, t_env **env_list);
+void	recognize_builtin(char **argv, t_env **env_list);
 bool	is_builtin(char **argv);
+
+
+// env
+t_env	*search_env(const char *key, t_env *env_list);
+void	del_env(const char *key, t_env **env_list);
+t_env	*env_last(t_env *env_list);
+void	env_addback(t_env **env_list, t_env *env_new);
+void	free_env(t_env **env_list);
+t_env	*env_new(char *key, char *value);
+void	add_env(const char *env, t_env **env_list);
+t_env	*make_env_list(char **envp);
+
+// debug_func.c
+void	print_t_tk(t_tk	*token);
+void	print_node(t_node *node, int i);
+void	print_env_list(t_env *env_list);
+
 #endif

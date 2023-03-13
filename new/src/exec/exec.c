@@ -60,7 +60,6 @@ char	*strjoin(char const *s1, char const *s2)
 	return (save);
 }
 
-
 size_t	argv_len(t_tk *token)
 {
 	size_t	len;
@@ -164,10 +163,12 @@ void	exec_cmd(t_node *node, char **envp)
 	char	**argv;
 	size_t	i;
 	size_t	pipe_num;
+	t_env	*env_list;
 
 	pipe_num = count_pipe_num(node);
 	input_pipefd(node, NULL);
 	expand(node);
+	env_list = make_env_list(envp);
 	while (node)
 	{
 		pathname = make_pathname(node, envp);
@@ -190,8 +191,19 @@ void	exec_cmd(t_node *node, char **envp)
 			g_return_error.exec_error = false;
 			continue ;
 		}
-		if (is_builtin(argv))
-			recognize_builtin(argv);
+		if (argv && is_builtin(argv))
+		{
+			recognize_builtin(argv, &env_list);
+			if (g_return_error.export_error)
+			{
+	//	reset_redirect(node->redirect);
+				free(pathname);
+				free_argv(argv);
+				node = node->pipe;
+				g_return_error.export_error = false;
+				continue ;
+			}
+		}
 		else
 		{
 			// connect_pipe(node);

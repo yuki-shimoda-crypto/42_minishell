@@ -3,15 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   debug_func.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:04:47 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/11 17:23:06 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/14 00:13:06 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdio.h>
+
+void	print_env_list(t_env *env_list)
+{
+	while (env_list)
+	{
+		printf("key:\t%s\n", env_list->key);
+		printf("value:\t%s\n", env_list->value);
+		printf("pre:\t%p\n", env_list->pre);
+		printf("now:\t%p\n", env_list);
+		printf("next:\t%p\n", env_list->next);
+		printf("%s\n", "------------");
+		env_list = env_list->next;
+	}
+}
 
 static const char	*print_t_node_kind(int kind)
 {

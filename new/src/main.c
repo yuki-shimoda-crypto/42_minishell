@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/13 18:53:16 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 03:29:22 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	init_return_error(void)
 	g_return_error.redirect_error = false;
 	g_return_error.exec_error = false;
 	g_return_error.return_value = 0;
+	g_return_error.export_error = false;
 }
 
 void	interpret(char *line, char **envp)
@@ -135,7 +136,7 @@ void	setup_signal(void)
 	}
 }
 
-int	main(int argc, char const *argv[], char **envp)
+int	main(int argc, char const *argv[], char *envp[])
 {
 	char	*line;
 

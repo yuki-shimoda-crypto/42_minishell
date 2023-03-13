@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:02:35 by enogawa           #+#    #+#             */
-/*   Updated: 2023/03/13 21:35:16 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 03:59:22 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,12 @@ static int	atoi_for_exit(char *cmd)
 
 int	builtin_exit(t_cmd_lst	*separated)
 {
-	int	i;
 	int	len;
 	int	status;
 
-	i = 0;
 	len = 0;
 	status = 0;
-	while (separated->cmd[i])
+	while (separated->cmd[len])
 		len++;
 	if (len == 1)
 	{

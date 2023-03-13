@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:19:57 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/13 21:35:16 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 03:59:22 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void	echo(char **argv)
+void	builtin_echo(char **argv)
 {
 	size_t	i;
 

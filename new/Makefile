@@ -43,7 +43,9 @@ SRCS			=	src/main.c				\
 					src/expand/is_01.c		\
 					src/expand/is_02.c		\
 					src/builtin/recognize_builtin.c	\
-					src/builtin/echo.c
+					src/builtin/echo.c		\
+					src/builtin/export.c	\
+					src/env/env.c
 
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
