@@ -42,11 +42,32 @@ int	open_redir_file(t_node *redir)
 	int	fd;
 
 	if (redir->kind == ND_REDIRECT_OUT)
+	{
 		fd = open (redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (fd == -1)
+		{
+			perror(NULL);
+			g_return_error.redirect_error = true;
+		}
+	}
 	else if (redir->kind == ND_REDIRECT_APPEND)
+	{
 		fd = open (redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (fd == -1)
+		{
+			perror(NULL);
+			g_return_error.redirect_error = true;
+		}
+	}
 	else if (redir->kind == ND_REDIRECT_IN)
+	{
 		fd = open (redir->filename, O_RDONLY);
+		if (fd == -1)
+		{
+			perror(NULL);
+			g_return_error.redirect_error = true;
+		}
+	}
 	else if (redir->kind == ND_REDIRECT_HEREDOC)
 		fd = heredoc(redir->filename);
 	return (fd);

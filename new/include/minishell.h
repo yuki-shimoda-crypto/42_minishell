@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/13 02:49:33 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/13 11:40:05 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ struct s_return_error
 {
 	bool	tokenize_error;
 	bool	parse_error;
+	bool	redirect_error;
 	bool	exec_error;
 	int		return_value;
 };
@@ -166,18 +167,13 @@ pid_t	wrap_fork(void);
 int		wrap_pipe(int pipefd[2]);
 ssize_t wrap_write(int fd, const void *buf, size_t count);
 
-// expand.c
-bool	is_special_charactor(char *line);
+// expand
+void	expand(t_node *node);
+bool	is_single_quote(const char c);
+bool	is_double_quote(const char c);
 bool	is_variable(char *line);
-bool	is_expand(char *line);
 bool	is_alpha_under(char c);
 bool	is_alpha_num_under(char c);
-char	*expand_variable(char **skipped, char *word, char *new_word);
-char	*expand_double_quote(char **skipped, char *word, char *new_word);
-char	*expand_single_quote(char **skipped, char *word, char *new_word);
-char	*expand_word(char *word);
-void	expand_token(t_tk *token);
-void	expand(t_node *node);
-char	*append_char(const char c, char *new_word);
+bool	is_special_charactor(char *line);
 
 #endif

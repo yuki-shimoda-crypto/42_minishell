@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 02:26:51 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/13 02:24:47 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/13 10:16:27 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,16 @@ t_tk	*word_into_list(char **skipped, char *line)
 	while (*line && !is_blank(*line) && !is_redirect(*line, &line, line)
 		&& !is_pipe(*line))
 	{
-		if (is_quoted(*line, &line, line))
+		if (is_quote(*line))
 		{
-			quote = *line;
-			line++;
-			while (*line != quote)
+			if (is_quoted(*line, &line, line))
+			{
+				quote = *line;
 				line++;
-			line++;
+				while (*line != quote)
+					line++;
+				line++;
+			}
 		}
 		else
 			line++;
@@ -98,13 +101,16 @@ t_tk	*quoted_into_list(char **skipped, char *line, const char c)
 	while (*line && !is_blank(*line) && !is_redirect(*line, &line, line)
 		&& !is_pipe(*line))
 	{
-		if (is_quoted(*line, &line, line))
+		if (is_quote(*line))
 		{
-			quote = *line;
-			line++;
-			while (*line != quote)
+			if (is_quoted(*line, &line, line))
+			{
+				quote = *line;
 				line++;
-			line++;
+				while (*line != quote)
+					line++;
+				line++;
+			}
 		}
 		else
 			line++;

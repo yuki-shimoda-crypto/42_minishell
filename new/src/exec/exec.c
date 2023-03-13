@@ -174,12 +174,21 @@ void	exec_cmd(t_node *node, char **envp)
 		pathname = make_pathname(node, envp);
 		argv = make_argv(node->token);
 		redirect_fd_list(node->redirect);
+		if (g_return_error.redirect_error)
+		{
+			free(pathname);
+			free_argv(argv);
+			node = node->pipe;
+			g_return_error.redirect_error = false;
+			continue ;
+		}
 		do_redirect(node->redirect);
 		if (g_return_error.exec_error)
 		{
 			free(pathname);
 			free_argv(argv);
 			node = node->pipe;
+			g_return_error.exec_error = false;
 			continue ;
 		}
 		// if (is_builtin(argv))
