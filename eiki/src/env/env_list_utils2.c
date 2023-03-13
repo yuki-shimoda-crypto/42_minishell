@@ -3,44 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogawa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 02:06:26 by enogawa           #+#    #+#             */
-/*   Updated: 2023/01/14 02:43:49 by enogawa          ###   ########.fr       */
+/*   Updated: 2023/03/13 20:23:39 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env_list	*search_env(char *key_name, t_env_list *env_box)
+t_env	*search_env(const char *key, t_env *env_list)
 {
-	t_env_list	*tmp;
-	size_t		len;
-
-	tmp = env_box;
-	len = ft_strlen(key_name);
-	while (tmp)
+	if (!key || !env_list)
+		return (NULL);
+	while (env_list)
 	{
-		if (!ft_strncmp(key_name, tmp->key, len + 1))
-			return (tmp);
-		tmp = tmp->next;
+		if (!strcmp(key, env_list->key))
+			return (env_list);
+		env_list = env_list->next;
 	}
 	return (NULL);
 }
 
-void	del_env(char *key_name, t_env_list *env_box)
+void	del_env(const char *key, t_env **env_list)
 {
-	t_env_list	*del_target;
+	t_env	*del_list;
 
-	del_target = search_env(key_name, env_box);
-	if (!del_target)
+	if (!key || !env_list)
 		return ;
-	del_target->prev->next = del_target->next;
-	del_target->next->prev = del_target->prev;
-	free(del_target->key);
-	del_target->key = NULL;
-	free(del_target->value);
-	del_target->value = NULL;
-	free(del_target);
-	del_target = NULL;
+	del_list = search_env(key, *env_list);
+	if (!del_list)
+		return ;
+	if (del_list == *env_list)
+		*env_list = (*env_list)->next;
+	if (del_list->pre)
+		del_list->pre->next = del_list->next;
+	if (del_list->next)
+		del_list->next->prev = del_list->prev;
+	free(del_list->key);
+	del_list->key = NULL;
+	free(del_list->value);
+	del_list->value = NULL;
+	free(del_list);
+	del_list = NULL;
 }

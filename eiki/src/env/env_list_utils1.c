@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_list_utils.c                                   :+:      :+:    :+:   */
+/*   env_list_utils1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogawa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 21:48:10 by enogawa           #+#    #+#             */
-/*   Updated: 2023/01/13 21:49:38 by enogawa          ###   ########.fr       */
+/*   Updated: 2023/03/13 19:50:23 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env_list	*env_last(t_env_list *env_list)
+t_env	*env_last(t_env *env_list)
 {
 	if (!env_list)
 		return (NULL);
@@ -21,11 +21,11 @@ t_env_list	*env_last(t_env_list *env_list)
 	return (env_list);
 }
 
-void	env_addback(t_env_list **env_list, t_env_list *env_new)
+void	env_addback(t_env **env_list, t_env *env_new)
 {
-	t_env_list	*last;
+	t_env	*last;
 
-	if (!env_list || ! env_new)
+	if (!env_list || !env_new)
 		return ;
 	if (!*env_list)
 	{
@@ -38,28 +38,28 @@ void	env_addback(t_env_list **env_list, t_env_list *env_new)
 	return ;
 }
 
-void	free_env(t_env_list **env_box, int flag)
+void	free_env(t_env **env_list)
 {
-	t_env_list	*tmp;
+	t_env	*tmp;
 
-	if (!env_box || !*env_box)
+	if (!env_list || !*env_list)
 		return ;
-	while (*env_box)
+	while (*env_list)
 	{
-		tmp = (*env_box)->next;
-		free(*env_box);
-		*env_box = tmp;
+		tmp = (*env_list)->next;
+		free(*env_list);
+		*env_list = tmp;
 	}
-	if (flag)
-		exit(1);
 }
 
-t_env_list	*env_new(void)
+t_env	*env_new(char *key, char *value)
 {
-	t_env_list	*env_new;
+	t_env	*env_new;
 
-	env_new = ft_calloc(1, sizeof(t_env_list));
+	env_new = calloc(1, sizeof(t_env));
 	if (!env_new)
-		error_func("cannot allocate memory");
+		assert_error("calloc\n");
+	env_new->key = key;
+	env_new->value = value;
 	return (env_new);
 }
