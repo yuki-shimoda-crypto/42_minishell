@@ -46,7 +46,7 @@ int	open_redir_file(t_node *redir)
 		fd = open (redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd == -1)
 		{
-			perror(NULL);
+			perror(redir->filename);
 			g_return_error.redirect_error = true;
 		}
 	}
@@ -55,7 +55,7 @@ int	open_redir_file(t_node *redir)
 		fd = open (redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd == -1)
 		{
-			perror(NULL);
+			perror(redir->filename);
 			g_return_error.redirect_error = true;
 		}
 	}
@@ -64,7 +64,7 @@ int	open_redir_file(t_node *redir)
 		fd = open (redir->filename, O_RDONLY);
 		if (fd == -1)
 		{
-			perror(NULL);
+			perror(redir->filename);
 			g_return_error.redirect_error = true;
 		}
 	}
