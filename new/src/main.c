@@ -94,6 +94,13 @@ void	interpret(char *line, char **envp)
 //	sleep(2);
 //	return (0);
 //}
+
+void	ctrl_backslash(int sig)
+{
+	(void)sig;
+	return ;
+}
+
 void	ctrl_c(int sig)
 {
 	g_return_error.g_sig = sig;
@@ -116,8 +123,16 @@ void	setup_signal(void)
 {
 	rl_event_hook = signal_hook;
 	rl_outstream = stderr;
-	signal(SIGINT, ctrl_c);
-	// signal(SIGQUIT, ctrl_backslash);
+	if (signal(SIGINT, ctrl_c) == SIG_ERR)
+	{
+		perror(NULL);
+		assert_error("signal\n");
+	}
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	{
+		perror(NULL);
+		assert_error("signal\n");
+	}
 }
 
 int	main(int argc, char const *argv[], char **envp)
