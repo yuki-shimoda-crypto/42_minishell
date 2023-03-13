@@ -51,9 +51,10 @@ LIBS			=	-lreadline
 
 ifeq ($(shell uname), Linux)
 CFLAGS_DEBUG	+=	-fsanitize=leak
+SHELL			=	/bin/bash
 endif
 
-ifneq ($(shell command -v ccache),)
+ifeq ($(shell command -v ccache), /usr/bin/ccache)
 CCACHE			=	ccache
 endif
 
