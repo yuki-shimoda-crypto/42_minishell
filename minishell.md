@@ -29,6 +29,45 @@ minishell
     1. $WORD
         1. $?
         1. expand $WORD
+1. signal
+    1. setup_signal
+        1. rl_event_hookに呼び出す関数(signal_hook)を設定する 
+        1. signal(SIGINT, ctrl_c)(sigintが来たときの処理)
+        1. ignore_sigquit
+        ```c
+        void setup_signal(void)
+        {
+            rl_event_hook = signal_hook;
+            rl_outstream = stderr;
+            signal(SIGINT, ctrl_c);
+            signal(SIGQUIT, ctrl_backslash);
+        }
+        ```
+    1. int  signal_hook(int g_sig)
+        ```c
+		int signal_hook(int g_sig)
+        {
+            if (g_sig == 0)
+                return (0);
+            else if (g_sig == SIGINT)
+            {
+                g_sig = 0;
+                rl_replace_line("", 0);
+                rl_done = 1;
+            }
+            return (0);
+        }
+        ```
+    1. int ctrl_c(int sig)
+        ```c
+        int ctrl_c(int sig)
+        {
+            g_sig = sig;
+        }
+        ```
+    1. int ignore_sigquit(int sig)
+        ```c
+        ```
 
 ## struct
 ```

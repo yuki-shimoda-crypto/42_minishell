@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/13 11:40:09 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/13 16:10:05 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 
 t_return_error	g_return_error;
 
@@ -78,6 +79,47 @@ void	interpret(char *line, char **envp)
 	free_node(&node);
 }
 
+//void	ctrl_c(int signal)
+//{
+//	rl_on_new_line();
+//	write(STDOUT_FILENO, "\n", strlen("\n"));
+//	rl_replace_line("", 0);
+//	rl_redisplay();
+//	rl_done = 1;
+//	(void)signal;
+//}
+//int	func(void)
+//{
+//	printf("%s\n", "variable");
+//	sleep(2);
+//	return (0);
+//}
+void	ctrl_c(int sig)
+{
+	g_return_error.g_sig = sig;
+}
+
+int	signal_hook(void)
+{
+	if (g_return_error.g_sig == 0)
+		return (0);
+	else if (g_return_error.g_sig == SIGINT)
+	{
+		g_return_error.g_sig = 0;
+		rl_replace_line("", 0);
+		rl_done = 1;
+	}
+	return (0);
+}
+
+void setup_signal(void)
+{
+	rl_event_hook = signal_hook;
+	rl_outstream = stderr;
+	signal(SIGINT, ctrl_c);
+	// signal(SIGQUIT, ctrl_backslash);
+}
+
 int	main(int argc, char const *argv[], char **envp)
 {
 	char	*line;
@@ -85,6 +127,9 @@ int	main(int argc, char const *argv[], char **envp)
 	(void)argc;
 	(void)argv;
 	// (void)envp;
+	// signal(SIGINT, ctrl_c);
+	// rl_event_hook = func;
+	setup_signal();
 	while (1)
 	{
 		init_return_error();

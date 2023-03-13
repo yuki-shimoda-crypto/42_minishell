@@ -41,6 +41,7 @@ int	open_redir_file(t_node *redir)
 {
 	int	fd;
 
+	fd = 0;
 	if (redir->kind == ND_REDIRECT_OUT)
 	{
 		fd = open (redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);

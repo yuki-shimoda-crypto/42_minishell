@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/13 11:40:05 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/13 16:09:35 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,14 @@ struct s_return_error
 	bool	parse_error;
 	bool	redirect_error;
 	bool	exec_error;
+	int		g_sig;
 	int		return_value;
 };
 
 extern t_return_error	g_return_error;
+
+// main.c
+void	ctrl_c(int sig);
 
 // error.c
 void	assert_error(const char *msg);
