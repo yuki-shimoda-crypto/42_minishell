@@ -56,11 +56,14 @@ OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 OBJ_DIR			=	obj
 
-LIBS			=	-lreadline
 
 ifeq ($(shell uname), Linux)
 CFLAGS_DEBUG	+=	-fsanitize=leak
 SHELL			=	/bin/bash
+LIBS			=	-lreadline
+else
+RLDIR    = $(shell brew --prefix readline)
+LIBS			=	-L$(RLDIR) -lreadline
 endif
 
 ifneq ($(shell command -v ccache), )
@@ -69,7 +72,7 @@ endif
 
 $(OBJ_DIR)/%.o:%.c
 				@mkdir -p $(@D)
-				$(CCACHE) $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@  
+				$(CCACHE) $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@ $(LIBS) 
 
 $(NAME):		$(OBJS)
 				$(CCACHE) $(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
