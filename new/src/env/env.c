@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 01:41:30 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/14 03:29:45 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 14:37:01 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,18 +118,8 @@ void	add_env(const char *env, t_env **env_list)
 	if (!env || !env_list)
 		return ;
 	tail = strchr(env, '=');
-	if (env[0] == '=' || !tail || tail[1] == '\0')
-	{
-		//fix
-		//fix
-		//fix
-		//fix
-		//fix
-		//fix
-		printf("minishell: export: `%s': not a valid identifier\n", env);
-		g_return_error.export_error = true;
+	if (!tail)
 		return ;
-	}
 	key = strndup(env, tail - env);
 	if (!key)
 		assert_error("strndup\n");

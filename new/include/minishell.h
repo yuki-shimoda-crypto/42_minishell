@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/14 03:29:22 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 14:43:07 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 // prompt name
 # define PROMPT			"\x1b[1m\x1b[32mminishell\x1b[0m$ "
+# define PROMPT_ERROR	"minishell: "
 
 // error
 # define ERROR_ASSERT	"minishell: assert error "
@@ -108,6 +109,7 @@ void	ctrl_c(int sig);
 void	assert_error(const char *msg);
 void	syntax_error(const char *msg, char **skipped, char *line);
 void	file_exec_error(const char *word, const char *msg);
+void	export_error(const char *cmd);
 
 
 // tokenize.c
@@ -150,7 +152,8 @@ char	*make_pathname(t_node *node, char **envp);
 size_t	argv_len(t_tk *token);
 char	**make_argv(t_tk *token);
 void	exec(char *pathname, char **argv, char **envp, t_node *node);
-void	exec_cmd(t_node *node, char **envp);
+// void	exec_cmd(t_node *node, char **envp);
+void	exec_cmd(t_node *node, t_env **env_list, char **envp);
 
 // redirect.c
 int		open_redir_file(t_node *redir);
@@ -171,6 +174,7 @@ pid_t	wrap_fork(void);
 int		wrap_pipe(int pipefd[2]);
 ssize_t	wrap_read(int fd, void *buf, size_t count);
 ssize_t wrap_write(int fd, const void *buf, size_t count);
+char	*wrap_getcwd(char *buf, size_t size);
 
 // expand
 void	expand(t_node *node);
@@ -185,7 +189,8 @@ bool	is_special_charactor(char *line);
 void	builtin_echo(char **argv);
 int		builtin_export(char **argv, t_env **env_list);
 void	recognize_builtin(char **argv, t_env **env_list);
-bool	is_builtin(char **argv);
+bool	is_builtin(const char *cmd);
+int		get_pwd(void);
 
 
 // env

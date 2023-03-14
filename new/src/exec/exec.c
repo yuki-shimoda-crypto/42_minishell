@@ -124,21 +124,21 @@ void	free_argv(char **argv)
 	free(argv);
 }
 
-bool	is_builtin(char *argv[0])
+bool	is_builtin(const char *cmd)
 {
-	if (!strncmp("cd", argv[0], 2))
+	if (!strcmp("cd", cmd))
 		return (true);
-	else if (!strncmp("echo", argv[0], 4))
+	else if (!strcmp("echo", cmd))
 		return (true);
-	else if (!strncmp("env", argv[0], 3))
+	else if (!strcmp("env", cmd))
 		return (true);
-	else if (!strncmp("exit", argv[0], 4))
+	else if (!strcmp("exit", cmd))
 		return (true);
-	else if (!strncmp("export", argv[0], 6))
+	else if (!strcmp("export", cmd))
 		return (true);
-	else if (!strncmp("pwd", argv[0], 3))
+	else if (!strcmp("pwd", cmd))
 		return (true);
-	else if (!strncmp("unset", argv[0], 5))
+	else if (!strcmp("unset", cmd))
 		return (true);
 	else
 		return (false);
@@ -157,18 +157,16 @@ size_t	count_pipe_num(t_node *node)
 	return (num);
 }
 
-void	exec_cmd(t_node *node, char **envp)
+void	exec_cmd(t_node *node, t_env **env_list, char **envp)
 {
 	char	*pathname;
 	char	**argv;
 	size_t	i;
 	size_t	pipe_num;
-	t_env	*env_list;
 
 	pipe_num = count_pipe_num(node);
 	input_pipefd(node, NULL);
 	expand(node);
-	env_list = make_env_list(envp);
 	while (node)
 	{
 		pathname = make_pathname(node, envp);
@@ -191,19 +189,8 @@ void	exec_cmd(t_node *node, char **envp)
 			g_return_error.exec_error = false;
 			continue ;
 		}
-		if (argv && is_builtin(argv))
-		{
-			recognize_builtin(argv, &env_list);
-			if (g_return_error.export_error)
-			{
-	//	reset_redirect(node->redirect);
-				free(pathname);
-				free_argv(argv);
-				node = node->pipe;
-				g_return_error.export_error = false;
-				continue ;
-			}
-		}
+		if (argv && is_builtin(argv[0]))
+			recognize_builtin(argv, env_list);
 		else
 		{
 			// connect_pipe(node);

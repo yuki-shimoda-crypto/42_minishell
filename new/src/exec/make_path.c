@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/12 10:18:18 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 12:36:41 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ char	*make_pathname(t_node *node, char **envp)
 	char	*pathname;
 
 	if (!node->token || !node->token->word)
+		return (NULL);
+	if (is_builtin(node->token->word))
 		return (NULL);
 	if (node->token->word[0] == '/')
 		pathname = make_absolute_path(node);

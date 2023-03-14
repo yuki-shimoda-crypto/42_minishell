@@ -181,17 +181,29 @@ struct s_env
 - [meety](https://meety.net/)
 
 ## memo
-- $の時のレキサーの処理
-	- $?の時のレキサーの処理
+### memo
 - なぜ、test.shのassert()内で、echo -nをつけて、最後にechoをしているのか
 - pipeのときのredirectを優先するときの判定を見てもらいたい。しっかりとつながっているのか`
 		if (!is_redirect_out_exist(node))
 		if (!is_redirect_in_exist(node))
-- exportで同じkeyが来たら、valueを上書きする
-- exportで=の右、左のどちらかが
-    42tokyo
-    42tokyo=
-    =42tokyo
+
+### must
+1. exit
+1. cd
+1. makepathでenvpを使って環境変数をとっているが、それをenvlistから取るようにする
+1. builtinと普通の関数間でpipeができていない
+1. builtinの関数の確認
+---
+1. exportの+=
+1. return valueの変更
+1. signal関連の見直し
+
+
+### やってもよい
+- A="echo a"のexpand
+- signalのデバッグ全然してない
+- 
+- 
 
 
 ## vim 

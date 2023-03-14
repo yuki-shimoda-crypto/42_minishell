@@ -6,12 +6,13 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 02:36:44 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/14 03:34:58 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 15:00:19 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdio.h>
+#include <string.h>
 
 static void	free_array(char **env_array)
 {
@@ -38,7 +39,7 @@ static void	sort_array(char **env_array)
 		j = i + 1;
 		while (env_array[j])
 		{
-			if (strcmp(env_array[i], env_array[j]) < 0)
+			if (strcmp(env_array[i], env_array[j]) > 0)
 			{
 				temp = env_array[i];
 				env_array[i] = env_array[j];
@@ -97,10 +98,59 @@ static void	put_sorted_env(t_env *env_list)
 	free_array(sort_env);
 }
 
+bool	is_key_exist(const char *env, t_env *env_list)
+{
+	char	*key;
+	char	*tail;
+
+	if (!env || !env_list)
+		return (false);
+	tail = strchr(env, '=');
+	if (!tail)
+		return (false);
+	key = strndup(env, tail - env);
+	if (!key)
+		assert_error("strndup\n");
+	while (env_list)
+	{
+		if (!strcmp(key, env_list->key))
+		{
+			free(key);
+			return (true);
+		}
+		env_list = env_list->next;
+	}
+	free(key);
+	return (false);	
+}
+
+void	overwrite_env(const char *env, t_env *env_list)
+{
+	char	*value;
+	char	*value_head;
+	
+	value_head = strchr(env, '=');
+	value_head++;
+	value = strdup(value_head);
+	if (!value)
+		assert_error("strdup");
+	while (env_list)
+	{
+		if (!strncmp(env, env_list->key, strlen(env_list->key)))
+		{
+			free(env_list->value);
+			env_list->value = value;
+			break ;
+		}
+		env_list = env_list->next;
+	}
+}
+
 int	builtin_export(char **argv, t_env **env_list)
 {
 	size_t	num;
 	size_t	i;
+	char	*eq_ptr;
 
 	if (!argv || !*argv || !env_list)
 		return (1);
@@ -111,10 +161,26 @@ int	builtin_export(char **argv, t_env **env_list)
 		put_sorted_env(*env_list);
 	else
 	{
-		i = 0;
+		i = 1;
 		while (argv[i])
 		{
-			add_env(argv[i], env_list);
+
+			if (!is_alpha_under(argv[i][0]))
+			{
+				export_error(argv[i]);
+				i++;
+				continue ;
+			}
+			eq_ptr = strchr(argv[i], '=');
+			if (!eq_ptr || eq_ptr[1] == '\0')
+			{
+				i++;
+				continue ;
+			}
+			if (is_key_exist(argv[i], *env_list))
+				overwrite_env(argv[i], *env_list);
+			else
+				add_env(argv[i], env_list);
 			i++;
 		}
 	}

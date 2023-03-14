@@ -1,35 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   recognize_builtin.c                                :+:      :+:    :+:   */
+/*   getcwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 18:05:49 by enogaWa           #+#    #+#             */
+/*   Created: 2023/03/14 12:12:53 by enogaWa           #+#    #+#             */
 /*   Updated: 2023/03/14 17:10:22 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <limits.h>
 #include <string.h>
 
-void	recognize_builtin(char **argv, t_env **env_list)
+char	*wrap_getcwd(char *buf, size_t size)
 {
-	
-	// if (!strcmp("cd", argv[0]))
-	// 	cd(argv);
-	if (!strcmp("echo", argv[0]))
-		builtin_echo(argv);
-	// else if (!strcmp("env", argv[0]))
-	// 	env(argv);
-	// else if (!strcmp("exit", argv[0]))
-	// 	exit(argv);
-	// else if (!strcmp("export", argv[0]))
-	else if (!strcmp("export", argv[0]))
-		builtin_export(argv, env_list);
-	// else if (!strcmp("pwd", argv[0]))
-	// 	pwd(argv);
-	// else if (!strcmp("unset", argv[0]))
-	// 	unset(argv);
+	size = PATH_MAX;
+	while (1)
+	{
+		buf = malloc(sizeof(char) * size);
+		if (!buf)
+		{
+			perror("NULL");
+			assert_error("malloc\n");
+		}
+		if (getcwd(buf, size) != NULL)
+			break ;
+		if (errno != ERANGE)
+		{
+			perror("NULL");
+			return (NULL);
+		}
+		size *= 2;
+		free(buf);
+	}
+	return (buf);
 }

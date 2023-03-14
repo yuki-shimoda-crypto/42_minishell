@@ -39,13 +39,15 @@ SRCS			=	src/main.c				\
 					src/wrap/pipe.c			\
 					src/wrap/read.c			\
 					src/wrap/write.c		\
+					src/wrap/getcwd.c		\
 					src/expand/expand.c		\
 					src/expand/is_01.c		\
 					src/expand/is_02.c		\
 					src/builtin/recognize_builtin.c	\
 					src/builtin/echo.c		\
 					src/builtin/export.c	\
-					src/env/env.c
+					src/env/env.c			\
+					src/builtin/pwd.c
 
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
