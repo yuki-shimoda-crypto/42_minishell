@@ -176,7 +176,7 @@ ssize_t wrap_write(int fd, const void *buf, size_t count);
 char	*wrap_getcwd(char *buf, size_t size);
 
 // expand
-void	expand(t_node *node);
+void	expand(t_node *node, t_env *env_list);
 bool	is_single_quote(const char c);
 bool	is_double_quote(const char c);
 bool	is_variable(char *line);

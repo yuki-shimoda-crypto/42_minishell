@@ -215,17 +215,16 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	pipe_num = count_pipe_num(node);
 	input_pipefd(node, NULL);
 	expand(node, *env_list);
+	envp = make_envp(*env_list);
 	while (node)
 	{
 		pathname = make_pathname(node->token, *env_list);
 		argv = make_argv(node->token);
-		envp = make_envp(*env_list);
 		redirect_fd_list(node->redirect);
 		if (g_return_error.redirect_error)
 		{
 			free(pathname);
 			free_argv(argv);
-			free_envp(envp);
 			node = node->pipe;
 			g_return_error.redirect_error = false;
 			continue ;
@@ -235,7 +234,6 @@ void	exec_cmd(t_node *node, t_env **env_list)
 		{
 			free(pathname);
 			free_argv(argv);
-			free_envp(envp);
 			node = node->pipe;
 			g_return_error.exec_error = false;
 			continue ;
@@ -257,8 +255,8 @@ void	exec_cmd(t_node *node, t_env **env_list)
 		node = node->pipe;
 		free(pathname);
 		free_argv(argv);
-		free_envp(envp);
 	}
+	free_envp(envp);
 	i = 0;
 	while (i < pipe_num)
 	{
