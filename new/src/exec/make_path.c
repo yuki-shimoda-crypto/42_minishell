@@ -13,43 +13,41 @@
 #include "minishell.h"
 #include <stdio.h>
 
-char	*find_env_path(char **envp)
+char	*find_env_path(t_env *env_list)
 {
-	size_t	i;
-	char	*path;
+	char	*value;
 
-	i = 0;
-	while (envp[i])
+	while (env_list)
 	{
-		if (strncmp("PATH=", envp[i], 5) == 0)
+		if (!strcmp("PATH", env_list->key))
 		{
-			path = strdup(&envp[i][5]);
-			if (!path)
+			value = strdup(env_list->value);
+			if (!value)
 				assert_error("strdup\n");
-			return (path);
+			return (value);
 		}
-		i++;
+		env_list = env_list->next;
 	}
 	return (NULL);
 }
 
-char	*make_absolute_path(t_node *node)
+char	*make_absolute_path(t_tk *token)
 {
 	char	*pathname;
 
-	pathname = strdup(node->token->word);
+	pathname = strdup(token->word);
 	if (!pathname)
 		assert_error("strdup\n");
 	if (!is_file(pathname))
-		file_exec_error(node->token->word, ": is a directory\n");
+		file_exec_error(token->word, ": is a directory\n");
 	else if (!is_file_exist(pathname))
-		file_exec_error(node->token->word, ": no such file or directory\n");
+		file_exec_error(token->word, ": no such file or directory\n");
 	else if (!is_file_executable(pathname))
-		file_exec_error(node->token->word, ": is not executable\n");
+		file_exec_error(token->word, ": is not executable\n");
 	return (pathname);
 }
 
-char	*make_relative_path(t_node *node, char **envp)
+char	*make_relative_path(t_tk *token, t_env *env_list)
 {
 	char	*head;
 	char	*tail;
@@ -58,7 +56,8 @@ char	*make_relative_path(t_node *node, char **envp)
 	char	*pathname;
 	char	*tmp;
 
-	env_path = find_env_path(envp);
+	pathname = NULL;
+	env_path = find_env_path(env_list);
 	env_path_head = env_path;
 	while (env_path && *env_path)
 	{
@@ -70,7 +69,7 @@ char	*make_relative_path(t_node *node, char **envp)
 			pathname = strdup(head);
 		if (!pathname)
 			assert_error("strndup\n");
-		tmp = strjoin_three(pathname, "/", node->token->word);
+		tmp = strjoin_three(pathname, "/", token->word);
 		free(pathname);
 		if (!tmp)
 			assert_error("malloc\n");
@@ -83,26 +82,28 @@ char	*make_relative_path(t_node *node, char **envp)
 		env_path = tail + 1;
 	}
 	free(env_path_head);
-	if (!is_file(pathname))
-		file_exec_error(node->token->word, ": is a directory\n");
+	if (!pathname)
+		file_exec_error(token->word, ": no such file or directory\n");
+	else if (!is_file(pathname))
+		file_exec_error(token->word, ": is a directory\n");
 	else if (!is_file_exist(pathname))
-		file_exec_error(node->token->word, ": command not found\n");
+		file_exec_error(token->word, ": command not found\n");
 	else if (!is_file_executable(pathname))
-		file_exec_error(node->token->word, ": is not executable\n");
+		file_exec_error(token->word, ": is not executable\n");
 	return (pathname);
 }
 
-char	*make_pathname(t_node *node, char **envp)
+char	*make_pathname(t_tk *token, t_env *env_list)
 {
 	char	*pathname;
 
-	if (!node->token || !node->token->word)
+	if (!token || !token->word)
 		return (NULL);
-	if (is_builtin(node->token->word))
+	if (is_builtin(token->word))
 		return (NULL);
-	if (node->token->word[0] == '/')
-		pathname = make_absolute_path(node);
+	if (token->word[0] == '/')
+		pathname = make_absolute_path(token);
 	else
-		pathname = make_relative_path(node, envp);
+		pathname = make_relative_path(token, env_list);
 	return (pathname);
 }

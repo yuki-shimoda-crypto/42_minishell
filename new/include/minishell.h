@@ -146,15 +146,14 @@ char	*strjoin_three(char const *s1, char const *s2, char const *s3);
 bool	is_file_executable(const char *pathname);
 bool	is_file_exist(const char *pathname);
 bool	is_file(const char *pathname);
-char	*find_env_path(char **envp);
-char	*make_absolute_path(t_node *node);
-char	*make_relative_path(t_node *node, char **envp);
-char	*make_pathname(t_node *node, char **envp);
+char	*find_env_path(t_env *env_list);
+char	*make_absolute_path(t_tk *token);
+char	*make_relative_path(t_tk *token, t_env *env_list);
+char	*make_pathname(t_tk *token, t_env *env_list);
 size_t	argv_len(t_tk *token);
 char	**make_argv(t_tk *token);
 void	exec(char *pathname, char **argv, char **envp, t_node *node);
-// void	exec_cmd(t_node *node, char **envp);
-void	exec_cmd(t_node *node, t_env **env_list, char **envp);
+void	exec_cmd(t_node *node, t_env **env_list);
 
 // redirect.c
 int		open_redir_file(t_node *redir);
@@ -179,7 +178,7 @@ char	*wrap_getcwd(char *buf, size_t size);
 int		wrap_chdir(const char *path);
 
 // expand
-void	expand(t_node *node);
+void	expand(t_node *node, t_env *env_list);
 bool	is_single_quote(const char c);
 bool	is_double_quote(const char c);
 bool	is_variable(char *line);

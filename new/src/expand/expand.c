@@ -94,36 +94,52 @@ char	*append_char(char **skipped, char *word, char *new_word)
 	return (new_word);
 }
 
-char	*expand_variable(char **skipped, char *word, char *new_word)
+t_env	*find_word_expandable(const char *key, t_env *env_list)
+{
+	if (!key)
+		return (NULL);
+	while (env_list)
+	{
+		if (!strcmp(key, env_list->key))
+			return (env_list);
+		env_list = env_list->next;
+	}
+	return (NULL);
+}
+
+char	*expand_variable(char **skipped, char *word, char *new_word, t_env *env_list)
 {
 	char	*head;
-	char	*env;
+	char	*key;
+	char	*value;
 	char	*tmp;
+	t_env	*target_list;
 
+// ok
 	word++;
 	head = word;
 	while (*word && is_alpha_num_under(*word))
 		word++;
-	env = strndup(head, word - head);
-	if (!env)
+	key = strndup(head, word - head);
+	if (!key)
 		assert_error("strndup");
-	tmp = getenv(env);
-	free(env);
-	if (!tmp)
+	target_list = find_word_expandable(key, env_list);
+	free(key);
+	if (target_list)
 	{
-		env = calloc(1, sizeof(char));
-		if (!env)
-			assert_error("calloc\n");
+		value = strdup(target_list->value);
+		if (!value)
+			assert_error("strdup\n");
 	}
 	else
 	{
-		env = strdup(tmp);
-		if (!env)
-			assert_error("strndup");
+		value = calloc(1, sizeof(char));
+		if (!value)
+			assert_error("calloc\n");
 	}
-	tmp = strjoin(new_word, env);
+	tmp = strjoin(new_word, value);
 	free(new_word);
-	free(env);
+	free(value);
 	if (!tmp)
 		assert_error("strjoin");
 	new_word = tmp;
@@ -131,7 +147,44 @@ char	*expand_variable(char **skipped, char *word, char *new_word)
 	return (new_word);
 }
 
-char	*expand_double_quote(char **skipped, char *word, char *new_word)
+//char	*expand_variable(char **skipped, char *word, char *new_word, t_env *env_list)
+//{
+//	char	*head;
+//	char	*env;
+//	char	*tmp;
+//
+//	word++;
+//	head = word;
+//	while (*word && is_alpha_num_under(*word))
+//		word++;
+//	env = strndup(head, word - head);
+//	if (!env)
+//		assert_error("strndup");
+//	tmp = getenv(env);
+//	free(env);
+//	if (!tmp)
+//	{
+//		env = calloc(1, sizeof(char));
+//		if (!env)
+//			assert_error("calloc\n");
+//	}
+//	else
+//	{
+//		env = strdup(tmp);
+//		if (!env)
+//			assert_error("strndup");
+//	}
+//	tmp = strjoin(new_word, env);
+//	free(new_word);
+//	free(env);
+//	if (!tmp)
+//		assert_error("strjoin");
+//	new_word = tmp;
+//	*skipped = word;
+//	return (new_word);
+//}
+
+char	*expand_double_quote(char **skipped, char *word, char *new_word, t_env *env_list)
 {
 	char	*head;
 	char	*tmp;
@@ -154,7 +207,7 @@ char	*expand_double_quote(char **skipped, char *word, char *new_word)
 			if (!tmp)
 				assert_error("strjoin\n");
 			new_word = tmp;
-			new_word = expand_variable(&word, word, new_word);
+			new_word = expand_variable(&word, word, new_word, env_list);
 			head = word;
 		}
 		else if (is_special_charactor(word))
@@ -216,7 +269,7 @@ char	*expand_single_quote(char **skipped, char *word, char *new_word)
 	return (new_word);
 }
 
-char	*expand_word(char *word)
+char	*expand_word(char *word, t_env *env_list)
 {
 	char	*head;
 	char	*new_word;
@@ -232,9 +285,9 @@ char	*expand_word(char *word)
 		if (is_single_quote(*word))
 			new_word = expand_single_quote(&word, word, new_word);
 		else if (is_double_quote(*word))
-			new_word = expand_double_quote(&word, word, new_word);
+			new_word = expand_double_quote(&word, word, new_word, env_list);
 		else if (is_variable(word))
-			new_word = expand_variable(&word, word, new_word);
+			new_word = expand_variable(&word, word, new_word, env_list);
 		else if (is_special_charactor(word))
 			new_word = expand_special_char(&word, word, new_word);
 		else
@@ -244,21 +297,21 @@ char	*expand_word(char *word)
 	return (new_word);
 }
 
-void	expand_token(t_tk *token)
+void	expand_token(t_tk *token, t_env *env_list)
 {
 	if (!token)
 		return ;
-	token->word = expand_word(token->word);
-	expand_token(token->next);
+	token->word = expand_word(token->word, env_list);
+	expand_token(token->next, env_list);
 }
 
-void	expand(t_node *node)
+void	expand(t_node *node, t_env *env_list)
 {
 	if (!node)
 		return ;
-	expand_token(node->token);
-	node->filename = expand_word(node->filename);
-	expand(node->redirect);
-	expand(node->pipe);
+	expand_token(node->token, env_list);
+	node->filename = expand_word(node->filename, env_list);
+	expand(node->redirect, env_list);
+	expand(node->pipe, env_list);
 }
 	

@@ -16,6 +16,8 @@ bool	is_file(const char *pathname)
 {
 	size_t	len;
 
+	if (!pathname)
+		return (false);
 	len = strlen(pathname);
 	if (len != 0 && pathname[len - 1] == '/')
 		return (false);
