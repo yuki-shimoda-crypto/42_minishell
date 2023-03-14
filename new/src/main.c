@@ -11,12 +11,13 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 t_return_error	g_return_error;
 
