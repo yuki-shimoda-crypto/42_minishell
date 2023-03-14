@@ -58,13 +58,14 @@ OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 OBJ_DIR			=	obj
 
 
-ifeq ($(shell uname), Linux)
+ifeq ($(shell uname -s), Linux)
 CFLAGS_DEBUG	+=	-fsanitize=leak
 SHELL			=	/bin/bash
 LIBS			=	-lreadline
 else
 RLDIR    = $(shell brew --prefix readline)
-LIBS			=	-L$(RLDIR) -lreadline
+LIBS			=	-L$(RLDIR)/lib -lreadline
+INCLUDE			+=	-I $(RLDIR)/include
 endif
 
 ifneq ($(shell command -v ccache), )
@@ -73,7 +74,7 @@ endif
 
 $(OBJ_DIR)/%.o:%.c
 				@mkdir -p $(@D)
-				$(CCACHE) $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@ $(LIBS) 
+				$(CCACHE) $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@  
 
 $(NAME):		$(OBJS)
 				$(CCACHE) $(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
@@ -118,5 +119,9 @@ test:			all
 PHONY			+=	no_flag
 no_flags:		CFLAGS =
 no_flags:		re
+
+PHONY			+=	tmp
+tmp:		
+			echo $(RLDIR)
 
 .PHONY:			$(PHONY)

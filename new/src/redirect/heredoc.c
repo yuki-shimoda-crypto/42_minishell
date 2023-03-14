@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
+#include <stdio.h>
 #include <readline/readline.h>
 
 t_return_error	g_return_error;
