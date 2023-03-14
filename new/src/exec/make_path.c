@@ -33,23 +33,23 @@ char	*find_env_path(char **envp)
 	return (NULL);
 }
 
-char	*make_absolute_path(t_node *node)
+char	*make_absolute_path(t_tk *token)
 {
 	char	*pathname;
 
-	pathname = strdup(node->token->word);
+	pathname = strdup(token->word);
 	if (!pathname)
 		assert_error("strdup\n");
 	if (!is_file(pathname))
-		file_exec_error(node->token->word, ": is a directory\n");
+		file_exec_error(token->word, ": is a directory\n");
 	else if (!is_file_exist(pathname))
-		file_exec_error(node->token->word, ": no such file or directory\n");
+		file_exec_error(token->word, ": no such file or directory\n");
 	else if (!is_file_executable(pathname))
-		file_exec_error(node->token->word, ": is not executable\n");
+		file_exec_error(token->word, ": is not executable\n");
 	return (pathname);
 }
 
-char	*make_relative_path(t_node *node, char **envp)
+char	*make_relative_path(t_tk *token, char **envp)
 {
 	char	*head;
 	char	*tail;
@@ -70,7 +70,7 @@ char	*make_relative_path(t_node *node, char **envp)
 			pathname = strdup(head);
 		if (!pathname)
 			assert_error("strndup\n");
-		tmp = strjoin_three(pathname, "/", node->token->word);
+		tmp = strjoin_three(pathname, "/", token->word);
 		free(pathname);
 		if (!tmp)
 			assert_error("malloc\n");
@@ -84,25 +84,25 @@ char	*make_relative_path(t_node *node, char **envp)
 	}
 	free(env_path_head);
 	if (!is_file(pathname))
-		file_exec_error(node->token->word, ": is a directory\n");
+		file_exec_error(token->word, ": is a directory\n");
 	else if (!is_file_exist(pathname))
-		file_exec_error(node->token->word, ": command not found\n");
+		file_exec_error(token->word, ": command not found\n");
 	else if (!is_file_executable(pathname))
-		file_exec_error(node->token->word, ": is not executable\n");
+		file_exec_error(token->word, ": is not executable\n");
 	return (pathname);
 }
 
-char	*make_pathname(t_node *node, char **envp)
+char	*make_pathname(t_tk *token, char **envp)
 {
 	char	*pathname;
 
-	if (!node->token || !node->token->word)
+	if (!token || !token->word)
 		return (NULL);
-	if (is_builtin(node->token->word))
+	if (is_builtin(token->word))
 		return (NULL);
-	if (node->token->word[0] == '/')
-		pathname = make_absolute_path(node);
+	if (token->word[0] == '/')
+		pathname = make_absolute_path(token);
 	else
-		pathname = make_relative_path(node, envp);
+		pathname = make_relative_path(token, envp);
 	return (pathname);
 }

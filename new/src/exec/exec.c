@@ -169,7 +169,7 @@ void	exec_cmd(t_node *node, t_env **env_list, char **envp)
 	expand(node);
 	while (node)
 	{
-		pathname = make_pathname(node, envp);
+		pathname = make_pathname(node->token, envp);
 		argv = make_argv(node->token);
 		redirect_fd_list(node->redirect);
 		if (g_return_error.redirect_error)
