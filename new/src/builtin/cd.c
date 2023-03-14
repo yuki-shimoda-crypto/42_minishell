@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 14:11:26 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/14 17:10:22 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 17:48:38 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 static int	go_home(t_env **env_list)
 {
 	t_env	*path;
-	size_t	status;
+	int		status;
 	char	*old_pwd;
 
 	status = 0;
@@ -30,8 +30,7 @@ static int	go_home(t_env **env_list)
 		return (status);
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
-		env_add(ft_strjoin("OLDPWD", old_pwd), env_list);
-	free(path->value);
+		add_env(strjoin("OLDPWD", old_pwd), env_list);
 	path->value = old_pwd;
 	free(old_pwd);
 	return (status);
@@ -49,9 +48,8 @@ static int	go_back_prev(t_env **env_list)
 		return (1);
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
-		env_add(ft_strjoin("OLDPWD", old_pwd), env_list);
+		add_env(strjoin("OLDPWD", old_pwd), env_list);
 	status = wrap_chdir(path->value);
-	free(path->value);
 	path->value = old_pwd;
 	free(old_pwd);
 	return (status);
@@ -72,8 +70,7 @@ static int	manage_cd_path(char *destination, t_env **env_list)
 		return (status);
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
-		env_add(ft_strjoin("OLDPWD", old_pwd), env_list);
-	free(path->value);
+		add_env(strjoin("OLDPWD", old_pwd), env_list);
 	path->value = old_pwd;
 	free(old_pwd);
 	return (status);
@@ -83,22 +80,14 @@ int	cd(char **destination, t_env **env_list)
 {
 	size_t	args;
 	int		status;
-	char	*old_pwd;
 
 	args = 0;
 	while (destination[args])
 		args++;
 	if (args == 1)
 		return (go_home(env_list));
-	else if (destination[1] == '-')
+	else if (!strcmp(destination[1], "-"))
 		return (go_back_prev(env_list));
 	status = manage_cd_path(destination[1], env_list);
 	return (status);
-}
-
-int main(void)
-{
-	char	*argv[] = {"cd", NULL};
-
-	cd(argv, )
 }

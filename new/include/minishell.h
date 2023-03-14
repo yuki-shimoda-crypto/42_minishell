@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/14 14:43:07 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 17:31:54 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ int		wrap_pipe(int pipefd[2]);
 ssize_t	wrap_read(int fd, void *buf, size_t count);
 ssize_t wrap_write(int fd, const void *buf, size_t count);
 char	*wrap_getcwd(char *buf, size_t size);
+int		wrap_chdir(const char *path);
 
 // expand
 void	expand(t_node *node);
@@ -191,6 +192,7 @@ int		builtin_export(char **argv, t_env **env_list);
 void	recognize_builtin(char **argv, t_env **env_list);
 bool	is_builtin(const char *cmd);
 int		get_pwd(void);
+int		cd(char **destination, t_env **env_list);
 
 
 // env
