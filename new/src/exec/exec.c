@@ -124,6 +124,18 @@ void	free_argv(char **argv)
 	free(argv);
 }
 
+void	free_envp(char **envp)
+{
+	size_t	i;
+
+	if (!envp)
+		return ;
+	i = 0;
+	while (envp[i])
+		free(envp[i++]);
+	free(envp);
+}
+
 bool	is_builtin(const char *cmd)
 {
 	if (!strcmp("cd", cmd))
@@ -157,25 +169,63 @@ size_t	count_pipe_num(t_node *node)
 	return (num);
 }
 
-void	exec_cmd(t_node *node, t_env **env_list, char **envp)
+size_t	env_list_size(t_env *env_list)
+{
+	size_t		i;
+
+	i = 0;
+	while (env_list)
+	{
+		env_list = env_list->next;
+		i++;
+	}
+	return (i);
+}
+
+char	**make_envp(t_env *env_list)
+{
+	char	**envp;
+	size_t	list_size;
+	size_t	i;
+
+	list_size = env_list_size(env_list);
+	envp = calloc(list_size + 1, sizeof(char *));
+	if (!envp)
+		assert_error("calloc\n");
+	i = 0;
+	while (i < list_size)
+	{
+		envp[i] = strjoin_three(env_list->key, "=", env_list->value);
+		if (!envp[i])
+			assert_error("strjoin_three, malloc\n");
+		i++;
+		env_list = env_list->next;
+	}
+	return (envp);
+}
+
+void	exec_cmd(t_node *node, t_env **env_list)
 {
 	char	*pathname;
 	char	**argv;
+	char	**envp;
 	size_t	i;
 	size_t	pipe_num;
 
 	pipe_num = count_pipe_num(node);
 	input_pipefd(node, NULL);
-	expand(node);
+	expand(node, *env_list);
 	while (node)
 	{
-		pathname = make_pathname(node->token, envp);
+		pathname = make_pathname(node->token, *env_list);
 		argv = make_argv(node->token);
+		envp = make_envp(*env_list);
 		redirect_fd_list(node->redirect);
 		if (g_return_error.redirect_error)
 		{
 			free(pathname);
 			free_argv(argv);
+			free_envp(envp);
 			node = node->pipe;
 			g_return_error.redirect_error = false;
 			continue ;
@@ -185,6 +235,7 @@ void	exec_cmd(t_node *node, t_env **env_list, char **envp)
 		{
 			free(pathname);
 			free_argv(argv);
+			free_envp(envp);
 			node = node->pipe;
 			g_return_error.exec_error = false;
 			continue ;
@@ -206,6 +257,7 @@ void	exec_cmd(t_node *node, t_env **env_list, char **envp)
 		node = node->pipe;
 		free(pathname);
 		free_argv(argv);
+		free_envp(envp);
 	}
 	i = 0;
 	while (i < pipe_num)

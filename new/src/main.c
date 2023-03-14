@@ -59,7 +59,7 @@ void	init_return_error(void)
 	g_return_error.export_error = false;
 }
 
-void	interpret(char *line, t_env **env_list, char **envp)
+void	interpret(char *line, t_env **env_list)
 {
 	t_tk	*token;
 	t_node	*node;
@@ -73,7 +73,7 @@ void	interpret(char *line, t_env **env_list, char **envp)
 	node = parse(token);
 	if (g_return_error.parse_error)
 		return ;
-	exec_cmd(node, env_list, envp);
+	exec_cmd(node, env_list);
 	// print_t_tk(token);
 	// print_node(node, 0);
 	free_token(&token);
@@ -157,7 +157,7 @@ int	main(int argc, char const *argv[], char *envp[])
 		if (*line)
 		{
 			add_history(line);
-			interpret(line, &env_list, envp);
+			interpret(line, &env_list);
 		}
 		free(line);
 	}
