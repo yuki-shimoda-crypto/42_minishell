@@ -186,15 +186,20 @@ struct s_env
 - pipeのときのredirectを優先するときの判定を見てもらいたい。しっかりとつながっているのか`
 		if (!is_redirect_out_exist(node))
 		if (!is_redirect_in_exist(node))
+- unset PATHした後にコマンドを実行する
+- ls | unset PATH おもろかった write失敗する
+- echo $A | export A=b
 
 ### must
 1. exit
 1. cd
-1. makepathでenvpを使って環境変数をとっているが、それをenvlistから取るようにする
+1. makepathでenvpを使って環境変数をとっているが、それをenvlistから取るようにする //ok
+1. export test= の修正
 1. builtinと普通の関数間でpipeができていない
 1. builtinの関数の確認
 ---
 1. exportの+=
+1. ./minishell
 1. return valueの変更
 1. signal関連の見直し
 
