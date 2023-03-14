@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:05:49 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/14 17:32:39 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 19:28:31 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	recognize_builtin(char **argv, t_env **env_list)
 		cd(argv, env_list);
 	else if (!strcmp("echo", argv[0]))
 		builtin_echo(argv);
-	// else if (!strcmp("env", argv[0]))
-	// 	env(argv, env_list);
+	else if (!strcmp("env", argv[0]))
+		env(argv, *env_list);
 	// else if (!strcmp("exit", argv[0]))
 	// 	exit(argv);
 	else if (!strcmp("export", argv[0]))

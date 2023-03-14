@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:18:49 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/14 17:32:06 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 18:34:47 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ int	get_pwd(void)
 	if (pwd_path == NULL)
 		return (1);
 	printf("%s\n", pwd_path);
+	free(pwd_path);
 	return (0);
 }

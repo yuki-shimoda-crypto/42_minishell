@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 14:11:26 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/14 17:48:38 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 18:32:31 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static int	go_home(t_env **env_list)
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
 		add_env(strjoin("OLDPWD", old_pwd), env_list);
+	free(path->value);
 	path->value = old_pwd;
-	free(old_pwd);
 	return (status);
 }
 
@@ -50,8 +50,8 @@ static int	go_back_prev(t_env **env_list)
 	if (!path)
 		add_env(strjoin("OLDPWD", old_pwd), env_list);
 	status = wrap_chdir(path->value);
+	free(path->value);
 	path->value = old_pwd;
-	free(old_pwd);
 	return (status);
 }
 
@@ -71,8 +71,8 @@ static int	manage_cd_path(char *destination, t_env **env_list)
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
 		add_env(strjoin("OLDPWD", old_pwd), env_list);
+	free(path->value);
 	path->value = old_pwd;
-	free(old_pwd);
 	return (status);
 }	
 

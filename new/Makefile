@@ -49,7 +49,8 @@ SRCS			=	src/main.c				\
 					src/builtin/export.c	\
 					src/env/env.c			\
 					src/builtin/pwd.c		\
-					src/builtin/cd.c
+					src/builtin/cd.c		\
+					src/builtin/env.c
 
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)

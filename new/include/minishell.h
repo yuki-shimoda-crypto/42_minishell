@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/14 17:31:54 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/14 19:27:26 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	assert_error(const char *msg);
 void	syntax_error(const char *msg, char **skipped, char *line);
 void	file_exec_error(const char *word, const char *msg);
 void	export_error(const char *cmd);
+void	env_error(const char *cmd);
 
 
 // tokenize.c
@@ -193,6 +194,7 @@ void	recognize_builtin(char **argv, t_env **env_list);
 bool	is_builtin(const char *cmd);
 int		get_pwd(void);
 int		cd(char **destination, t_env **env_list);
+int		env(char **argv, t_env *env_list);
 
 
 // env
