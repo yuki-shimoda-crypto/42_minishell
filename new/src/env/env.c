@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 01:41:30 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/15 00:38:22 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/15 13:26:12 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ void	del_env(const char *key, t_env **env_list)
 		return ;
 	del_list = search_env(key, *env_list);
 	if (!del_list)
+	{
+		unset_error(key);
 		return ;
+	}
 	if (del_list == *env_list)
 		*env_list = (*env_list)->next;
 	if (del_list->pre)
@@ -49,32 +52,6 @@ void	del_env(const char *key, t_env **env_list)
 	free(del_list->key);
 	free(del_list->value);
 	free(del_list);
-}
-
-t_env	*env_last(t_env *env_list)
-{
-	if (!env_list)
-		return (NULL);
-	while (env_list->next)
-		env_list = env_list->next;
-	return (env_list);
-}
-
-void	env_addback(t_env **env_list, t_env *env_new)
-{
-	t_env	*last;
-
-	if (!env_list || !env_new)
-		return ;
-	if (!*env_list)
-	{
-		*env_list = env_new;
-		return ;
-	}
-	last = env_last(*env_list);
-	env_new->pre = last;
-	last->next = env_new;
-	return ;
 }
 
 // ok
@@ -92,19 +69,6 @@ void	free_env(t_env **env_list)
 		free(*env_list);
 		*env_list = tmp;
 	}
-}
-
-// ok
-t_env	*env_new(char *key, char *value)
-{
-	t_env	*env_new;
-
-	env_new = calloc(1, sizeof(t_env));
-	if (!env_new)
-		assert_error("calloc\n");
-	env_new->key = key;
-	env_new->value = value;
-	return (env_new);
 }
 
 // ok

@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/15 12:10:26 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:15:43 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ void	file_exec_error(const char *word, const char *msg);
 void	export_error(const char *cmd);
 void	env_error(const char *cmd);
 char	*itoa(int n);
+void	unset_error(const char *cmd);
+void	exit_numeric(const char *cmd);
 
 
 // tokenize.c
@@ -194,12 +196,18 @@ bool	is_special_charactor(char *line);
 //builtin
 void	builtin_echo(char **argv);
 int		builtin_export(char **argv, t_env **env_list);
+
 int		recognize_builtin(char **argv, t_env **env_list);
 bool	is_builtin(const char *cmd);
 int		get_pwd(void);
 int		cd(char **destination, t_env **env_list);
 int		env(char **argv, t_env *env_list);
-
+int		unset(char **del_target, t_env **env_list);
+int		builtin_exit(char **argv);
+void	free_array(char **env_array);
+void	sort_array(char **env_array);
+char	**env_into_array(t_env *env_list);
+bool	is_key_exist(const char *env, t_env *env_list);
 
 // env
 t_env	*search_env(const char *key, t_env *env_list);
@@ -210,6 +218,10 @@ void	free_env(t_env **env_list);
 t_env	*env_new(char *key, char *value);
 void	add_env(const char *env, t_env **env_list);
 t_env	*make_env_list(char **envp);
+t_env	*env_new(char *key, char *value);
+t_env	*env_last(t_env *env_list);
+void	env_addback(t_env **env_list, t_env *env_new);
+
 
 // debug_func.c
 void	print_t_tk(t_tk	*token);

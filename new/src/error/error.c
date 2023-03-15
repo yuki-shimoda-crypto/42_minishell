@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 23:26:00 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/15 01:44:43 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/15 14:07:15 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,24 @@ void	env_error(const char *cmd)
 	write(STDERR_FILENO, "`: No such file or directory\n", strlen("`: No such file or directory\n"));
 }
 
-// void	unset_error(const char *cmd)
-// {
-// 	write(STDERR_FILENO, "bash: unset: `", strlen("bash: unset: `"));
-// 	write(STDERR_FILENO, cmd, strlen(cmd));
-// 	write(STDERR_FILENO, "': not a valid identifie\n", strlen("': not a valid identifie");
-// }
+void	unset_error(const char *cmd)
+{
+	write(STDERR_FILENO, "bash: unset: `", strlen("bash: unset: `"));
+	write(STDERR_FILENO, cmd, strlen(cmd));
+	write(STDERR_FILENO, "': not a valid identifier\n", strlen("': not a valid identifier\n"));
+}
+
+void	exit_numeric(const char *cmd)
+{
+	write(STDERR_FILENO, "exit: ", strlen("exit: "));
+	write(STDERR_FILENO, cmd, strlen(cmd));
+	write(STDERR_FILENO, ": numeric argument required\n", strlen(": numeric argument required\n"));
+	exit (255);
+}
+
+void	cd_error(const char *cmd)
+{
+	write(STDERR_FILENO, "bash: cd: ", strlen("bash: cd: "));
+	write(STDERR_FILENO, cmd, strlen(cmd));
+	write(STDERR_FILENO, " not set\n", strlen(" not set\n");
+}
