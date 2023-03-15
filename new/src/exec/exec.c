@@ -314,91 +314,93 @@ char	**make_envp(t_env *env_list)
 // 	}
 // }
 
+void	wait_f
 
-void exec_cmd(t_node *node, t_env **env_list)
+
+void	exec_cmd(t_node *node, t_env **env_list)
 {
-    char *pathname;
-    char **argv;
-    char **envp;
-    size_t i;
-    size_t pipe_num;
+	char	*pathname;
+	char	**argv;
+	char	**envp;
+	size_t	i;
+	size_t	pipe_num;
 
-    pipe_num = count_pipe_num(node);
-    input_pipefd(node, NULL);
-    expand(node, *env_list);
-    envp = make_envp(*env_list);
-    while (node)
-    {
-        pathname = make_pathname(node->token, *env_list);
-        argv = make_argv(node->token);
-        redirect_fd_list(node->redirect);
-        if (g_return_error.redirect_error)
-        {
-            free(pathname);
-            free_argv(argv);
-            node = node->pipe;
-            g_return_error.redirect_error = false;
-            continue;
-        }
-        do_redirect(node->redirect);
-        if (g_return_error.exec_error)
-        {
-            free(pathname);
-            free_argv(argv);
-            node = node->pipe;
-            g_return_error.exec_error = false;
-            continue;
-        }
-        if (argv && is_builtin(argv[0]))
-        {
-            connect_pipe_builtin(node);
-            recognize_builtin(argv, env_list);
-            reset_pipe_builtin(node);
-        }
-        else
-        {
-            pid_t pid = fork();
-            if (pid == -1)
-            {
-                perror("fork");
-                exit(EXIT_FAILURE);
-            }
-            if (pid == 0)
-            {
-                // Child process
-                connect_pipe(node);
-                if (pathname && argv)
-                {
-                    execve(pathname, argv, envp);
-                    perror("execve");
-                    exit(EXIT_FAILURE);
-                }
-            }
-            else
-            {
-                // Parent process
-                if (node->inpipe[0] != INT_MAX)
-                {
-                    wrap_close(node->inpipe[1]);
-                    wrap_close(node->inpipe[0]);
-                }
-                if (node->outpipe[1] != INT_MAX)
-                {
-                    wrap_close(node->outpipe[1]);
-                }
-                waitpid(pid, NULL, 0);
-            }
-        }
-        reset_redirect(node->redirect);
-        node = node->pipe;
-        free(pathname);
-        free_argv(argv);
-    }
-    free_envp(envp);
-    i = 0;
-    while (i < pipe_num)
-    {
-        wait(NULL);
-        i++;
-    }
+	pipe_num = count_pipe_num(node);
+	input_pipefd(node, NULL);
+	expand(node, *env_list);
+	envp = make_envp(*env_list);
+	while (node)
+	{
+		pathname = make_pathname(node->token, *env_list);
+		argv = make_argv(node->token);
+		redirect_fd_list(node->redirect);
+		if (g_return_error.redirect_error)
+		{
+			free(pathname);
+			free_argv(argv);
+			node = node->pipe;
+			g_return_error.redirect_error = false;
+			continue;
+		}
+		do_redirect(node->redirect);
+		if (g_return_error.exec_error)
+		{
+			free(pathname);
+			free_argv(argv);
+			node = node->pipe;
+			g_return_error.exec_error = false;
+			continue;
+		}
+		if (argv && is_builtin(argv[0]))
+		{
+			connect_pipe_builtin(node);
+			recognize_builtin(argv, env_list);
+			reset_pipe_builtin(node);
+		}
+		else
+		{
+			pid_t pid = fork();
+			if (pid == -1)
+			{
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
+			if (pid == 0)
+			{
+				// Child process
+				connect_pipe(node);
+				if (pathname && argv)
+				{
+					execve(pathname, argv, envp);
+					perror("execve");
+					exit(EXIT_FAILURE);
+				}
+			}
+			else
+			{
+				// Parent process
+				if (node->inpipe[0] != INT_MAX)
+				{
+					wrap_close(node->inpipe[1]);
+					wrap_close(node->inpipe[0]);
+				}
+				if (node->outpipe[1] != INT_MAX)
+				{
+					wrap_close(node->outpipe[1]);
+				}
+				waitpid(pid, NULL, 0);
+			}
+		}
+		reset_redirect(node->redirect);
+		node = node->pipe;
+		free(pathname);
+		free_argv(argv);
+	}
+	free_envp(envp);
+	i = 0;
+	while (i < pipe_num)
+	{
+		wait(NULL);
+		i++;
+	}
 }
