@@ -295,25 +295,6 @@ char	**make_envp(t_env *env_list)
 // 			if (pathname && argv)
 // 				exec(pathname, argv, envp, node);
 // 		}
-// //		if (argv)
-// //		{
-// //			pid_t	pid;
-// //	
-// //			pid = fork();
-// //			if (pid == -1)
-// //				assert_error("fork\n");
-// //			else if (pid == 0)
-// //			{
-// //				connect_pipe(node);
-// //				if (is_builtin(argv[0]))
-// //					exit(recognize_builtin(argv, env_list));
-// //				else if (pathname)
-// //				{
-// //					execve(pathname, argv, envp);
-// //					assert_error("execve\n");
-// //				}
-// //			}
-// //		}
 // 		reset_redirect(node->redirect);
 // 		if (node->inpipe[0] != INT_MAX)
 // 		{

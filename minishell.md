@@ -189,6 +189,12 @@ struct s_env
 - unset PATHした後にコマンドを実行する
 - ls | unset PATH おもろかった write失敗する
 - echo $A | export A=b
+- ./minishell  < test.txt
+    ```test.txt
+    export | grep PATH
+    ```
+    死ぬ
+    
 
 ### must
 1. exit
