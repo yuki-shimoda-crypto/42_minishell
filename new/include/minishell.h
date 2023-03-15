@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/16 00:15:43 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:33:45 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,9 @@ void	syntax_error(const char *msg, char **skipped, char *line);
 void	file_exec_error(const char *word, const char *msg);
 void	export_error(const char *cmd);
 void	env_error(const char *cmd);
-char	*itoa(int n);
 void	unset_error(const char *cmd);
 void	exit_numeric(const char *cmd);
+void	cd_error(const char *cmd);
 
 
 // tokenize.c
@@ -227,5 +227,7 @@ void	env_addback(t_env **env_list, t_env *env_new);
 void	print_t_tk(t_tk	*token);
 void	print_node(t_node *node, int i);
 void	print_env_list(t_env *env_list);
+
+char	*itoa(int n);
 
 #endif
