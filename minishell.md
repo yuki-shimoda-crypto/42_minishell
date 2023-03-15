@@ -1,4 +1,4 @@
-minishell
+#minishell
 
 ## Issue
 - [github_issue](https://github.com/yuki-shimoda-crypto/42_minishell/issues)
@@ -193,13 +193,13 @@ struct s_env
 ### must
 1. exit
 1. cd
-1. makepathでenvpを使って環境変数をとっているが、それをenvlistから取るようにする //ok
 1. export test= の修正
-1. builtinと普通の関数間でpipeができていない
 1. builtinの関数の確認
----
-1. exportの+=
 1. ./minishell
+1. makepathでenvpを使って環境変数をとっているが、それをenvlistから取るようにする //ok
+1. builtinと普通の関数間でpipeができていない //ok?
+---
+7. exportの+=
 1. return valueの変更
 1. signal関連の見直し
 

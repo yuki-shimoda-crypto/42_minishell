@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 23:26:00 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/14 20:33:01 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/15 01:44:43 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,3 +60,10 @@ void	env_error(const char *cmd)
 	write(STDERR_FILENO, cmd, strlen(cmd));
 	write(STDERR_FILENO, "`: No such file or directory\n", strlen("`: No such file or directory\n"));
 }
+
+// void	unset_error(const char *cmd)
+// {
+// 	write(STDERR_FILENO, "bash: unset: `", strlen("bash: unset: `"));
+// 	write(STDERR_FILENO, cmd, strlen(cmd));
+// 	write(STDERR_FILENO, "': not a valid identifie\n", strlen("': not a valid identifie");
+// }

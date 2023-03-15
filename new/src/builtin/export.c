@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 02:36:44 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/14 17:25:04 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/15 11:52:55 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,7 @@ static void	put_sorted_env(t_env *env_list)
 	i = 0;
 	while (sort_env[i])
 	{
-		write (1, "declare -x ", strlen("declare -x "));
-		write (1, sort_env[i], strlen(sort_env[i]));
-		write (1, "\n", 1);
+		printf("declare -x %s\n", sort_env[i]);
 		i++;
 	}
 	free_array(sort_env);
@@ -172,7 +170,7 @@ int	builtin_export(char **argv, t_env **env_list)
 				continue ;
 			}
 			eq_ptr = strchr(argv[i], '=');
-			if (!eq_ptr || eq_ptr[1] == '\0')
+			if (!eq_ptr)
 			{
 				i++;
 				continue ;

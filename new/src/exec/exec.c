@@ -97,20 +97,20 @@ char	**make_argv(t_tk *token)
 	return (argv);
 }
 
-void	exec(char *pathname, char **argv, char **envp, t_node *node)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		assert_error("fork\n");
-	else if (pid == 0)
-	{
-		connect_pipe(node);
-		execve(pathname, argv, envp);
-		assert_error("execve\n");
-	}
-}
+//void	exec(char *pathname, char **argv, char **envp, t_node *node)
+//{
+//	pid_t	pid;
+//
+//	pid = fork();
+//	if (pid == -1)
+//		assert_error("fork\n");
+//	else if (pid == 0)
+//	{
+//		connect_pipe(node);
+//		execve(pathname, argv, envp);
+//		assert_error("execve\n");
+//	}
+//}
 
 void	free_argv(char **argv)
 {
@@ -138,6 +138,8 @@ void	free_envp(char **envp)
 
 bool	is_builtin(const char *cmd)
 {
+	if (!cmd)
+		return (false);
 	if (!strcmp("cd", cmd))
 		return (true);
 	else if (!strcmp("echo", cmd))
@@ -238,13 +240,24 @@ void	exec_cmd(t_node *node, t_env **env_list)
 			g_return_error.exec_error = false;
 			continue ;
 		}
-		if (argv && is_builtin(argv[0]))
-			recognize_builtin(argv, env_list);
-		else
+		if (argv)
 		{
-			// connect_pipe(node);
-			if (pathname && argv)
-				exec(pathname, argv, envp, node);
+			pid_t	pid;
+	
+			pid = fork();
+			if (pid == -1)
+				assert_error("fork\n");
+			else if (pid == 0)
+			{
+				connect_pipe(node);
+				if (is_builtin(argv[0]))
+					exit(recognize_builtin(argv, env_list));
+				else if (pathname)
+				{
+					execve(pathname, argv, envp);
+					assert_error("execve\n");
+				}
+			}
 		}
 		reset_redirect(node->redirect);
 		if (node->inpipe[0] != INT_MAX)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 14:43:45 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/12 20:31:56 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/15 01:47:21 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	connect_pipe(t_node *node)
 		else
 			wrap_close(node->outpipe[1]);
 	}
-
 	if (node->inpipe[0] != INT_MAX)
 	{
 		wrap_close(node->inpipe[1]);

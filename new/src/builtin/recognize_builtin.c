@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:05:49 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/14 19:28:31 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/15 03:03:44 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void	recognize_builtin(char **argv, t_env **env_list)
+int	recognize_builtin(char **argv, t_env **env_list)
 {
 	if (!strcmp("cd", argv[0]))
 		cd(argv, env_list);
@@ -30,4 +30,5 @@ void	recognize_builtin(char **argv, t_env **env_list)
 		get_pwd();
 	// else if (!strcmp("unset", argv[0]))
 	// 	unset(argv);
+	return (0);
 }

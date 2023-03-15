@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/14 19:27:26 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/15 00:21:58 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ bool	is_special_charactor(char *line);
 //builtin
 void	builtin_echo(char **argv);
 int		builtin_export(char **argv, t_env **env_list);
-void	recognize_builtin(char **argv, t_env **env_list);
+int		recognize_builtin(char **argv, t_env **env_list);
 bool	is_builtin(const char *cmd);
 int		get_pwd(void);
 int		cd(char **destination, t_env **env_list);
