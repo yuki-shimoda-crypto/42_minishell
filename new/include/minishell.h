@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/15 00:21:58 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/15 12:10:26 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ struct s_node
 	int			fd_save;
 	int			fd_target;
 	// PIPE
+	int			fd_save_inpipe;
+	int			fd_save_outpipe;
 	int			inpipe[2];
 	int			outpipe[2];
 	t_node		*pipe;
@@ -111,6 +113,7 @@ void	syntax_error(const char *msg, char **skipped, char *line);
 void	file_exec_error(const char *word, const char *msg);
 void	export_error(const char *cmd);
 void	env_error(const char *cmd);
+char	*itoa(int n);
 
 
 // tokenize.c
@@ -165,6 +168,8 @@ int		heredoc(char *delimiter);
 // pipe.c
 void	input_pipefd(t_node *node, int *inpipe);
 void	connect_pipe(t_node *node);
+void	reset_pipe_builtin(t_node *node);
+void	connect_pipe_builtin(t_node *node);
 
 // wrap
 int		wrap_close(int fd);

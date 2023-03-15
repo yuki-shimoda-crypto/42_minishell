@@ -13,8 +13,51 @@
 #include "minishell.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 #include <limits.h>
+
+static size_t	get_size(int n)
+{
+	size_t	len;
+
+	len = 0;
+	if (!n)
+		return (1);
+	if (n < 0)
+		len++;
+	while (n)
+	{
+		n /= 10;
+		len++;
+	}
+	return (len);
+}
+
+char	*itoa(int n)
+{
+	char	*s;
+	size_t	len;
+	int		num;
+
+	len = get_size(n);
+	s = malloc(sizeof(char) * (len + 1));
+	if (!s)
+		return (NULL);
+	s[len] = '\0';
+	num = n;
+	while (len--)
+	{
+		if (num < 0)
+			s[len] = -(num % 10) + '0';
+		else
+			s[len] = num % 10 + '0';
+		num /= 10;
+	}
+	if (n < 0)
+		*s = '-';
+	return (s);
+}
 
 char	*strjoin_three(char const *s1, char const *s2, char const *s3)
 {
@@ -97,20 +140,20 @@ char	**make_argv(t_tk *token)
 	return (argv);
 }
 
-//void	exec(char *pathname, char **argv, char **envp, t_node *node)
-//{
-//	pid_t	pid;
-//
-//	pid = fork();
-//	if (pid == -1)
-//		assert_error("fork\n");
-//	else if (pid == 0)
-//	{
-//		connect_pipe(node);
-//		execve(pathname, argv, envp);
-//		assert_error("execve\n");
-//	}
-//}
+void	exec(char *pathname, char **argv, char **envp, t_node *node)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		assert_error("fork\n");
+	else if (pid == 0)
+	{
+		connect_pipe(node);
+		execve(pathname, argv, envp);
+		assert_error("execve\n");
+	}
+}
 
 void	free_argv(char **argv)
 {
@@ -240,30 +283,42 @@ void	exec_cmd(t_node *node, t_env **env_list)
 			g_return_error.exec_error = false;
 			continue ;
 		}
-		if (argv)
+		if (argv && is_builtin(argv[0]))
 		{
-			pid_t	pid;
-	
-			pid = fork();
-			if (pid == -1)
-				assert_error("fork\n");
-			else if (pid == 0)
-			{
-				connect_pipe(node);
-				if (is_builtin(argv[0]))
-					exit(recognize_builtin(argv, env_list));
-				else if (pathname)
-				{
-					execve(pathname, argv, envp);
-					assert_error("execve\n");
-				}
-			}
+			connect_pipe_builtin(node);
+			recognize_builtin(argv, env_list);
+			reset_pipe_builtin(node);
 		}
+		else
+		{
+			// connect_pipe(node);
+			if (pathname && argv)
+				exec(pathname, argv, envp, node);
+		}
+//		if (argv)
+//		{
+//			pid_t	pid;
+//	
+//			pid = fork();
+//			if (pid == -1)
+//				assert_error("fork\n");
+//			else if (pid == 0)
+//			{
+//				connect_pipe(node);
+//				if (is_builtin(argv[0]))
+//					exit(recognize_builtin(argv, env_list));
+//				else if (pathname)
+//				{
+//					execve(pathname, argv, envp);
+//					assert_error("execve\n");
+//				}
+//			}
+//		}
 		reset_redirect(node->redirect);
 		if (node->inpipe[0] != INT_MAX)
 		{
-			wrap_close(node->inpipe[0]);
 			wrap_close(node->inpipe[1]);
+			wrap_close(node->inpipe[0]);
 		}
 		node = node->pipe;
 		free(pathname);

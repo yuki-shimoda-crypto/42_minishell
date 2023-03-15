@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 14:43:45 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/15 01:47:21 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/15 12:17:49 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,61 @@ void	connect_pipe(t_node *node)
 		else
 			wrap_close(node->inpipe[0]);
 	}
+}
+
+void	reset_pipe_builtin(t_node *node)
+{
+	if (node->kind != ND_SIMPLE_CMD)
+		return ;
+//	if (node->fd_save_inpipe != INT_MAX)
+//	{
+//		wrap_close(STDIN_FILENO);
+//		wrap_dup2(node->fd_save_inpipe, STDIN_FILENO);
+//		wrap_close(node->fd_save_inpipe);
+//	}
+	if (node->fd_save_outpipe != INT_MAX)
+	{
+		wrap_close(STDOUT_FILENO);
+		wrap_dup2(node->fd_save_outpipe, STDOUT_FILENO);
+		wrap_close(node->fd_save_outpipe);
+	}
+
+}
+
+void	connect_pipe_builtin(t_node *node)
+{
+	if (node->kind != ND_SIMPLE_CMD)
+		return ;
+	if (node->outpipe[1] != INT_MAX)
+	{
+		//wrap_close(node->outpipe[0]);
+		if (!is_redirect_out_exist(node))
+		{
+			if (node->outpipe[1] != 1)
+			{
+				node->fd_save_outpipe = wrap_dup(STDOUT_FILENO);
+				wrap_close(STDOUT_FILENO);
+				wrap_dup2(node->outpipe[1], STDOUT_FILENO);
+				//wrap_close(node->outpipe[1]);
+			}
+		}
+		else
+			wrap_close(node->outpipe[1]);
+	}
+//	if (node->inpipe[0] != INT_MAX)
+//	{
+//		wrap_close(node->inpipe[1]);
+//		if (!is_redirect_in_exist(node))
+//		{
+//			if (node->inpipe[0] != 0)
+//			{
+//				node->fd_save_inpipe = wrap_dup(STDIN_FILENO);
+//				wrap_close(STDIN_FILENO);
+//				wrap_dup2(node->inpipe[0], STDIN_FILENO);
+//				wrap_close(node->inpipe[0]);
+//			}
+//		}
+//		else
+//			wrap_close(node->inpipe[0]);
+//	}
 }

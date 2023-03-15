@@ -39,6 +39,8 @@ t_node	*new_node(t_node_kind kind, t_node *node_pre)
 	else if (node->kind == ND_REDIRECT_IN)
 		node->fd_target = STDIN_FILENO;
 	node->redirect_pre = node_pre;
+	node->fd_save_inpipe = INT_MAX;
+	node->fd_save_outpipe = INT_MAX;
 	node->inpipe[0] = INT_MAX;
 	node->inpipe[1] = INT_MAX;
 	node->outpipe[0] = INT_MAX;
@@ -111,6 +113,8 @@ void	make_simple_command(t_node *node, t_tk **skipped, t_tk *token)
 
 void	init_node(t_node *node)
 {
+	node->fd_save_inpipe = INT_MAX;
+	node->fd_save_outpipe = INT_MAX;
 	node->inpipe[0] = INT_MAX;
 	node->inpipe[1] = INT_MAX;
 	node->outpipe[0] = INT_MAX;
