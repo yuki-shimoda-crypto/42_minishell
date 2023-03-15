@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 14:11:26 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/14 18:32:31 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/15 14:41:23 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,20 @@ static int	go_home(t_env **env_list)
 
 	status = 0;
 	path = search_env("HOME", *env_list);
+	if (!path)
+	{
+		cd_error("HOME");
+		return (1);
+	}
 	old_pwd = wrap_getcwd(NULL, 0);
 	if (!old_pwd)
 		return (1);
 	status = wrap_chdir(path->value);
 	if (status == -1)
+	{
+		free(old_pwd);
 		return (status);
+	}
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
 		add_env(strjoin("OLDPWD", old_pwd), env_list);
@@ -48,8 +56,17 @@ static int	go_back_prev(t_env **env_list)
 		return (1);
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
-		add_env(strjoin("OLDPWD", old_pwd), env_list);
+	{
+		cd_error("OLDPWD");
+		add_env(strjoin("OLDPWD=", old_pwd), env_list);
+		return (1);
+	}
 	status = wrap_chdir(path->value);
+	if (status == -1)
+	{
+		free(old_pwd);
+		return (status);
+	}
 	free(path->value);
 	path->value = old_pwd;
 	return (status);
@@ -67,7 +84,10 @@ static int	manage_cd_path(char *destination, t_env **env_list)
 		return (1);
 	status = wrap_chdir(destination);
 	if (status == -1)
+	{
+		free(old_pwd);
 		return (status);
+	}
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
 		add_env(strjoin("OLDPWD", old_pwd), env_list);

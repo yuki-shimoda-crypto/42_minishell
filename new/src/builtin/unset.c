@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 00:18:33 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/15 11:52:55 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/15 12:33:43 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	unset(char **argv, t_env **env_list)
 	i = 1;
 	while (argv[i])
 	{
-		if (strchr(argv[i], "="))
+		if (strchr(argv[i], '='))
 		{
 			unset_error(argv[i]);
 			return (1);
