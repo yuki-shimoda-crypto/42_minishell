@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/16 00:33:45 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/16 06:11:32 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ size_t	argv_len(t_tk *token);
 char	**make_argv(t_tk *token);
 void	exec(char *pathname, char **argv, char **envp, t_node *node);
 void	exec_cmd(t_node *node, t_env **env_list);
+void	wait_child_process(void);
 
 // redirect.c
 int		open_redir_file(t_node *redir);

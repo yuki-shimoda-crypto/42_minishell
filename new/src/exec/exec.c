@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <limits.h>
+#include <errno.h>
 
 static size_t	get_size(int n)
 {
@@ -314,7 +315,28 @@ char	**make_envp(t_env *env_list)
 // 	}
 // }
 
-void	wait_f
+void	wait_child_process(void)
+{
+	int		status;
+	pid_t	pid;
+
+	status = 0;
+	while (1)
+	{
+		pid = waitpid(-1, &status, 0);
+		if (pid == -1 && errno == ECHILD)
+			break ;
+		else if (pid == -1)
+		{
+			perror(NULL);
+			assert_error("waitpid\n");
+		}
+		else if (WIFEXITED(status))
+			g_return_error.return_value = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_return_error.return_value = 128 + WTERMSIG(status);
+	}
+}
 
 
 void	exec_cmd(t_node *node, t_env **env_list)
@@ -322,10 +344,7 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	char	*pathname;
 	char	**argv;
 	char	**envp;
-	size_t	i;
-	size_t	pipe_num;
 
-	pipe_num = count_pipe_num(node);
 	input_pipefd(node, NULL);
 	expand(node, *env_list);
 	envp = make_envp(*env_list);
@@ -388,7 +407,7 @@ void	exec_cmd(t_node *node, t_env **env_list)
 				{
 					wrap_close(node->outpipe[1]);
 				}
-				waitpid(pid, NULL, 0);
+				//waitpid(pid, NULL, 0);
 			}
 		}
 		reset_redirect(node->redirect);
@@ -397,10 +416,25 @@ void	exec_cmd(t_node *node, t_env **env_list)
 		free_argv(argv);
 	}
 	free_envp(envp);
-	i = 0;
-	while (i < pipe_num)
-	{
-		wait(NULL);
-		i++;
-	}
+//	int		status;
+//	pid_t	pid;
+//
+//	status = 0;
+//	while (1)
+//	{
+//		pid = waitpid(-1, &status, 0);
+//		if (pid == -1 && errno == ECHILD)
+//			break ;
+//		else if (pid == -1)
+//		{
+//			perror(NULL);
+//			assert_error("waitpid\n");
+//		}
+//		else if (WIFEXITED(status))
+//			g_return_error.return_value = WEXITSTATUS(status);
+//		else if (WIFSIGNALED(status))
+//			g_return_error.return_value = 128 + WTERMSIG(status);
+//	}
+//	//printf("%d\n", g_return_error.return_value);
+	wait_child_process();
 }
