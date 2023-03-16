@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/14 17:04:47 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/16 06:30:46 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	init_return_error(void)
 	g_return_error.parse_error = false;
 	g_return_error.redirect_error = false;
 	g_return_error.exec_error = false;
-	g_return_error.return_value = 0;
 	g_return_error.export_error = false;
 }
 
