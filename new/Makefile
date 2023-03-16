@@ -21,11 +21,13 @@ INCLUDE			=	-I include
 SRCS			=	src/main.c				\
 					src/debug_func.c		\
 					src/error/error.c		\
+					src/error/error2.c		\
 					src/lexer/into_list.c	\
 					src/lexer/is_01.c		\
 					src/lexer/is_02.c		\
 					src/lexer/tokenize.c	\
 					src/parse/parse.c		\
+					src/parse/parse2.c		\
 					src/exec/exec.c			\
 					src/exec/is.c			\
 					src/exec/make_path.c	\

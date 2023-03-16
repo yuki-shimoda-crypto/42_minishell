@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 20:46:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/13 11:54:42 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/16 12:01:47 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 char	*expand_special_char(char **skipped, char *word, char *new_word)
 {
-	char *append_word;
-	char *tmp;
+	char	*append_word;
+	char	*tmp;
 
 	append_word = itoa(g_return_error.return_value);
 	if (!append_word)
@@ -37,8 +37,8 @@ char	*expand_special_char(char **skipped, char *word, char *new_word)
 
 char	*append_char(char **skipped, char *word, char *new_word)
 {
-	char *append_word;
-	char *tmp;
+	char	*append_word;
+	char	*tmp;
 
 	append_word = strndup(word, 1);
 	if (!append_word)
@@ -272,4 +272,3 @@ void	expand(t_node *node, t_env *env_list)
 	expand(node->redirect, env_list);
 	expand(node->pipe, env_list);
 }
-	
