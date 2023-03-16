@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 04:04:00 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/16 12:20:14 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/16 14:20:08 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	syntax_error(const char *msg, char **skipped, char *line)
 	while (*line)
 		line++;
 	*skipped = line;
+	g_return_error.return_value = 258;
 }
 
 void	file_exec_error(const char *word, const char *msg)
