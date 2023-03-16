@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:19:57 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/15 12:54:24 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/16 23:10:59 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	builtin_echo(char **argv)
 		while (argv[i])
 		{
 			wrap_write(STDOUT_FILENO, argv[i], strlen(argv[i]));
-			wrap_write(STDOUT_FILENO, " ", 1);
+			if (argv[i + 1])
+				wrap_write(STDOUT_FILENO, " ", 1);
 			i++;
 		}
 		if (strncmp(argv[1], "-n", 2))

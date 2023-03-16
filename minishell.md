@@ -201,6 +201,20 @@ struct s_env
     execve: Exec format error 
     ```
 - ls | ls
+
+- | fjklda
+- exit status 
+- ls | ls
+-    ```
+    Handle ctrl-C, ctrl-D and ctrl-\ which should behave like in bash.
+    • In interactive mode:
+    ◦ ctrl-C displays a new prompt on a new line.
+    ◦ ctrl-D exits the shell.
+    ◦ ctrl-\ does nothing.
+    ```
+- グローバル変数を一つにする
+- ccache消しても良いかも
+
     
 
 ### must
@@ -215,6 +229,58 @@ struct s_env
 7. exportの+=
 1. return valueの変更
 1. signal関連の見直し
+
+### review
+1. スペースを入れる
+1. タブを入れる
+1. echo -e "\t" | ./minishell
+1. ./minishell < test.sh
+1. /bin/ls/jfsのexitのstatusを126にする
+1. ctrl-D in an empty prompt should quit minishell --> RELAUNCH!
+    - ctrl-\ をしてからだと、exitが次の行に表示されいなかも
+1. cat をした後に、ctrl-Cを押した後にプロンプトが表示されてしまう。
+    minishell$ cat 
+    ^Cminishell$ 
+    minishell$
+1. cat をした後に、ctrl-\を押すとプロンプトが表示されてしまう。
+    minishell$ cat
+    ^\^Cminishell$ 
+    minishell$ 
+1. env =test
+1. export をしたときに decare -x key="value"
+1. cd の返り値がおかしい
+    ```
+    minishell$ cd fdskjl
+    No such file or directory
+    minishell$ echo $?
+    0
+    ```
+1. ./minishellを使えるようにする
+1. >a
+    ``` 
+    root@381b7482e1fe:~/minishell/new(rebuild)# ./minishell 
+    minishell$ >a
+    minishell$ exit
+    minishell$ exit
+    root@381b7482e1fe:~/minishell/new(rebuild)# ./minishell 
+    minishell$ <a
+    minishell$ exit
+    minishell$ exit
+    root@381b7482e1fe:~/minishell/new(rebuild)# ./minishell 
+    minishell$ >>a
+    minishell$ exit
+    minishell$ exit
+    root@381b7482e1fe:~/minishell/new(rebuild)# ./minishell 
+    minishell$ <<a
+    > a
+    minishell$ exit
+    minishell$ exit
+    ``` 
+1. cd をやったときに,PWDを書き換える
+
+
+1. minishell$ ''
+    minishell: : No such file or directory
 
 
 ### やってもよい
