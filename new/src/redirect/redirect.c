@@ -43,32 +43,11 @@ int	open_redir_file(t_node *redir)
 
 	fd = 0;
 	if (redir->kind == ND_REDIRECT_OUT)
-	{
-		fd = open (redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (fd == -1)
-		{
-			perror(redir->filename);
-			g_return_error.redirect_error = true;
-		}
-	}
+		fd = open_redir_out(redir->filename);
 	else if (redir->kind == ND_REDIRECT_APPEND)
-	{
-		fd = open (redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (fd == -1)
-		{
-			perror(redir->filename);
-			g_return_error.redirect_error = true;
-		}
-	}
+		fd = open_redir_append(redir->filename);
 	else if (redir->kind == ND_REDIRECT_IN)
-	{
-		fd = open (redir->filename, O_RDONLY);
-		if (fd == -1)
-		{
-			perror(redir->filename);
-			g_return_error.redirect_error = true;
-		}
-	}
+		fd = open_redir_in(redir->filename);
 	else if (redir->kind == ND_REDIRECT_HEREDOC)
 		fd = heredoc(redir->filename);
 	return (fd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dup2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 20:25:54 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/12 20:28:26 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/16 13:06:23 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,3 @@ int	wrap_dup2(int oldfd, int newfd)
 	}
 	return (result);
 }
-

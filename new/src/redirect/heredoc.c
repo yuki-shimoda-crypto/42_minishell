@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 15:54:58 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/13 17:44:18 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/16 13:02:33 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,7 @@ int	heredoc(char *delimiter)
 		input = readline("> ");
 		if (input == NULL)
 			break ;
-		if (g_return_error.g_sig)///
-		{
-			free(input);
-			break ;
-		}///
-		if (!strcmp(input, delimiter))
+		if (g_return_error.g_sig || !strcmp(input, delimiter))
 		{
 			free(input);
 			break ;

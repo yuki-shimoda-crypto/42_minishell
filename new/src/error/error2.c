@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 04:04:00 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/16 12:01:47 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/16 12:20:14 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <string.h>
 #include <unistd.h>
 
-// ok
 void	assert_error(const char *msg)
 {
 	if (msg)
@@ -25,7 +24,6 @@ void	assert_error(const char *msg)
 	exit(1);
 }
 
-// ok
 void	syntax_error(const char *msg, char **skipped, char *line)
 {
 	if (msg)

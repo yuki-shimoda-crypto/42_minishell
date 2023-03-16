@@ -19,6 +19,7 @@ CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=undefined
 INCLUDE			=	-I include
 
 SRCS			=	src/main.c				\
+					src/signal/signal.c			\
 					src/debug_func.c		\
 					src/error/error.c		\
 					src/error/error2.c		\
@@ -33,6 +34,7 @@ SRCS			=	src/main.c				\
 					src/exec/make_path.c	\
 					src/redirect/redirect.c	\
 					src/redirect/heredoc.c	\
+					src/redirect/open_file.c	\
 					src/pipe/pipe.c			\
 					src/wrap/close.c		\
 					src/wrap/dup2.c			\

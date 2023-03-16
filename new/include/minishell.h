@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/16 06:11:32 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/16 13:40:13 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,12 @@ extern t_return_error	g_return_error;
 // main.c
 void	ctrl_c(int sig);
 
+//signal
+void	ctrl_backslash(int sig);
+void	ctrl_c(int sig);
+int		signal_hook(void);
+void	setup_signal(void);
+
 // error.c
 void	assert_error(const char *msg);
 void	syntax_error(const char *msg, char **skipped, char *line);
@@ -167,6 +173,9 @@ void	redirect_fd_list(t_node *node);
 void	do_redirect(t_node *redir);
 void	reset_redirect(t_node *redir);
 int		heredoc(char *delimiter);
+int		open_redir_out(char *filename);
+int		open_redir_append(char *filename);
+int		open_redir_in(char *filename);
 
 // pipe.c
 void	input_pipefd(t_node *node, int *inpipe);

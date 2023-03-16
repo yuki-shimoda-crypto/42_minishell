@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   is_02.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 01:36:57 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/07 01:40:29 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/16 14:11:28 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// ok
 bool	is_pipe(char c)
 {
 	return (c == '|');

@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:52:17 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/13 00:56:58 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/16 13:57:21 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-// ok_yshimoda
 t_tk	*token_new(char *word, t_tk_kind kind)
 {
 	t_tk	*token;
@@ -28,12 +27,40 @@ t_tk	*token_new(char *word, t_tk_kind kind)
 	return (token);
 }
 
-// ok
 static void	skip_blank(char **skipped, char *line)
 {
 	while (is_blank(*line))
 		line++;
 	*skipped = line;
+}
+
+static void	judge_kind_and_put(t_tk **token, char *line)
+{
+	while (*line)
+	{
+		if (is_blank(*line))
+			skip_blank(&line, line);
+		else if (is_quoted(*line, &line, line))
+		{
+			(*token)->next = quoted_into_list(&line, line, *line);
+			(*token) = (*token)->next;
+		}
+		else if (is_redirect(*line, &line, line))
+		{
+			(*token)->next = redirect_into_list(&line, line, *line, *token);
+			(*token) = (*token)->next;
+		}
+		else if (is_pipe(*line))
+		{
+			(*token)->next = pipe_into_list(&line, line, *token);
+			(*token) = (*token)->next;
+		}
+		else
+		{
+			(*token)->next = word_into_list(&line, line);
+			(*token) = (*token)->next;
+		}
+	}
 }
 
 t_tk	*tokenize(char *line)
@@ -45,31 +72,8 @@ t_tk	*tokenize(char *line)
 	token->word = NULL;
 	token->kind = TK_WORD;
 	token->next = NULL;
-	while (*line)
-	{
-		if (is_blank(*line))
-			skip_blank(&line, line);
-		else if (is_quoted(*line, &line, line))
-		{
-			token->next = quoted_into_list(&line, line, *line);
-			token = token->next;
-		}
-		else if (is_redirect(*line, &line, line))
-		{
-			token->next = redirect_into_list(&line, line, *line, token);
-			token = token->next;
-		}
-		else if (is_pipe(*line))
-		{
-			token->next = pipe_into_list(&line, line, token);
-			token = token->next;
-		}
-		else
-		{
-			token->next = word_into_list(&line, line);
-			token = token->next;
-		}
-	}
+
+	judge_kind_and_put(&token, line);
 	if (!g_return_error.tokenize_error)
 	{
 		if (token && token->kind == TK_REDIRECT)

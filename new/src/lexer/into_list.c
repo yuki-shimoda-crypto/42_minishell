@@ -6,13 +6,12 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 02:26:51 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/13 10:16:27 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/16 14:11:05 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// ok_yshimoda
 t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token)
 {
 	char	*word;
@@ -86,12 +85,22 @@ t_tk	*redirect_into_list(char **skipped,
 	return (token_new(word, TK_REDIRECT));
 }
 
-// ok
+static void	skip_while_quote(char **skipped, char *line)
+{
+	char	quote;
+
+	quote = *line;
+	line++;
+	while (*line != quote)
+		line++;
+	line++;
+	*skipped = line;
+}
+
 t_tk	*quoted_into_list(char **skipped, char *line, const char c)
 {
 	char	*start;
 	char	*word;
-	char	quote;
 
 	start = line;
 	line++;
@@ -104,13 +113,7 @@ t_tk	*quoted_into_list(char **skipped, char *line, const char c)
 		if (is_quote(*line))
 		{
 			if (is_quoted(*line, &line, line))
-			{
-				quote = *line;
-				line++;
-				while (*line != quote)
-					line++;
-				line++;
-			}
+				skip_while_quote(&line, line);
 		}
 		else
 			line++;
