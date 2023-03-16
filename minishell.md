@@ -194,6 +194,13 @@ struct s_env
     export | grep PATH
     ```
     死ぬ
+
+-   ```
+    minishell$ touch a
+    minishell$ $PWD/a
+    execve: Exec format error 
+    ```
+- ls | ls
     
 
 ### must

@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 23:26:00 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/16 00:32:37 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/16 14:05:12 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	syntax_error(const char *msg, char **skipped, char *line)
 	while (*line)
 		line++;
 	*skipped = line;
+	g_return_error.return_value = 258;
 }
 
 void	file_exec_error(const char *word, const char *msg)

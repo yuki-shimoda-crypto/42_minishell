@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/16 13:19:07 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/16 13:40:35 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,14 +107,21 @@ char	*make_relative_path(t_tk *token, t_env *env_list)
 		env_path = tail + 1;
 	}
 	free(env_path_head);
-	if (!pathname)
-		file_exec_error(token->word, ": no such file or directory\n");
-	else if (!is_file(pathname))
-		file_exec_error(token->word, ": is a directory\n");
+	if (!pathname || !is_file(pathname))
+	{
+		file_exec_error(token->word, ": No such file or directory\n");
+		g_return_error.return_value = 127;
+	}
 	else if (!is_file_exist(pathname))
+	{
 		file_exec_error(token->word, ": command not found\n");
+		g_return_error.return_value = 127;
+	}
 	else if (!is_file_executable(pathname))
-		file_exec_error(token->word, ": is not executable\n");
+	{
+		file_exec_error(token->word, ": Permission deied\n");
+		g_return_error.return_value = 126;
+	}
 	return (pathname);
 }
 
