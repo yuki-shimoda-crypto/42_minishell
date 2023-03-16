@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/14 12:36:41 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/16 13:19:07 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,22 @@ char	*find_env_path(t_env *env_list)
 	return (NULL);
 }
 
+bool	is_only_slash(const char *pathname)
+{
+	size_t	i;
+
+	if (!pathname || !*pathname)
+		return (false);
+	i = 0;
+	while (pathname[i])
+	{
+		if (pathname[i] != '/')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 char	*make_absolute_path(t_tk *token)
 {
 	char	*pathname;
@@ -38,12 +54,21 @@ char	*make_absolute_path(t_tk *token)
 	pathname = strdup(token->word);
 	if (!pathname)
 		assert_error("strdup\n");
-	if (!is_file(pathname))
+	if (is_only_slash(pathname))
+	{
 		file_exec_error(token->word, ": is a directory\n");
-	else if (!is_file_exist(pathname))
-		file_exec_error(token->word, ": no such file or directory\n");
+		g_return_error.return_value = 126;
+	}
+	else if (!is_file(pathname) || !is_file_exist(pathname))
+	{
+		file_exec_error(token->word, ": No such file or directory\n");
+		g_return_error.return_value = 127;
+	}
 	else if (!is_file_executable(pathname))
-		file_exec_error(token->word, ": is not executable\n");
+	{
+		file_exec_error(token->word, ": Permission deied\n");
+		g_return_error.return_value = 126;
+	}
 	return (pathname);
 }
 
