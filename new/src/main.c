@@ -71,6 +71,7 @@ void	interpret(char *line, t_env **env_list)
 		return ;
 	}
 	node = parse(token);
+	print_node(node, 0);
 	if (g_return_error.parse_error)
 		return ;
 	exec_cmd(node, env_list);

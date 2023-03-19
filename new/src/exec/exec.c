@@ -370,6 +370,13 @@ void	exec_cmd(t_node *node, t_env **env_list)
 			g_return_error.exec_error = false;
 			continue;
 		}
+		if (node->kind == ND_SIMPLE_CMD && node->token->kind == TK_EOF)
+		{
+			free(pathname);
+			free_argv(argv);
+			node = node->pipe;
+			continue;
+		}
 		if (argv && is_builtin(argv[0]))
 		{
 			connect_pipe_builtin(node);

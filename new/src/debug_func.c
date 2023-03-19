@@ -47,13 +47,17 @@ static const char	*print_t_node_kind(int kind)
 void	print_node(t_node *node, int i)
 {
 	printf("%s\n", "----------");
+
 	printf("rank\t\t%d\n", i);
 	printf("node_kind\t%s\n", print_t_node_kind(node->kind));
+	printf("node->token\t%p\n", node->token);
+	printf("node->redirect\t%p\n", node->redirect);
+	printf("node_redirect_pre\t%p\n", node->redirect_pre);
 	if (node->filename)
 		printf("node_filename\t%s\n", node->filename);
 	print_t_tk(node->token);
 	printf("node_ptr\t%p\n", node);
-	printf("node_redirect_pre\t%p\n", node->redirect_pre);
+
 	printf("%s\n", "----------");
 	if (node->redirect)
 		print_node(node->redirect, i + 1);
@@ -76,10 +80,12 @@ const char	*print_t_tk_kind(int kind)
 
 void	print_t_tk(t_tk	*token)
 {
-	while (token && token->kind != TK_EOF)
+	while (token)
 	{
 		printf("token_word\t%s\n", token->word);
 		printf("token_kind\t%s\n", print_t_tk_kind(token->kind));
+		if (token->kind == TK_EOF)
+			break ;
 		token = token->next;
 	}
 }
