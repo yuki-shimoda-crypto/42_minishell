@@ -350,6 +350,11 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	envp = make_envp(*env_list);
 	while (node)
 	{
+		if (!node->token)
+		{
+			node = node->pipe;
+			continue;
+		}
 		pathname = make_pathname(node->token, *env_list);
 		argv = make_argv(node->token);
 		redirect_fd_list(node->redirect);
@@ -368,13 +373,6 @@ void	exec_cmd(t_node *node, t_env **env_list)
 			free_argv(argv);
 			node = node->pipe;
 			g_return_error.exec_error = false;
-			continue;
-		}
-		if (node->kind == ND_SIMPLE_CMD && node->token->kind == TK_EOF)
-		{
-			free(pathname);
-			free_argv(argv);
-			node = node->pipe;
 			continue;
 		}
 		if (argv && is_builtin(argv[0]))
