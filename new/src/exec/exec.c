@@ -338,7 +338,6 @@ void	wait_child_process(void)
 	}
 }
 
-
 void	exec_cmd(t_node *node, t_env **env_list)
 {
 	char	*pathname;
@@ -350,13 +349,18 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	envp = make_envp(*env_list);
 	while (node)
 	{
-		if (!node->token)
+		if (node->token->kind != TK_WORD && node->redirect->kind != ND_REDIRECT_HEREDOC)//
 		{
 			node = node->pipe;
-			continue;
+			continue ;
 		}
 		pathname = make_pathname(node->token, *env_list);
 		argv = make_argv(node->token);
+		if (!argv)
+		{
+			node = node->pipe;
+			continue ;
+		}
 		redirect_fd_list(node->redirect);
 		if (g_return_error.redirect_error)
 		{

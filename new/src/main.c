@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/16 13:11:30 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/28 13:58:31 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	init_return_error(void)
 	g_return_error.redirect_error = false;
 	g_return_error.exec_error = false;
 	g_return_error.export_error = false;
+	g_return_error.heredoc_interupt = false;
 }
 
 void	interpret(char *line, t_env **env_list)
@@ -71,10 +72,10 @@ void	interpret(char *line, t_env **env_list)
 		return ;
 	}
 	node = parse(token);
-	print_node(node, 0);
 	if (g_return_error.parse_error)
 		return ;
 	exec_cmd(node, env_list);
+	// print_node(node, 0);
 	free_token(&token);
 	free_node(&node);
 }

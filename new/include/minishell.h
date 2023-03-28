@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/16 13:40:13 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/28 17:21:04 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ struct s_return_error
 	int		return_value;
 	//fix
 	bool	export_error;
+	bool	heredoc_interupt;
 };
+
 
 extern t_return_error	g_return_error;
 
@@ -159,7 +161,7 @@ bool	is_file_exist(const char *pathname);
 bool	is_file(const char *pathname);
 char	*find_env_path(t_env *env_list);
 char	*make_absolute_path(t_tk *token);
-char	*make_relative_path(t_tk *token, t_env *env_list);
+char	*make_environment_path(t_tk *token, t_env *env_list);
 char	*make_pathname(t_tk *token, t_env *env_list);
 size_t	argv_len(t_tk *token);
 char	**make_argv(t_tk *token);

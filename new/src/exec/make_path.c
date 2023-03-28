@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/16 13:40:35 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/03/28 14:21:18 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*make_absolute_path(t_tk *token)
 	return (pathname);
 }
 
-char	*make_relative_path(t_tk *token, t_env *env_list)
+char	*make_environment_path(t_tk *token, t_env *env_list)
 {
 	char	*head;
 	char	*tail;
@@ -135,7 +135,9 @@ char	*make_pathname(t_tk *token, t_env *env_list)
 		return (NULL);
 	if (token->word[0] == '/')
 		pathname = make_absolute_path(token);
+//	else if (token->word[0] == '.')
+//		pathname = 
 	else
-		pathname = make_relative_path(token, env_list);
+		pathname = make_environment_path(token, env_list);
 	return (pathname);
 }
