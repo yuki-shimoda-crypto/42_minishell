@@ -349,6 +349,11 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	envp = make_envp(*env_list);
 	while (node)
 	{
+		if (!node->token)
+		{
+			node = node->pipe;
+			continue ;
+		}
 		if (node->token->kind != TK_WORD && node->redirect->kind != ND_REDIRECT_HEREDOC)//
 		{
 			node = node->pipe;

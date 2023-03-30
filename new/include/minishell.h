@@ -159,6 +159,7 @@ char	*strjoin_three(char const *s1, char const *s2, char const *s3);
 bool	is_file_executable(const char *pathname);
 bool	is_file_exist(const char *pathname);
 bool	is_file(const char *pathname);
+bool	is_relative_path(const char *word);
 char	*find_env_path(t_env *env_list);
 char	*make_absolute_path(t_tk *token);
 char	*make_environment_path(t_tk *token, t_env *env_list);
