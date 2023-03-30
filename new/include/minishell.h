@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/28 17:21:04 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/30 15:12:11 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,11 +170,11 @@ void	exec_cmd(t_node *node, t_env **env_list);
 void	wait_child_process(void);
 
 // redirect.c
-int		open_redir_file(t_node *redir);
-void	redirect_fd_list(t_node *node);
-void	do_redirect(t_node *redir);
+int		open_redir_file(t_node *redir, t_env *env_list);//
+void	redirect_fd_list(t_node *node, t_env *env_list);//
+void	do_redirect(t_node *redird);
 void	reset_redirect(t_node *redir);
-int		heredoc(char *delimiter);
+int		heredoc(char *delimiter, t_env *env_list);//
 int		open_redir_out(char *filename);
 int		open_redir_append(char *filename);
 int		open_redir_in(char *filename);
@@ -204,6 +204,7 @@ bool	is_variable(char *line);
 bool	is_alpha_under(char c);
 bool	is_alpha_num_under(char c);
 bool	is_special_charactor(char *line);
+char	*expand_word(char *word, t_env *env_list);
 
 //builtin
 void	builtin_echo(char **argv);
