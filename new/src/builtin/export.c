@@ -17,6 +17,7 @@ static void	put_sorted_env(t_env *env_list)
 		//printf("declare -x %s\n", sort_env[i]);
 		write(1, "declare -x ", strlen("declare -x "));
 		write(1, sort_env[i], strlen(sort_env[i]));
+		write(1, "\"", 1);
 		write(1, "\n", 1);
 		i++;
 	}

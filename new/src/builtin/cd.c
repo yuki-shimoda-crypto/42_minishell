@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 14:11:26 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/15 14:41:23 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/30 18:03:16 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int	manage_cd_path(char *destination, t_env **env_list)
 	return (status);
 }	
 
-int	cd(char **destination, t_env **env_list)
+int	builtin_cd(char **destination, t_env **env_list)
 {
 	size_t	args;
 	int		status;

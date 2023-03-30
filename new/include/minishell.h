@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/30 15:12:11 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/30 18:02:57 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,10 +212,10 @@ int		builtin_export(char **argv, t_env **env_list);
 
 int		recognize_builtin(char **argv, t_env **env_list);
 bool	is_builtin(const char *cmd);
-int		get_pwd(void);
-int		cd(char **destination, t_env **env_list);
-int		env(char **argv, t_env *env_list);
-int		unset(char **del_target, t_env **env_list);
+int		builtin_pwd(void);
+int		builtin_cd(char **destination, t_env **env_list);
+int		builtin_env(t_env *env_list);
+int		builtin_unset(char **del_target, t_env **env_list);
 int		builtin_exit(char **argv);
 void	free_array(char **env_array);
 void	sort_array(char **env_array);
