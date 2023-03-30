@@ -334,7 +334,11 @@ void	wait_child_process(void)
 		else if (WIFEXITED(status))
 			g_return_error.return_value = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
+		{
+			wrap_write(STDOUT_FILENO, "\n", 1);
+			g_return_error.g_sig = 0;
 			g_return_error.return_value = 128 + WTERMSIG(status);
+		}
 	}
 }
 
@@ -349,16 +353,6 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	envp = make_envp(*env_list);
 	while (node)
 	{
-		if (!node->token)
-		{
-			node = node->pipe;
-			continue ;
-		}
-		if (node->token->kind != TK_WORD && node->redirect->kind != ND_REDIRECT_HEREDOC)//
-		{
-			node = node->pipe;
-			continue ;
-		}
 		pathname = make_pathname(node->token, *env_list);
 		argv = make_argv(node->token);
 		if (!argv)
@@ -366,23 +360,31 @@ void	exec_cmd(t_node *node, t_env **env_list)
 			node = node->pipe;
 			continue ;
 		}
-		redirect_fd_list(node->redirect);
+		redirect_fd_list(node->redirect, *env_list);//
 		if (g_return_error.redirect_error)
 		{
 			free(pathname);
 			free_argv(argv);
 			node = node->pipe;
 			g_return_error.redirect_error = false;
-			continue;
+			continue ;
 		}
 		do_redirect(node->redirect);
+		if (node->token->kind != TK_WORD)///
+		{
+			reset_redirect(node->redirect);
+			free(pathname);
+			free_argv(argv);
+			node = node->pipe;
+			continue ;
+		}///
 		if (g_return_error.exec_error)
 		{
 			free(pathname);
 			free_argv(argv);
 			node = node->pipe;
 			g_return_error.exec_error = false;
-			continue;
+			continue ;
 		}
 		if (argv && is_builtin(argv[0]))
 		{
@@ -401,6 +403,8 @@ void	exec_cmd(t_node *node, t_env **env_list)
 			if (pid == 0)
 			{
 				// Child process
+				signal(SIGQUIT, SIG_DFL);//
+				signal(SIGINT, SIG_DFL);//
 				connect_pipe(node);
 				if (pathname && argv)
 				{

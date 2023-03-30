@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:18:49 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/14 18:34:47 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/30 18:03:43 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <limits.h>
 #include <string.h>
 
-int	get_pwd(void)
+int	builtin_pwd(void)
 {
 	char	*pwd_path;
 
