@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/28 13:58:31 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/06 15:34:31 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,9 @@ int	main(int argc, char const *argv[], char *envp[])
 		line = readline(PROMPT);
 		if (!line)
 		{
-			write (STDOUT_FILENO, "exit\n", strlen("exit\n"));
+			wrap_write (STDOUT_FILENO, "exit", strlen("exit\n"));
+			if (g_return_error.ctrl_c == false)
+				wrap_write(STDOUT_FILENO, "\n", 1);
 			break ;
 		}
 		if (*line)

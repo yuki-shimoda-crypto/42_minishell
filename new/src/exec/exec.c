@@ -337,6 +337,8 @@ void	wait_child_process(void)
 		{
 			wrap_write(STDOUT_FILENO, "\n", 1);
 			g_return_error.g_sig = 0;
+			if (WTERMSIG(status) == SIGINT)
+				g_return_error.ctrl_c = true;//
 			g_return_error.return_value = 128 + WTERMSIG(status);
 		}
 	}
@@ -347,6 +349,7 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	char	*pathname;
 	char	**argv;
 	char	**envp;
+	pid_t	pid;
 
 	input_pipefd(node, NULL);
 	expand(node, *env_list);
@@ -394,7 +397,7 @@ void	exec_cmd(t_node *node, t_env **env_list)
 		}
 		else
 		{
-			pid_t pid = fork();
+			pid = fork();
 			if (pid == -1)
 			{
 				perror("fork");
@@ -403,8 +406,8 @@ void	exec_cmd(t_node *node, t_env **env_list)
 			if (pid == 0)
 			{
 				// Child process
-				signal(SIGQUIT, SIG_DFL);//
-				signal(SIGINT, SIG_DFL);//
+				signal(SIGQUIT, SIG_DFL);///
+				signal(SIGINT, SIG_DFL);///
 				connect_pipe(node);
 				if (pathname && argv)
 				{

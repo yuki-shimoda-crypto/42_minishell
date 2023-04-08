@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/30 18:02:57 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/03 20:20:47 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ struct s_return_error
 	//fix
 	bool	export_error;
 	bool	heredoc_interupt;
+	bool	ctrl_c;//
 };
 
 

@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:29:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/30 18:45:33 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/06 15:34:14 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	signal_hook(void)
 	else if (g_return_error.g_sig == SIGINT)
 	{
 		g_return_error.g_sig = 0;
+		g_return_error.ctrl_c = true;//
 		g_return_error.heredoc_interupt = true;
 		rl_replace_line("", 0);
 		rl_done = 1;

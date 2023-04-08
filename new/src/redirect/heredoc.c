@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 15:54:58 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/30 15:18:05 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/03 17:28:35 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	heredoc(char *delimiter, t_env *env_list)
 			free(input);
 			break ;
 		}
-		expanded = expand_word(input, env_list);//
+		expanded = expand_word(input, env_list);
 		write (pipe_fd[1], expanded, strlen(expanded));
 		write (pipe_fd[1], "\n", strlen("\n"));
 		free(expanded);
