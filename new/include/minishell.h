@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/04/03 20:20:47 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/11 16:06:21 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ struct s_node
 	int			fd_file;
 	int			fd_save;
 	int			fd_target;
+	bool		quote_flag;
 	// PIPE
 	int			fd_save_inpipe;
 	int			fd_save_outpipe;
@@ -172,11 +173,11 @@ void	exec_cmd(t_node *node, t_env **env_list);
 void	wait_child_process(void);
 
 // redirect.c
-int		open_redir_file(t_node *redir, t_env *env_list);//
-void	redirect_fd_list(t_node *node, t_env *env_list);//
+int		open_redir_file(t_node *redir, t_env *env_list);
+void	redirect_fd_list(t_node *node, t_env *env_list);
 void	do_redirect(t_node *redird);
 void	reset_redirect(t_node *redir);
-int		heredoc(char *delimiter, t_env *env_list);//
+int		heredoc(char *delimiter, t_env *env_list, bool quote_flag);
 int		open_redir_out(char *filename);
 int		open_redir_append(char *filename);
 int		open_redir_in(char *filename);

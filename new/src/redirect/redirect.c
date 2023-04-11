@@ -49,7 +49,7 @@ int	open_redir_file(t_node *redir, t_env *env_list)
 	else if (redir->kind == ND_REDIRECT_IN)
 		fd = open_redir_in(redir->filename);
 	else if (redir->kind == ND_REDIRECT_HEREDOC)
-		fd = heredoc(redir->filename, env_list);
+		fd = heredoc(redir->filename, env_list, redir->quote_flag);
 	return (fd);
 }
 
