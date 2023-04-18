@@ -1,11 +1,11 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 int main(void)
 {
-	extern char	**environ;
-	char		*argv[] = {line, NULL};
-
-	printf("%s\n", argv[0]);
-	printf("%s\n", argv[1]);
+	char	*str = strndup("test", 0);
+	printf("%s\n", str);
+	free(str);
 	return (0);
 }

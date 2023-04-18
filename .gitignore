@@ -1,10 +1,10 @@
 minishell
 .DS_Store
-.vscode/
 log.txt
 tmp
 *.swp
 .*.swp
+tags
 
 # Prerequisites
 *.d

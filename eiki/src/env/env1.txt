@@ -1,0 +1,168 @@
+key:	SHELL
+value:	/bin/bash
+pre:	(nil)
+now:	0xffffaeb00b80
+next:	0xffffaeb00b50
+------------
+key:	COLORTERM
+value:	truecolor
+pre:	0xffffaeb00b80
+now:	0xffffaeb00b50
+next:	0xffffaeb00af0
+------------
+key:	TERM_PROGRAM_VERSION
+value:	1.66.2
+pre:	0xffffaeb00b50
+now:	0xffffaeb00af0
+next:	0xffffaeb00ac0
+------------
+key:	HOSTNAME
+value:	381b7482e1fe
+pre:	0xffffaeb00af0
+now:	0xffffaeb00ac0
+next:	0xffffaeb00a90
+------------
+key:	LANGUAGE
+value:	en_US.UTF-8
+pre:	0xffffaeb00ac0
+now:	0xffffaeb00a90
+next:	0xffffaeb00a60
+------------
+key:	SSH_AUTH_SOCK
+value:	/tmp/vscode-ssh-auth-588e8f98d1499bdfdc0a9b10191eb2449164cf80.sock
+pre:	0xffffaeb00a90
+now:	0xffffaeb00a60
+next:	0xffffaeb00a00
+------------
+key:	REMOTE_CONTAINERS_IPC
+value:	/tmp/vscode-remote-containers-ipc-588e8f98d1499bdfdc0a9b10191eb2449164cf80.sock
+pre:	0xffffaeb00a60
+now:	0xffffaeb00a00
+next:	0xffffaeb009a0
+------------
+key:	PWD
+value:	/root/minishell/eiki/src/env
+pre:	0xffffaeb00a00
+now:	0xffffaeb009a0
+next:	0xffffaeb00940
+------------
+key:	VSCODE_GIT_ASKPASS_NODE
+value:	/root/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/node
+pre:	0xffffaeb009a0
+now:	0xffffaeb00940
+next:	0xffffaeb00910
+------------
+key:	HOME
+value:	/root
+pre:	0xffffaeb00940
+now:	0xffffaeb00910
+next:	0xffffaeb008e0
+------------
+key:	LANG
+value:	C.UTF-8
+pre:	0xffffaeb00910
+now:	0xffffaeb008e0
+next:	0xffffaeb008b0
+------------
+key:	LS_COLORS
+value:	rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+pre:	0xffffaeb008e0
+now:	0xffffaeb008b0
+next:	0xffffaeb00850
+------------
+key:	REMOTE_CONTAINERS
+value:	true
+pre:	0xffffaeb008b0
+now:	0xffffaeb00850
+next:	0xffffaeb00820
+------------
+key:	GIT_ASKPASS
+value:	/root/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/extensions/git/dist/askpass.sh
+pre:	0xffffaeb00850
+now:	0xffffaeb00820
+next:	0xffffaeb007c0
+------------
+key:	VSCODE_GIT_ASKPASS_EXTRA_ARGS
+value:	
+pre:	0xffffaeb00820
+now:	0xffffaeb007c0
+next:	0xffffaeb00760
+------------
+key:	LESSCLOSE
+value:	/usr/bin/lesspipe %s %s
+pre:	0xffffaeb007c0
+now:	0xffffaeb00760
+next:	0xffffaeb00730
+------------
+key:	TERM
+value:	xterm-256color
+pre:	0xffffaeb00760
+now:	0xffffaeb00730
+next:	0xffffaeb006d0
+------------
+key:	REMOTE_CONTAINERS_SOCKETS
+value:	["/tmp/vscode-ssh-auth-588e8f98d1499bdfdc0a9b10191eb2449164cf80.sock"]
+pre:	0xffffaeb00730
+now:	0xffffaeb006d0
+next:	0xffffaeb00670
+------------
+key:	LESSOPEN
+value:	| /usr/bin/lesspipe %s
+pre:	0xffffaeb006d0
+now:	0xffffaeb00670
+next:	0xffffaeb005e0
+------------
+key:	VSCODE_GIT_IPC_HANDLE
+value:	/tmp/vscode-git-8c3addae15.sock
+pre:	0xffffaeb00670
+now:	0xffffaeb005e0
+next:	0xffffaeb005b0
+------------
+key:	SHLVL
+value:	2
+pre:	0xffffaeb005e0
+now:	0xffffaeb005b0
+next:	0xffffaeb00550
+------------
+key:	VSCODE_GIT_ASKPASS_MAIN
+value:	/root/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/extensions/git/dist/askpass-main.js
+pre:	0xffffaeb005b0
+now:	0xffffaeb00550
+next:	0xffffaeb00520
+------------
+key:	BROWSER
+value:	/root/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/bin/helpers/browser.sh
+pre:	0xffffaeb00550
+now:	0xffffaeb00520
+next:	0xffffaeb004f0
+------------
+key:	PATH
+value:	/root/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+pre:	0xffffaeb00520
+now:	0xffffaeb004f0
+next:	0xffffaeb004c0
+------------
+key:	TERM_PROGRAM
+value:	vscode
+pre:	0xffffaeb004f0
+now:	0xffffaeb004c0
+next:	0xffffaeb00460
+------------
+key:	VSCODE_IPC_HOOK_CLI
+value:	/tmp/vscode-ipc-3f58a15e-f9a3-47e8-a85e-4b22c996c637.sock
+pre:	0xffffaeb004c0
+now:	0xffffaeb00460
+next:	0xffffaeb00400
+------------
+key:	OLDPWD
+value:	/root/minishell/eiki
+pre:	0xffffaeb00460
+now:	0xffffaeb00400
+next:	0xffffaeb003d0
+------------
+key:	_
+value:	./a.out
+pre:	0xffffaeb00400
+now:	0xffffaeb003d0
+next:	(nil)
+------------

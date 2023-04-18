@@ -1,4 +1,4 @@
-# minishell
+#minishell
 
 ## Issue
 - [github_issue](https://github.com/yuki-shimoda-crypto/42_minishell/issues)
@@ -11,11 +11,125 @@
     1. consume_blank
     1. is_operator
     1. is_word
+        1. if (c == single quote || c == double quote) つぎのクォートまでインプット
+1. parse
+    1. remove sigle quote
+    1. remove double quote
+    1. redirect
 1. exec
     1. search_path
     1. validate_access
     1. execve
-1. Parser
+1. expand
+    1. single_quote
+        1. 次のsingle quoteまでをinput
+    1. double_quote
+        1. 次のdouble quoteまでをinput
+        1. if $WORD expand $WORD
+    1. $WORD
+        1. $?
+        1. expand $WORD
+1. signal
+    1. setup_signal
+        1. rl_event_hookに呼び出す関数(signal_hook)を設定する 
+        1. signal(SIGINT, ctrl_c)(sigintが来たときの処理)
+        1. ignore_sigquit
+        ```c
+        void setup_signal(void)
+        {
+            rl_event_hook = signal_hook;
+            rl_outstream = stderr;
+            signal(SIGINT, ctrl_c);
+            signal(SIGQUIT, ctrl_backslash);
+        }
+        ```
+    1. int  signal_hook(int g_sig)
+        ```c
+		int signal_hook(int g_sig)
+        {
+            if (g_sig == 0)
+                return (0);
+            else if (g_sig == SIGINT)
+            {
+                g_sig = 0;
+                rl_replace_line("", 0);
+                rl_done = 1;
+            }
+            return (0);
+        }
+        ```
+    1. int ctrl_c(int sig)
+        ```c
+        int ctrl_c(int sig)
+        {
+            g_sig = sig;
+        }
+        ```
+    1. int ignore_sigquit(int sig)
+        ```c
+        ```
+
+## struct
+```
+typedef enum e_tk_kind t_tk_kind;
+enum e_tk_kind
+{
+    TK_WORD,
+    TK_OPERATOR,
+    TK_EOF,
+};
+```
+
+```
+typedef struct s_tk t_tk;
+struct s_tk
+{
+    char			*word;
+	t_tk_kind		kind;
+    struct s_token	*next;
+};
+```
+
+```
+typedef enum e_node_kind t_node_kind;
+enum e_node_kind
+{
+    ND_PIPE,
+    ND_SIMPLE_CMD,
+    ND_REDIRECT_OUT,
+    ND_REDIRECT_IN,
+    ND_REDIRECT_APPEND,
+    ND_REDIRECT_HEREDOC,
+}
+```
+
+```
+typedef struct s_node t_node;
+struct s_node
+{
+	t_node_kind	kind;
+    t_node		*next;
+    // CMD
+	t_node	*command;
+    // REDIRECT
+	t_node	*redirect;
+	t_token	*filename;
+	t_token	*delimiter;
+	int		filefd;
+}
+```
+
+```
+typedef struct s_env t_env;
+struct s_env
+{
+	char		*key;
+	char		*value;
+	t_env		*pre;
+	t_env		*next;
+}
+```
+
 
 ## Rule
 - Only if original function exists add "ft" at head of the function
@@ -67,9 +181,114 @@
 - [meety](https://meety.net/)
 
 ## memo
-- $の時のレキサーの処理
-	- $?の時のレキサーの処理
+### memo
 - なぜ、test.shのassert()内で、echo -nをつけて、最後にechoをしているのか
+- pipeのときのredirectを優先するときの判定を見てもらいたい。しっかりとつながっているのか`
+		if (!is_redirect_out_exist(node))
+		if (!is_redirect_in_exist(node))
+- unset PATHした後にコマンドを実行する
+- ls | unset PATH おもろかった write失敗する
+- echo $A | export A=b
+- ./minishell  < test.txt
+    ```test.txt
+    export | grep PATH
+    ```
+    死ぬ
+
+-   ```
+    minishell$ touch a
+    minishell$ $PWD/a
+    execve: Exec format error 
+    ```
+- ls | ls
+
+- | fjklda
+- exit status 
+- ls | ls
+-    ```
+    Handle ctrl-C, ctrl-D and ctrl-\ which should behave like in bash.
+    • In interactive mode:
+    ◦ ctrl-C displays a new prompt on a new line.
+    ◦ ctrl-D exits the shell.
+    ◦ ctrl-\ does nothing.
+    ```
+- グローバル変数を一つにする
+- ccache消しても良いかも
+- バイナリファイルではないshell sciriptなどを./test.shなどをすると、execveエラーを吐いてしまう 
+
+    
+
+### must
+1. exit
+1. cd
+1. export test= の修正
+1. builtinの関数の確認
+1. ./minishell
+1. makepathでenvpを使って環境変数をとっているが、それをenvlistから取るようにする //ok
+1. builtinと普通の関数間でpipeができていない //ok?
+---
+7. exportの+=
+1. return valueの変更
+1. signal関連の見直し
+
+### review
+1. スペースを入れる
+1. タブを入れる
+1. echo -e "\t" | ./minishell
+1. ./minishell < test.sh
+1. /bin/ls/jfsのexitのstatusを126にする
+1. ctrl-D in an empty prompt should quit minishell --> RELAUNCH!
+    - ctrl-\ をしてからだと、exitが次の行に表示されいなかも
+1. cat をした後に、ctrl-Cを押した後にプロンプトが表示されてしまう。
+    minishell$ cat 
+    ^Cminishell$ 
+    minishell$
+1. cat をした後に、ctrl-\を押すとプロンプトが表示されてしまう。
+    minishell$ cat
+    ^\^Cminishell$ 
+    minishell$ 
+1. env =test
+1. export をしたときに decare -x key="value"
+1. cd の返り値がおかしい
+    ```
+    minishell$ cd fdskjl
+    No such file or directory
+    minishell$ echo $?
+    0
+    ```
+1. ./minishellを使えるようにする
+1. >a
+    ``` 
+    root@381b7482e1fe:~/minishell/new(rebuild)# ./minishell 
+    minishell$ >a
+    minishell$ exit
+    minishell$ exit
+    root@381b7482e1fe:~/minishell/new(rebuild)# ./minishell 
+    minishell$ <a
+    minishell$ exit
+    minishell$ exit
+    root@381b7482e1fe:~/minishell/new(rebuild)# ./minishell 
+    minishell$ >>a
+    minishell$ exit
+    minishell$ exit
+    root@381b7482e1fe:~/minishell/new(rebuild)# ./minishell 
+    minishell$ <<a
+    > a
+    minishell$ exit
+    minishell$ exit
+    ``` 
+1. cd をやったときに,PWDを書き換える
+
+
+1. minishell$ ''
+    minishell: : No such file or directory
+
+
+### やってもよい
+- A="echo a"のexpand
+- signalのデバッグ全然してない
+- 
+- 
 
 
 ## vim 
@@ -125,4 +344,59 @@
 - レジスタ = expression用レジスタ
 - ctags **/*.c **/*.h
 
+
+## 使用可能関数
+access
+add_history
+chdir
+close
+closedir
+dup
+dup2
+execve
+exit
+fork
+free
+fstat
+getcwd
+getenv
+ioctl
+isatty
+kill
+lstat
+malloc
+open
+opendir
+perror
+pipe
+printf
+read
+readdir
+readline
+rl_clear_history
+rl_on_new_line
+rl_redisplay
+rl_replace_line
+sigaction
+sigaddset
+sigemptyset
+signal
+stat
+strerror
+tcgetattr
+tcsetattr
+tgetent
+tgetflag
+tgetnum
+tgetstr
+tgoto
+tputs
+ttyname
+ttyslot
+unlink
+wait
+wait3
+wait4
+waitpid
+write
 

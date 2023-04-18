@@ -6,13 +6,13 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:52:04 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/02/28 23:22:24 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/13 22:58:56 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char const *argv[], char **envp)
+int	main(int argc, char const *argv[], char *envp[])
 {
 	char			*input;
 	t_token_list	*tk_list;
