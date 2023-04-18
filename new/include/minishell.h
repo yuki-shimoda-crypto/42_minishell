@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/16 13:40:13 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/11 16:06:21 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ struct s_node
 	int			fd_file;
 	int			fd_save;
 	int			fd_target;
+	bool		quote_flag;
 	// PIPE
 	int			fd_save_inpipe;
 	int			fd_save_outpipe;
@@ -100,7 +101,10 @@ struct s_return_error
 	int		return_value;
 	//fix
 	bool	export_error;
+	bool	heredoc_interupt;
+	bool	ctrl_c;//
 };
+
 
 extern t_return_error	g_return_error;
 
@@ -157,9 +161,10 @@ char	*strjoin_three(char const *s1, char const *s2, char const *s3);
 bool	is_file_executable(const char *pathname);
 bool	is_file_exist(const char *pathname);
 bool	is_file(const char *pathname);
+bool	is_relative_path(const char *word);
 char	*find_env_path(t_env *env_list);
 char	*make_absolute_path(t_tk *token);
-char	*make_relative_path(t_tk *token, t_env *env_list);
+char	*make_environment_path(t_tk *token, t_env *env_list);
 char	*make_pathname(t_tk *token, t_env *env_list);
 size_t	argv_len(t_tk *token);
 char	**make_argv(t_tk *token);
@@ -168,11 +173,11 @@ void	exec_cmd(t_node *node, t_env **env_list);
 void	wait_child_process(void);
 
 // redirect.c
-int		open_redir_file(t_node *redir);
-void	redirect_fd_list(t_node *node);
-void	do_redirect(t_node *redir);
+int		open_redir_file(t_node *redir, t_env *env_list);
+void	redirect_fd_list(t_node *node, t_env *env_list);
+void	do_redirect(t_node *redird);
 void	reset_redirect(t_node *redir);
-int		heredoc(char *delimiter);
+int		heredoc(char *delimiter, t_env *env_list, bool quote_flag);
 int		open_redir_out(char *filename);
 int		open_redir_append(char *filename);
 int		open_redir_in(char *filename);
@@ -202,6 +207,7 @@ bool	is_variable(char *line);
 bool	is_alpha_under(char c);
 bool	is_alpha_num_under(char c);
 bool	is_special_charactor(char *line);
+char	*expand_word(char *word, t_env *env_list);
 
 //builtin
 void	builtin_echo(char **argv);
@@ -209,10 +215,10 @@ int		builtin_export(char **argv, t_env **env_list);
 
 int		recognize_builtin(char **argv, t_env **env_list);
 bool	is_builtin(const char *cmd);
-int		get_pwd(void);
-int		cd(char **destination, t_env **env_list);
-int		env(char **argv, t_env *env_list);
-int		unset(char **del_target, t_env **env_list);
+int		builtin_pwd(void);
+int		builtin_cd(char **destination, t_env **env_list);
+int		builtin_env(t_env *env_list);
+int		builtin_unset(char **del_target, t_env **env_list);
 int		builtin_exit(char **argv);
 void	free_array(char **env_array);
 void	sort_array(char **env_array);

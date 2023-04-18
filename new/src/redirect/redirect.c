@@ -37,7 +37,7 @@ void	reset_redirect(t_node *redir)
 	}
 }
 
-int	open_redir_file(t_node *redir)
+int	open_redir_file(t_node *redir, t_env *env_list)
 {
 	int	fd;
 
@@ -49,17 +49,17 @@ int	open_redir_file(t_node *redir)
 	else if (redir->kind == ND_REDIRECT_IN)
 		fd = open_redir_in(redir->filename);
 	else if (redir->kind == ND_REDIRECT_HEREDOC)
-		fd = heredoc(redir->filename);
+		fd = heredoc(redir->filename, env_list, redir->quote_flag);
 	return (fd);
 }
 
-void	redirect_fd_list(t_node *redir)
+void	redirect_fd_list(t_node *redir, t_env *env_list)
 {
 	if (!redir)
 		return ;
 	while (redir)
 	{
-		redir->fd_file = open_redir_file(redir);
+		redir->fd_file = open_redir_file(redir, env_list);
 		redir = redir->redirect;
 	}
 }

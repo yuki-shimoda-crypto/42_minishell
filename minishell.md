@@ -214,6 +214,7 @@ struct s_env
     ```
 - グローバル変数を一つにする
 - ccache消しても良いかも
+- バイナリファイルではないshell sciriptなどを./test.shなどをすると、execveエラーを吐いてしまう 
 
     
 

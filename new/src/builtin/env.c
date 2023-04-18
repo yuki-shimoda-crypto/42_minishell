@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 18:39:29 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/16 23:10:59 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/03/30 18:03:24 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,8 @@ static void	print_env(t_env *env_list)
 	write(STDOUT_FILENO, "_=/usr/bin/env\n", strlen("_=/usr/bin/env\n"));
 }
 
-int	env(char **argv, t_env *env_list)
+int	builtin_env(t_env *env_list)
 {
-	size_t	i;
-
-	i = 1;
-	while (argv[i])
-	{
-		if (!strchr(argv[i], '='))
-		{
-			env_error(argv[i]);
-			return (1);
-		}
-		i++;
-	}
 	print_env(env_list);
-	if (argv[1])
-	{
-		i = 1;
-		while (argv[i])
-		{
-			write(STDOUT_FILENO, argv[i], strlen(argv[i]));
-			i++;
-		}
-	}
 	return (0);
 }

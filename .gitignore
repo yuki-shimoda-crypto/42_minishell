@@ -4,6 +4,7 @@ log.txt
 tmp
 *.swp
 .*.swp
+tags
 
 # Prerequisites
 *.d

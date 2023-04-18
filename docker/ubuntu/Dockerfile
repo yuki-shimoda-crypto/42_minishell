@@ -31,6 +31,7 @@ RUN		apt update			\
 			bash-completion	\
 			ccache			\
 			clang			\
+			ctags			\
 			curl			\
 			gcc				\
 			git				\
