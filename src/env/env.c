@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 01:41:30 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/15 13:26:12 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/18 19:02:36 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ void	del_env(const char *key, t_env **env_list)
 		return ;
 	del_list = search_env(key, *env_list);
 	if (!del_list)
-	{
-		unset_error(key);
 		return ;
-	}
 	if (del_list == *env_list)
 		*env_list = (*env_list)->next;
 	if (del_list->pre)
