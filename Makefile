@@ -10,49 +10,88 @@
 #                                                                              #
 # **************************************************************************** #
 
-# CC				=	clang
-# CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=alignment -fsanitize=bool -fsanitize=bounds -fsanitize=builtin -fsanitize=enum -fsanitize=float-cast-overflow -fsanitize=float-divide-by-zero -fsanitize=integer-divide-by-zero -fsanitize=leak -fsanitize=nonnull-attribute -fsanitize=null -fsanitize=object-size -fsanitize=pointer-compare -fsanitize=pointer-overflow -fsanitize=pointer-subtract -fsanitize=return -fsanitize=returns-nonnull-attribute -fsanitize=shadow-call-stack -fsanitize=shift -fsanitize=shift-base -fsanitize=shift-exponent -fsanitize=signed-integer-overflow -fsanitize=undefined -fsanitize=unreachable -fsanitize=vla-bound -fsanitize=vptr
+NAME			=	minishell
 
 CC				=	cc
-CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=alignment -fsanitize=bool -fsanitize=bounds -fsanitize=bounds-strict -fsanitize=builtin -fsanitize=enum -fsanitize=float-cast-overflow -fsanitize=float-divide-by-zero -fsanitize=integer-divide-by-zero -fsanitize=leak -fsanitize=nonnull-attribute -fsanitize=null -fsanitize=object-size -fsanitize=pointer-compare -fsanitize=pointer-overflow -fsanitize=pointer-subtract -fsanitize=return -fsanitize=returns-nonnull-attribute -fsanitize=shift -fsanitize=shift-base -fsanitize=shift-exponent -fsanitize=signed-integer-overflow -fsanitize=undefined -fsanitize=unreachable -fsanitize=vla-bound -fsanitize=vptr
-
-NAME			=	minishell
-# CC				=	cc
 CFLAGS			=	-Wall -Werror -Wextra
-# CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=leak -fsanitize=undefined
+CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=undefined
+
 INCLUDE			=	-I include
 
-# SRCS			=	src/main.c				\
-# 					src/lexer.c				\
-# 					src/parser.c			\
-# 					src/minishell_signal.c
-
-SRCS			=	$(shell find src/ -name "*.c")
+SRCS			=	src/main.c						\
+					src/signal/signal.c				\
+					src/debug_func.c				\
+					src/error/error.c				\
+					src/error/error2.c				\
+					src/lexer/into_list.c			\
+					src/lexer/is_01.c				\
+					src/lexer/is_02.c				\
+					src/lexer/tokenize.c			\
+					src/parse/parse.c				\
+					src/parse/parse2.c				\
+					src/exec/exec.c					\
+					src/exec/is.c					\
+					src/exec/make_path.c			\
+					src/redirect/redirect.c			\
+					src/redirect/heredoc.c			\
+					src/redirect/open_file.c		\
+					src/pipe/pipe.c					\
+					src/wrap/close.c				\
+					src/wrap/dup2.c					\
+					src/wrap/dup.c					\
+					src/wrap/fork.c					\
+					src/wrap/pipe.c					\
+					src/wrap/read.c					\
+					src/wrap/write.c				\
+					src/wrap/getcwd.c				\
+					src/wrap/chdir.c				\
+					src/expand/expand.c				\
+					src/expand/is_01.c				\
+					src/expand/is_02.c				\
+					src/builtin/recognize_builtin.c	\
+					src/builtin/echo.c				\
+					src/builtin/export.c			\
+					src/builtin/export2.c			\
+					src/env/env.c					\
+					src/env/env2.c					\
+					src/builtin/pwd.c				\
+					src/builtin/cd.c				\
+					src/builtin/env.c				\
+					src/builtin/unset.c				\
+					src/builtin/exit.c
 
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 OBJ_DIR			=	obj
-LIBFT_DIR		=	libft
 
-LIBFT_LIB		=	$(addprefix $(LIBFT_DIR),/libft.a)
-LIBS			=	$(LIBFT_LIB) -lreadline 
+
+ifeq ($(shell uname -s), Linux)
+CFLAGS_DEBUG	+=	-fsanitize=leak
+SHELL			=	/bin/bash
+LIBS			=	-lreadline
+else
+RLDIR   		= $(shell brew --prefix readline)
+LIBS			=	-L$(RLDIR)/lib -lreadline
+INCLUDE			+=	-I $(RLDIR)/include
+endif
+
+ifneq ($(shell command -v ccache), )
+CCACHE			=	ccache
+endif
 
 $(OBJ_DIR)/%.o:%.c
 				@mkdir -p $(@D)
-				$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@  
+				$(CCACHE) $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@  
 
-$(NAME):		$(OBJS) $(LIBFT_LIB)
-				$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
-
-$(LIBFT_LIB):	
-				make -C $(LIBFT_DIR)
+$(NAME):		$(OBJS)
+				$(CCACHE) $(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 PHONY			=	all
 all:			$(NAME)	
 
 PHONY			+=	clean
 clean:			
-				make fclean -C $(LIBFT_DIR)
+				# make fclean -C $(LIBFT_DIR)
 				$(RM) -r $(OBJ_DIR)
 
 PHONY			+=	fclean
@@ -65,10 +104,11 @@ re:				fclean all
 PHONY			+=	debug
 debug:			CFLAGS += $(CFLAGS_DEBUG)
 debug:			re
+				./$(NAME)
 
 PHONY			+=	valgrind
 valgrind:		all
-				valgrind --log-file=$(PWD)/log.txt --leak-check=full --tool=memcheck --leak-check=yes --show-reachable=yes ./$(NAME)
+				valgrind --log-file=$(PWD)/log.txt --leak-check=full --tool=memcheck --leak-check=yes ./$(NAME)
 				@cat log.txt | grep -A 3 "HEAP SUMMARY"
 				@cat log.txt | grep -A 6 "LEAK SUMMARY"
 
@@ -82,5 +122,9 @@ leak:			all
 PHONY			+=	test
 test:			all
 				./$(NAME) < test.txt
+
+PHONY			+=	no_flag
+no_flags:		CFLAGS =
+no_flags:		re
 
 .PHONY:			$(PHONY)
