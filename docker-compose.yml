@@ -1,12 +1,22 @@
-version: '3'
-
+version: '3.9'
 services:
-  ubuntu:
-    build: ./ubuntu
+  minishell:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+      args:
+        USER_ID: ${UID:-1000}
+        GROUP_ID: ${GID:-1000}
     container_name: minishell
     image: minishell
-    platform: 'linux/amd64'
-    restart: always
-    tty: true
     volumes:
-      - ${HOME}:/mnt/host/
+      - ./:/app
+      - ${HOME}/.aliases:/home/appuser/.aliases
+      - ${HOME}/.bashrc:/home/appuser/.bashrc
+      - ${HOME}/.gitconfig:/home/appuser/.gitconfig
+      - ${HOME}/.vimrc:/home/appuser/.vimrc
+      - ${HOME}/.zshrc:/home/appuser/.zshrc
+      - ${HOME}/.ssh:/home/appuser/.ssh
+      - ${HOME}/commit_template.txt:/home/appuser/commit_template.txt
+    platform: 'linux/amd64'
+    tty: true
