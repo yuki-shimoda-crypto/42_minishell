@@ -15,8 +15,8 @@ NAME			=	minishell
 CC				=	cc
 CFLAGS			=	-Wall -Werror -Wextra
 CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=undefined
-
 INCLUDE			=	-I include
+LIBS			=
 
 SRCS			=	src/main.c						\
 					src/signal/signal.c				\
@@ -59,12 +59,10 @@ SRCS			=	src/main.c						\
 					src/builtin/env.c				\
 					src/builtin/unset.c				\
 					src/builtin/exit.c
-
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
-
 OBJ_DIR			=	obj
 
-
+# Determine OS specific settings
 ifeq ($(shell uname -s), Linux)
 CFLAGS_DEBUG	+=	-fsanitize=leak
 SHELL			=	/bin/bash
@@ -75,56 +73,87 @@ LIBS			=	-L$(RLDIR)/lib -lreadline
 INCLUDE			+=	-I $(RLDIR)/include
 endif
 
+# Check if ccache is available
 ifneq ($(shell command -v ccache), )
 CCACHE			=	ccache
 endif
 
+DOCKER_IMAGE_NAME = minishell
+
+# Object file rule
 $(OBJ_DIR)/%.o:%.c
 				@mkdir -p $(@D)
 				$(CCACHE) $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@  
 
+# Main build rule
 $(NAME):		$(OBJS)
 				$(CCACHE) $(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
-PHONY			=	all
+.PHONY: all clean fclean re debug valgrind leak test build up down down-clean exec logs ps logs-compose start stop restart
+
+# Default rule
 all:			$(NAME)	
 
-PHONY			+=	clean
+# Clean rules
 clean:			
 				# make fclean -C $(LIBFT_DIR)
 				$(RM) -r $(OBJ_DIR)
 
-PHONY			+=	fclean
 fclean:			clean
 				$(RM) $(NAME)
 
-PHONY			+=	re
 re:				fclean all
 
-PHONY			+=	debug
+# Debug rules
 debug:			CFLAGS += $(CFLAGS_DEBUG)
 debug:			re
 				./$(NAME)
 
-PHONY			+=	valgrind
+# Valgrind rule
 valgrind:		all
 				valgrind --log-file=$(PWD)/log.txt --leak-check=full --tool=memcheck --leak-check=yes ./$(NAME)
 				@cat log.txt | grep -A 3 "HEAP SUMMARY"
 				@cat log.txt | grep -A 6 "LEAK SUMMARY"
 
-PHONY			+=	leak
+# Leak rule
 leak:			all
-				while [ 1 ];			\
-				do leaks -q minishell;	\
-				sleep 1;				\
-				done
+				while [ 1 ]; do leaks -q minishell;	sleep 1; done
 
-PHONY			+=	test
+# Test rule
 test:			all
 				./$(NAME) < test.txt
 
-PHONY			+=	no_flag
-no_flags:		CFLAGS =
-no_flags:		re
+# Docker rules
+build:
+	docker compose build --build-arg HOST_HOME=${HOME}
 
-.PHONY:			$(PHONY)
+up:
+	docker compose up -d
+
+down:
+	docker compose down
+
+down-clean:
+	docker compose down --rmi all --volumes --remove-orphans
+
+exec:
+	docker exec -it $(DOCKER_IMAGE_NAME) bash
+
+logs:
+	docker logs $(DOCKER_IMAGE_NAME)
+
+ps:
+	docker ps -f "ancestor=$(DOCKER_IMAGE_NAME)"
+
+logs-compose:
+	docker compose logs
+
+start:
+	docker compose start
+
+stop:
+	docker compose stop
+
+restart:
+	docker compose restart
+
