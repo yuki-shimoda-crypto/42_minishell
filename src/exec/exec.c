@@ -424,10 +424,6 @@ void	exec_cmd(t_node *node, t_env **env_list)
 					wrap_close(node->inpipe[1]);
 					wrap_close(node->inpipe[0]);
 				}
-				if (node->outpipe[1] != INT_MAX)
-				{
-					wrap_close(node->outpipe[1]);
-				}
 			}
 		}
 		reset_redirect(node->redirect);
