@@ -95,9 +95,9 @@ int	main(int argc, char const *argv[], char *envp[])
 		line = readline(PROMPT);
 		if (!line)
 		{
-			wrap_write (STDOUT_FILENO, "exit", strlen("exit\n"));
-			if (g_return_error.ctrl_c == false)
-				wrap_write(STDOUT_FILENO, "\n", 1);
+//			wrap_write (STDOUT_FILENO, "exit", strlen("exit\n"));
+//			if (g_return_error.ctrl_c == false)
+//				wrap_write(STDOUT_FILENO, "\n", 1);
 			break ;
 		}
 		if (*line)
