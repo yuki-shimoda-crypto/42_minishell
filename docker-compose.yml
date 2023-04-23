@@ -4,19 +4,19 @@ services:
     build:
       context: ./docker
       dockerfile: Dockerfile
-      args:
-        USER_ID: ${UID:-1000}
-        GROUP_ID: ${GID:-1000}
+#      args:
+#        USER_ID: ${UID:-1000}
+#        GROUP_ID: ${GID:-1000}
     container_name: minishell
     image: minishell
     volumes:
       - ./:/app
-      - ${HOME}/.aliases:/home/appuser/.aliases
-      - ${HOME}/.bashrc:/home/appuser/.bashrc
-      - ${HOME}/.gitconfig:/home/appuser/.gitconfig
-      - ${HOME}/.vimrc:/home/appuser/.vimrc
-      - ${HOME}/.zshrc:/home/appuser/.zshrc
-      - ${HOME}/.ssh:/home/appuser/.ssh
-      - ${HOME}/commit_template.txt:/home/appuser/commit_template.txt
-    platform: 'linux/amd64'
+      - ${HOME}/.aliases:/root/.aliases
+      - ${HOME}/.bashrc:/root/.bashrc
+      - ${HOME}/.gitconfig:/root/.gitconfig
+      - ${HOME}/.vimrc:/root/.vimrc
+      - ${HOME}/.zshrc:/root/.zshrc
+      - ${HOME}/.ssh:/root/.ssh
+      - ${HOME}/commit_template.txt:/root/commit_template.txt
+#    platform: 'linux/amd64'
     tty: true

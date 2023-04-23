@@ -37,14 +37,14 @@ RUN		curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | 
 # RUN		ssh-keygen -q -f ~/.ssh/id_rsa_github -t rsa -N "" 
 # RUN		ssh-keygen -q -f ~/.ssh/id_rsa_42 -t rsa -N ""
 
-# Create a new user with the same UID and GID as your host user
-ARG USER_ID
-ARG GROUP_ID
-RUN groupadd -g ${GROUP_ID} appuser && \
-    useradd -u ${USER_ID} -g ${GROUP_ID} -m -s /bin/bash appuser && \
-	echo "appuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-# Set the default user and command to run when starting the container
-USER appuser
+# # Create a new user with the same UID and GID as your host user
+# ARG USER_ID
+# ARG GROUP_ID
+# RUN groupadd -g ${GROUP_ID} appuser && \
+#     useradd -u ${USER_ID} -g ${GROUP_ID} -m -s /bin/bash appuser && \
+# 	echo "appuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+# 
+# # Set the default user and command to run when starting the container
+# USER appuser
 
 CMD ["bash"]
