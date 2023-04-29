@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 14:11:26 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/04/11 17:21:02 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/29 16:11:48 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #include <stdio.h>
 #include <unistd.h>
 
+static void	join_add_env(char *key, char *value, t_env **env_list)
+{
+	char	*tmp;
+
+	tmp = strjoin(key, value);
+	add_env(tmp, env_list);
+	free(tmp);
+	free(value);
+}
 static int	go_home(t_env **env_list)
 {
 	t_env	*path;
@@ -39,16 +48,27 @@ static int	go_home(t_env **env_list)
 		return (status);
 	}
 	pwd_new = wrap_getcwd(NULL, 0);
+	if (!pwd_new)
+	{
+		free(old_pwd);
+		return (1);
+	}
 	rewrite_pwd = search_env("PWD", *env_list);
 	if (!rewrite_pwd)
-		add_env(strjoin("PWD", pwd_new), env_list);
-	free(rewrite_pwd->value);
-	rewrite_pwd->value = pwd_new;
+		join_add_env("PWD", pwd_new, env_list);
+	else
+	{
+		free(rewrite_pwd->value);
+		rewrite_pwd->value = pwd_new;
+	}
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
-		add_env(strjoin("OLDPWD", old_pwd), env_list);
-	free(path->value);
-	path->value = old_pwd;
+		join_add_env("OLDPWD", old_pwd, env_list);
+	else
+	{
+		free(path->value);
+		path->value = old_pwd;
+	}
 	return (status);
 }
 
@@ -68,21 +88,27 @@ static int	go_back_prev(t_env **env_list)
 	if (!path)
 	{
 		cd_error("OLDPWD");
-		add_env(strjoin("OLDPWD=", old_pwd), env_list);
+		join_add_env("OLDPWD", old_pwd, env_list);
 		return (1);
 	}
 	status = wrap_chdir(path->value);
 	if (status == -1)
 	{
+		free(path);
 		free(old_pwd);
 		return (status);
 	}
 	pwd_new = wrap_getcwd(NULL, 0);
+	if (!pwd_new)
+		return (0);
 	rewrite_pwd = search_env("PWD", *env_list);
 	if (!rewrite_pwd)
-		add_env(strjoin("PWD", pwd_new), env_list);
-	free(rewrite_pwd->value);
-	rewrite_pwd->value = pwd_new;
+		join_add_env("PWD", pwd_new, env_list);
+	else
+	{
+		free(rewrite_pwd->value);
+		rewrite_pwd->value = pwd_new;
+	}
 	free(path->value);
 	path->value = old_pwd;
 	return (status);
@@ -91,8 +117,8 @@ static int	go_back_prev(t_env **env_list)
 static int	manage_cd_path(char *destination, t_env **env_list)
 {
 	t_env	*path;
-	char	*old_pwd;
 	t_env	*rewrite_pwd;
+	char	*old_pwd;
 	char	*pwd_new;
 	int		status;
 
@@ -109,14 +135,20 @@ static int	manage_cd_path(char *destination, t_env **env_list)
 	pwd_new = wrap_getcwd(NULL, 0);
 	rewrite_pwd = search_env("PWD", *env_list);
 	if (!rewrite_pwd)
-		add_env(strjoin("PWD", pwd_new), env_list);
-	free(rewrite_pwd->value);
-	rewrite_pwd->value = pwd_new;
+		join_add_env("PWD", pwd_new, env_list);
+	else
+	{
+		free(rewrite_pwd->value);
+		rewrite_pwd->value = pwd_new;
+	}
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
-		add_env(strjoin("OLDPWD", old_pwd), env_list);
-	free(path->value);
-	path->value = old_pwd;
+		join_add_env("OLDPWD", old_pwd, env_list);
+	else
+	{
+		free(path->value);
+		path->value = old_pwd;
+	}
 	return (status);
 }	
 
