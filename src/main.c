@@ -108,4 +108,5 @@ int	main(int argc, char const *argv[], char *envp[])
 		free(line);
 	}
 	free_env(&env_list);
+	return (g_return_error.return_value);
 }

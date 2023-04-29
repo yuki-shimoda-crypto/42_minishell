@@ -181,6 +181,19 @@ bool	is_relative_path(const char *word)
 	return (false);
 }
 
+bool	is_dot(const char *word)
+{
+	size_t	len;
+
+	len = strlen(word);
+	if (len == 1 && !strncmp(word, ".", 1))
+		return (true);
+	else if (len == 2 && !strncmp(word, "..", 2))
+		return (true);
+	return (false);
+}
+
+
 char	*make_pathname(t_tk *token, t_env *env_list)
 {
 	char	*pathname;
@@ -193,6 +206,12 @@ char	*make_pathname(t_tk *token, t_env *env_list)
 		pathname = make_absolute_path(token);
 	else if (is_relative_path(token->word))
 		pathname = make_relative_path(token->word);
+	else if (is_dot(token->word))
+	{
+		file_exec_error(token->word, ": command not found\n");
+		g_return_error.return_value = 127;
+		return (NULL);
+	}
 	else
 		pathname = make_environment_path(token, env_list);
 	return (pathname);
