@@ -120,8 +120,8 @@ leak:			all
 				while [ 1 ]; do leaks -q minishell;	sleep 1; done
 
 # Test rule
-test:			all
-				./$(NAME) < test.txt
+test:			debug
+				./test.sh
 
 # Docker rules
 build:
