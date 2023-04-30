@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:18:49 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/30 18:03:43 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/29 20:42:08 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	builtin_pwd(void)
 	pwd_path = wrap_getcwd(NULL, 0);
 	if (pwd_path == NULL)
 		return (1);
-	printf("%s\n", pwd_path);
+	write(1, pwd_path, strlen(pwd_path));
+	write(1, "\n", 1);
 	free(pwd_path);
 	return (0);
 }

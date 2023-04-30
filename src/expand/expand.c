@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 20:46:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/04/11 16:05:31 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/30 15:29:25 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,8 @@ void	expand(t_node *node, t_env *env_list)
 	if (node->filename
 		&& (strchr(node->filename, '"') || strchr(node->filename, '\'')))
 		node->quote_flag = true;
-	node->filename = expand_word(node->filename, env_list);
+	if (node->kind != ND_REDIRECT_HEREDOC)
+		node->filename = expand_word(node->filename, env_list);
 	expand(node->redirect, env_list);
 	expand(node->pipe, env_list);
 }
