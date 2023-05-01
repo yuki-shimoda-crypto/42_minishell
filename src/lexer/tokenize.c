@@ -86,6 +86,11 @@ t_tk	*tokenize(char *line)
 			syntax_error("|\n", &line, line);
 			g_return_error.tokenize_error = true;
 		}
+		else if (head.next && head.next->kind == TK_PIPE)
+		{
+			syntax_error("|\n", &line, line);
+			g_return_error.tokenize_error = true;
+		}
 	}
 	token->next = token_new(NULL, TK_EOF);
 	return (head.next);

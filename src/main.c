@@ -75,7 +75,8 @@ void	interpret(char *line, t_env **env_list)
 	if (g_return_error.parse_error)
 		return ;
 	exec_cmd(node, env_list);
-	// print_node(node, 0);
+//	print_t_tk(token);
+//	print_node(node, 0);
 	free_token(&token);
 	free_node(&node);
 }
@@ -98,6 +99,8 @@ int	main(int argc, char const *argv[], char *envp[])
 //			wrap_write (STDOUT_FILENO, "exit", strlen("exit\n"));
 //			if (g_return_error.ctrl_c == false)
 //				wrap_write(STDOUT_FILENO, "\n", 1);
+			if (isatty(STDIN_FILENO))
+				wrap_write (STDOUT_FILENO, "exit\n", strlen("exit\n"));
 			break ;
 		}
 		if (*line)
