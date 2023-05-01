@@ -1,26 +1,25 @@
 ---
-name: バグ報告
-about: バグや不具合に関する報告用のテンプレート
+name: Bug report
+about: Template for reporting bugs or issues
 ---
 
-### バグ概要
-<!-- バグや不具合について簡潔に説明してください -->
+### Bug summary
+<!-- Provide a concise description of the bug or issue -->
 
-### 再現手順
-<!-- バグを再現する手順を記載してください -->
+### Steps to reproduce
+<!-- List the steps to reproduce the bug -->
 1.
 2.
 3.
 
-### 期待される挙動
-<!-- 正常な場合どのような挙動が期待されるのか説明してください -->
+### Expected behavior
+<!-- Describe what should happen under normal circumstances -->
 
-### スクリーンショット
-<!-- 必要に応じて、問題のスクリーンショットを添付してください -->
+### Screenshots
+<!-- Attach any relevant screenshots of the issue, if applicable -->
 
-### 環境情報
-<!-- 問題が発生した環境情報を記載してください (例: OS, ブラウザ, バージョンなど) -->
+### Environment information
+<!-- Provide information about the environment where the issue occurred (e.g. OS, browser, version) -->
 
-### 追加情報
-<!-- その他、このバグに関連する情報があれば記載してください -->
-
+### Additional information
+<!-- Include any other information related to the bug, if applicable -->
