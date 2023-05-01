@@ -1,17 +1,16 @@
 ---
-name: 質問用テンプレート
-about: 質問や疑問に関するテンプレート
+name: Question template
+about: Template for questions or inquiries
 ---
 
-### 質問概要
-<!-- 質問や疑問について簡潔に説明してください -->
+### Question summary
+<!-- Provide a concise description of your question or inquiry -->
 
-### 詳細説明
-<!-- 質問や疑問の詳細を記載してください。必要であれば、コード例やエラーメッセージを含めてください -->
+### Detailed explanation
+<!-- Provide a detailed explanation of your question or inquiry. Include code examples and error messages if applicable -->
 
-### 参考情報
-<!-- もし参考になるリンクや情報があれば記載してください -->
+### Reference information
+<!-- List any relevant links or reference materials, if applicable -->
 
-### 追加情報
-<!-- その他、この質問に関連する情報があれば記載してください -->
-
+### Additional information
+<!-- Include any other information related to the question, if applicable -->
