@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 15:54:58 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/04/11 16:05:45 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/02 11:13:44 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	heredoc(char *delimiter, t_env *env_list, bool quote_flag)
 			break ;
 		}
 		if (!quote_flag)
-			expanded = expand_word(input, env_list);
+			expanded = expand_word(input, ND_SIMPLE_CMD, env_list);
 		else
 			expanded = input;
 		write (pipe_fd[1], expanded, strlen(expanded));
