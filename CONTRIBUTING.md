@@ -29,7 +29,7 @@ Please use the following template for your branch names:
 `<category>`/`<issue-number>`-`<short-description>`
 
 `<category>` should be one of the following:
-- `feature`: For new features or functionality additions.
+- `feat`: For new features or functionality additions.
 - `fix`: For bug fixes.
 - `docs`: For documentation changes.
 - `style`: For code style adjustments (indentation, whitespace, etc.) without logic changes.
@@ -67,7 +67,7 @@ Long description (wrap at 72 characters):
 Motivation:
 - Explain the motivation behind the changes in this commit.
 
-Issue or Pull Request: (e.g., "Issue: #123" or "PR: #456")
+Issue or Pull Request: (e.g., "fixes: #123" or "closes: #456" or "Issue # 789", "PR #1000")
 - If applicable, add a reference to the issue or pull request that this commit addresses.
 
 Again, thank you for your interest in contributing to our project. We look forward to your collaboration and contributions!

@@ -38,8 +38,8 @@ int	heredoc(char *delimiter, t_env *env_list, bool quote_flag)
 			expanded = expand_word(input, ND_SIMPLE_CMD, env_list);
 		else
 			expanded = input;
-		write (pipe_fd[1], expanded, strlen(expanded));
-		write (pipe_fd[1], "\n", strlen("\n"));
+		write(pipe_fd[1], expanded, strlen(expanded));
+		write(pipe_fd[1], "\n", strlen("\n"));
 		free(expanded);
 	}
 	close(pipe_fd[1]);

@@ -259,7 +259,7 @@ void	expand_token(t_tk *token, t_env *env_list)
 {
 	if (!token)
 		return ;
-	token->word = expand_word(token->word, token->kind, env_list);
+	token->word = expand_word(token->word, ND_SIMPLE_CMD, env_list);
 	expand_token(token->next, env_list);
 }
 

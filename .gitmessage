@@ -1,0 +1,37 @@
+# <type>(<scope>): <Short description> (less than 50 characters)
+# 
+# Commit type: (Choose one of the following)
+#   feat: A new feature or functionality addition
+#   fix: A bug fix
+#   docs: Documentation changes
+#   style: Code style adjustments (indentation, whitespace, etc.) without logic changes
+#   refactor: Code refactoring without adding new features or fixing bugs
+#   test: Addition or modification of test code
+#   chore: Build process or tooling changes
+#
+# Scope: (A brief description of the part of the codebase affected by the commit)
+#
+# Long description (wrap at 72 characters):
+# - More detailed explanation of what the commit does.
+# - You can use multiple bullet points if needed.
+#
+# Motivation:
+# - Explain the motivation behind the changes in this commit.
+#
+# Issue or Pull Request: (e.g., "fixes: #123" or "closes: #456" or "Issue # 789", "PR #1000")
+# - If applicable, add a reference to the issue or pull request that this commit addresses.
+
+# example
+# feat(main): user authentication module
+# 
+# Add a new user authentication module that supports:
+# - Registration with email and password
+# - Login with email and password
+# - Password reset functionality
+# 
+# Motivation:
+# - Improve the security of the application by adding an authentication system.
+# - Provide a better user experience with personalized content based on user login status.
+# 
+# Issue: #42
+
