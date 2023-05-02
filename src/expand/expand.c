@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 20:46:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/04/11 16:05:31 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/02 11:08:25 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ char	*expand_single_quote(char **skipped, char *word, char *new_word)
 	return (new_word);
 }
 
-char	*expand_word(char *word, t_env *env_list)
+char	*expand_word(char *word, t_node_kind kind, t_env *env_list)
 {
 	char	*head;
 	char	*new_word;
@@ -244,7 +244,7 @@ char	*expand_word(char *word, t_env *env_list)
 			new_word = expand_single_quote(&word, word, new_word);
 		else if (is_double_quote(*word))
 			new_word = expand_double_quote(&word, word, new_word, env_list);
-		else if (is_variable(word))
+		else if (is_variable(word) && kind != ND_REDIRECT_HEREDOC)
 			new_word = expand_variable(&word, word, new_word, env_list);
 		else if (is_special_charactor(word))
 			new_word = expand_special_char(&word, word, new_word);
@@ -259,7 +259,7 @@ void	expand_token(t_tk *token, t_env *env_list)
 {
 	if (!token)
 		return ;
-	token->word = expand_word(token->word, env_list);
+	token->word = expand_word(token->word, token->kind, env_list);
 	expand_token(token->next, env_list);
 }
 
@@ -271,7 +271,7 @@ void	expand(t_node *node, t_env *env_list)
 	if (node->filename
 		&& (strchr(node->filename, '"') || strchr(node->filename, '\'')))
 		node->quote_flag = true;
-	node->filename = expand_word(node->filename, env_list);
+	node->filename = expand_word(node->filename, node->kind, env_list);
 	expand(node->redirect, env_list);
 	expand(node->pipe, env_list);
 }
