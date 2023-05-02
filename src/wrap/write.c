@@ -22,7 +22,7 @@ ssize_t	wrap_write(int fd, const void *buf, size_t count)
 	if (result == -1)
 	{
 		perror(NULL);
-		assert_error("pipe\n");
+		assert_error("write\n");
 	}
 	return (result);
 }
