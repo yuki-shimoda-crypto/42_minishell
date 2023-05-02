@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 #include <stdio.h>
+#include <sys/stat.h>
 
 char	*find_env_path(t_env *env_list)
 {
@@ -47,6 +48,18 @@ bool	is_only_slash(const char *pathname)
 	return (true);
 }
 
+bool	is_directory(const char *pathname)
+{
+	struct stat st;
+
+	if (stat(pathname, &st) == 0)
+	{
+		if (S_ISDIR(st.st_mode))
+			return (true);
+	}
+	return (false);
+}
+
 char	*make_absolute_path(t_tk *token)
 {
 	char	*pathname;
@@ -54,7 +67,7 @@ char	*make_absolute_path(t_tk *token)
 	pathname = strdup(token->word);
 	if (!pathname)
 		assert_error("strdup\n");
-	if (is_only_slash(pathname))
+	if (is_only_slash(pathname) || is_directory(pathname))
 	{
 		file_exec_error(token->word, ": is a directory\n");
 		g_return_error.return_value = 126;

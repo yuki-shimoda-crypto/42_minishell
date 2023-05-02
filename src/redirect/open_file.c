@@ -21,11 +21,13 @@ int	open_redir_out(char *filename)
 	int	fd;
 
 	fd = 0;
-	fd = open (filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 	{
+		write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
 		perror(filename);
 		g_return_error.redirect_error = true;
+		g_return_error.return_value = 1;
 	}
 	return (fd);
 }
@@ -38,8 +40,10 @@ int	open_redir_append(char *filename)
 	fd = open (filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd == -1)
 	{
+		write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
 		perror(filename);
 		g_return_error.redirect_error = true;
+		g_return_error.return_value = 1;
 	}
 	return (fd);
 }
@@ -52,8 +56,10 @@ int	open_redir_in(char *filename)
 	fd = open (filename, O_RDONLY);
 	if (fd == -1)
 	{
+		write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
 		perror(filename);
 		g_return_error.redirect_error = true;
+		g_return_error.return_value = 1;
 	}
 	return (fd);
 }

@@ -1,20 +1,20 @@
 ---
-name: 機能リクエスト
-about: 新しい機能や改善提案に関するテンプレート
+name: Feature request
+about: Template for new features or improvement suggestions
 ---
 
-### 機能概要
-<!-- 提案する新機能や改善点について簡潔に説明してください -->
+### Feature summary
+<!-- Provide a concise description of the proposed feature or improvement -->
 
-### 背景・目的
-<!-- この機能がなぜ必要か、どのような問題があるのか、解決することでどのような利益があるのかを説明してください -->
+### Background and purpose
+<!-- Explain why this feature is needed, what problems it addresses, and the benefits of solving it -->
 
-### 提案される機能・解決方法
-<!-- 具体的にどのような方法や機能で問題を解決するのかを説明してください -->
+### Proposed feature and solution
+<!-- Describe how the issue will be solved or what feature will be added -->
 
-### 代替案
-<!-- もし他に解決方法や提案があれば記載してください -->
+### Alternatives
+<!-- List any alternative solutions or proposals, if applicable -->
 
-### 追加情報
-<!-- その他、この機能リクエストに関連する情報があれば記載してください -->
+### Additional information
+<!-- Include any other information related to the feature request, if applicable -->
 
