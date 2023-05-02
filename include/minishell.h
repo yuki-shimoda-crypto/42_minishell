@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/04/11 16:06:21 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/04/30 16:03:30 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ bool	is_variable(char *line);
 bool	is_alpha_under(char c);
 bool	is_alpha_num_under(char c);
 bool	is_special_charactor(char *line);
-char	*expand_word(char *word, t_env *env_list);
+char	*expand_word(char *word, t_node_kind kind, t_env *env_list);
 
 //builtin
 void	builtin_echo(char **argv);
