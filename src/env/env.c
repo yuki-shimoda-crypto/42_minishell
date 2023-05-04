@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 01:41:30 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/04/18 19:02:36 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/04 21:39:38 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,20 @@ void	add_env(const char *env, t_env **env_list)
 		return ;
 	tail = strchr(env, '=');
 	if (!tail)
-		return ;
+	{
+		key = strdup(env);
+		value = calloc(1, 1);
+	}
+	else
+	{
 	key = strndup(env, tail - env);
-	if (!key)
-		assert_error("strndup\n");
-	tail++;
-	value = strdup(tail);
-	if (!value)
-		assert_error("strdup\n");
+		if (!key)
+			assert_error("strndup\n");
+		tail++;
+		value = strdup(tail);
+		if (!value)
+			assert_error("strdup\n");
+	}
 	new_env_list = env_new(key, value);
 	if (!new_env_list)
 		assert_error("env_new\n");
