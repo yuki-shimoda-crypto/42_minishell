@@ -14,7 +14,23 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void	builtin_echo(char **argv)
+static bool	is_output_newline(const char *word)
+{
+	size_t	i;
+
+	if (strncmp(word, "-n", 2))
+		return (true);
+	i = 1;
+	while (word[i])
+	{
+		if (word[i] != 'n')
+			return (true);	
+		i++;
+	}
+	return (false);
+}
+
+int	builtin_echo(char **argv)
 {
 	size_t	i;
 
@@ -23,7 +39,7 @@ void	builtin_echo(char **argv)
 	else
 	{
 		i = 1;
-		if (!strncmp(argv[1], "-n", 2))
+		if (!is_output_newline(argv[1]))
 			i++;
 		while (argv[i])
 		{
@@ -32,7 +48,8 @@ void	builtin_echo(char **argv)
 				wrap_write(STDOUT_FILENO, " ", 1);
 			i++;
 		}
-		if (strncmp(argv[1], "-n", 2))
+		if (is_output_newline(argv[1]))
 			wrap_write(STDOUT_FILENO, "\n", 1);
 	}
+	return (0);
 }

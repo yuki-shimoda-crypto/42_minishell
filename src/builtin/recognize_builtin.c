@@ -19,7 +19,7 @@ int	recognize_builtin(char **argv, t_env **env_list)
 	if (!strcmp("cd", argv[0]))
 		g_return_error.return_value = builtin_cd(argv, env_list);
 	else if (!strcmp("echo", argv[0]))
-		builtin_echo(argv);
+		g_return_error.return_value = builtin_echo(argv);
 	else if (!strcmp("env", argv[0]))
 		builtin_env(*env_list);
 	else if (!strcmp("exit", argv[0]))
