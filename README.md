@@ -18,7 +18,7 @@ To build Minishell, follow these steps:
 1. Install the necessary dependencies:
     - For Ubuntu/Debian-based systems:
         ```bash
-        sudo apt install build-essential
+        sudo apt install build-essential libreadline-dev
         ```
     - For Fedora systems:
         ```bash

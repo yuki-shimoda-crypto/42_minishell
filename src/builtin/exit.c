@@ -15,85 +15,82 @@
 #include <limits.h>
 #include <ctype.h>
 
-static int	check_num(char *str)
+bool	is_number(const char *status)
 {
-	size_t	len;
-
-	len = 0;
-	while (str[len])
-	{
-		if (!isdigit(str[len]))
-			return (1);
-		if (len >= 20)
-			return (1);
-		len++;
-	}
-	return (0);
-}
-
-static int	check_overflow(unsigned long ans, int sign)
-{
-	if (sign == 1)
-	{
-		if (ans > LONG_MAX)
-			return (-1);
-	}
-	else if (sign == -1)
-	{
-		ans -= 1;
-		if (ans > LONG_MAX)
-			return (1);
-	}
-	return (0);
-}
-
-static int	atoi_for_exit(char *cmd)
-{
-	unsigned long	i;
-	unsigned long	ans;
-	int				sign;
-
+	size_t	i;
+	
 	i = 0;
-	sign = 1;
-	while (cmd[i] == '\t' || cmd[i] == '\n' || cmd[i] == '\v'
-		|| cmd[i] == '\f' || cmd[i] == '\r' || cmd[i] == ' ')
-		i++;
-	if (cmd[i] == '-')
-		sign = -1;
-	if (cmd[i] == '-' || cmd[i] == '+')
-		i++;
-	if (check_num(&cmd[i]) != 0)
-		exit_numeric(cmd);
-	while (isdigit(cmd[i]))
+	while (status[i])
 	{
-		ans = ans * 10 + cmd[i] - '0';
+		if (!isdigit(status[i]))
+			return (false);
 		i++;
 	}
-	if (!check_overflow(ans, sign))
-		exit_numeric(cmd);
-	return (ans * sign);
+	return (true);
+}
+
+static int	ft_check_over(int sign, long ans, char c)
+{
+	long	tmp;
+
+	tmp = LONG_MAX / 10;
+	if (sign == 1)
+		c++;
+	if (tmp < ans || (tmp == ans && LONG_MAX % 10 + 1 < c - '0'))
+		return (1);
+	return (0);
+}
+
+bool	is_over_long(const char *str)
+{
+	int		sign;
+	long	total;
+
+	sign = 1;
+	total = 0;
+	while (*str == '\t' || *str == '\n' || *str == '\v'
+		|| *str == '\f' || *str == '\r' || *str == ' ')
+		str++;
+	if (*str == '-')
+		sign *= -1;
+	if (*str == '-' || *str == '+')
+		str++;
+	while ('0' <= *str && *str <= '9')
+	{
+		if (sign == 1 && ft_check_over(sign, total, *str))
+			return (true);
+		if (sign == -1 && ft_check_over(sign, total, *str))
+			return (true);
+		total = total * 10 + *str - '0';
+		str++;
+	}
+	total *= sign;
+	return (false);
 }
 
 int	builtin_exit(char **argv)
 {
-	int	status;
+	long	status;
 
 	status = 0;
 	if (!argv[1])
 	{
-		printf("exit\n");
-		exit (0);
+		if (isatty(STDIN_FILENO))
+			write(STDERR_FILENO, "exit\n", strlen("exit\n"));
+		exit(0);
 	}
 	else if (!argv[2])
 	{
-		status = atoi_for_exit(argv[1]);
-		printf("exit\n");
+		if (argv[1][0] == '\0' || !is_number(argv[1]) || is_over_long(argv[1]))
+			exit_numeric(argv[1]);
+		status = atol(argv[1]);
+		write(STDERR_FILENO, "exit\n", strlen("exit\n"));
 		exit(status % 256);
 	}
 	else
 	{
-		printf("exit: too many arguments\n");
-		return (1);
+		write(STDERR_FILENO, "exit: too many arguments\n", strlen("exit: too many arguments\n"));
+		g_return_error.return_value = 1;
 	}
 	return (0);
 }

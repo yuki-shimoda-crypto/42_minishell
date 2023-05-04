@@ -25,6 +25,7 @@ void	export_error(const char *cmd)
 
 void	env_error(const char *cmd)
 {
+	write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
 	write(STDERR_FILENO, "env: `", strlen("env `"));
 	write(STDERR_FILENO, cmd, strlen(cmd));
 	write(STDERR_FILENO, "`: No such file or directory\n",
@@ -41,6 +42,8 @@ void	unset_error(const char *cmd)
 
 void	exit_numeric(const char *cmd)
 {
+	write(STDERR_FILENO, "exit\n", strlen("exit\n"));
+	write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
 	write(STDERR_FILENO, "exit: ", strlen("exit: "));
 	write(STDERR_FILENO, cmd, strlen(cmd));
 	write(STDERR_FILENO, ": numeric argument required\n",
