@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 14:11:26 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/04/29 16:11:48 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/04 16:44:15 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	go_home(t_env **env_list)
 	}
 	rewrite_pwd = search_env("PWD", *env_list);
 	if (!rewrite_pwd)
-		join_add_env("PWD", pwd_new, env_list);
+		join_add_env("PWD=", pwd_new, env_list);
 	else
 	{
 		free(rewrite_pwd->value);
@@ -63,7 +63,7 @@ static int	go_home(t_env **env_list)
 	}
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
-		join_add_env("OLDPWD", old_pwd, env_list);
+		join_add_env("OLDPWD=", old_pwd, env_list);
 	else
 	{
 		free(path->value);
@@ -88,7 +88,7 @@ static int	go_back_prev(t_env **env_list)
 	if (!path)
 	{
 		cd_error("OLDPWD");
-		join_add_env("OLDPWD", old_pwd, env_list);
+		join_add_env("OLDPWD=", old_pwd, env_list);
 		return (1);
 	}
 	status = wrap_chdir(path->value);
@@ -103,7 +103,7 @@ static int	go_back_prev(t_env **env_list)
 		return (0);
 	rewrite_pwd = search_env("PWD", *env_list);
 	if (!rewrite_pwd)
-		join_add_env("PWD", pwd_new, env_list);
+		join_add_env("PWD=", pwd_new, env_list);
 	else
 	{
 		free(rewrite_pwd->value);
@@ -135,7 +135,7 @@ static int	manage_cd_path(char *destination, t_env **env_list)
 	pwd_new = wrap_getcwd(NULL, 0);
 	rewrite_pwd = search_env("PWD", *env_list);
 	if (!rewrite_pwd)
-		join_add_env("PWD", pwd_new, env_list);
+		join_add_env("PWD=", pwd_new, env_list);
 	else
 	{
 		free(rewrite_pwd->value);
@@ -143,7 +143,7 @@ static int	manage_cd_path(char *destination, t_env **env_list)
 	}
 	path = search_env("OLDPWD", *env_list);
 	if (!path)
-		join_add_env("OLDPWD", old_pwd, env_list);
+		join_add_env("OLDPWD=", old_pwd, env_list);
 	else
 	{
 		free(path->value);
