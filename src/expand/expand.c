@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 20:46:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/02 11:08:25 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/04 17:01:01 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ char	*expand_variable(char **skipped, char *word, char *new_word, t_env *env_lis
 //	return (new_word);
 //}
 
-char	*expand_double_quote(char **skipped, char *word, char *new_word, t_env *env_list)
+char	*expand_double_quote(char **skipped, char *word, char *new_word, t_env *env_list, t_node_kind kind)
 {
 	char	*head;
 	char	*tmp;
@@ -154,7 +154,7 @@ char	*expand_double_quote(char **skipped, char *word, char *new_word, t_env *env
 	{
 		if (*word == '"')
 			break ;
-		else if (is_variable(word))
+		else if (is_variable(word) && kind != ND_REDIRECT_HEREDOC)
 		{
 			append_word = strndup(head, word - head);
 			if (!append_word)
@@ -232,6 +232,7 @@ char	*expand_word(char *word, t_node_kind kind, t_env *env_list)
 	char	*head;
 	char	*new_word;
 
+	(void)kind;
 	if (!word)
 		return (NULL);
 	head = word;
@@ -243,7 +244,7 @@ char	*expand_word(char *word, t_node_kind kind, t_env *env_list)
 		if (is_single_quote(*word))
 			new_word = expand_single_quote(&word, word, new_word);
 		else if (is_double_quote(*word))
-			new_word = expand_double_quote(&word, word, new_word, env_list);
+			new_word = expand_double_quote(&word, word, new_word, env_list, kind);
 		else if (is_variable(word) && kind != ND_REDIRECT_HEREDOC)
 			new_word = expand_variable(&word, word, new_word, env_list);
 		else if (is_special_charactor(word))
