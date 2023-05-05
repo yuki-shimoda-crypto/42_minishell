@@ -53,7 +53,8 @@ void	exit_numeric(const char *cmd)
 
 void	cd_error(const char *cmd)
 {
-	write(STDERR_FILENO, "bash: cd: ", strlen("bash: cd: "));
+	write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
+	write(STDERR_FILENO, "cd: ", strlen("cd: "));
 	write(STDERR_FILENO, cmd, strlen(cmd));
 	write(STDERR_FILENO, " not set\n", strlen(" not set\n"));
 }
