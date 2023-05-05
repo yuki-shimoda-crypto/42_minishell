@@ -351,10 +351,14 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	char	**argv;
 	char	**envp;
 	pid_t	pid;
+	bool	one_cmd;
 
 	input_pipefd(node, NULL);
 	expand(node, *env_list);
 	envp = make_envp(*env_list);
+	one_cmd = false;
+	if (!node->pipe)
+		one_cmd = true;
 	while (node)
 	{
 		pathname = make_pathname(node->token, *env_list);
@@ -377,7 +381,6 @@ void	exec_cmd(t_node *node, t_env **env_list)
 			free(pathname);
 			free_argv(argv);
 			node = node->pipe;
-			g_return_error.redirect_error = false;
 			continue ;
 		}
 		do_redirect(node->redirect);
@@ -397,10 +400,10 @@ void	exec_cmd(t_node *node, t_env **env_list)
 			g_return_error.exec_error = false;
 			continue ;
 		}
-		if (argv && is_builtin(argv[0]))
+		if (argv && is_builtin(argv[0]) && one_cmd)
 		{
 			connect_pipe_builtin(node);
-			recognize_builtin(argv, env_list);
+			recognize_builtin(argv, env_list, one_cmd);
 			reset_pipe_builtin(node);
 		}
 		else
@@ -417,7 +420,12 @@ void	exec_cmd(t_node *node, t_env **env_list)
 				signal(SIGQUIT, SIG_DFL);///
 				signal(SIGINT, SIG_DFL);///
 				connect_pipe(node);
-				if (pathname && argv)
+				if (argv && is_builtin(argv[0]))
+				{
+					recognize_builtin(argv, env_list, one_cmd);
+					exit(EXIT_SUCCESS);
+				}
+				else if (pathname && argv)
 				{
 					execve(pathname, argv, envp);
 					perror("execve");

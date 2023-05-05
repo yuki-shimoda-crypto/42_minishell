@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:28:58 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/16 23:10:59 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 00:16:02 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ bool	is_over_long(const char *str)
 	return (false);
 }
 
-int	builtin_exit(char **argv)
+int	builtin_exit(char **argv, bool one_cmd)
 {
 	long	status;
 
 	status = 0;
 	if (!argv[1])
 	{
-		if (isatty(STDIN_FILENO))
+		if (isatty(STDIN_FILENO) && one_cmd)
 			write(STDERR_FILENO, "exit\n", strlen("exit\n"));
 		exit(0);
 	}
@@ -84,12 +84,14 @@ int	builtin_exit(char **argv)
 		if (argv[1][0] == '\0' || !is_number(argv[1]) || is_over_long(argv[1]))
 			exit_numeric(argv[1]);
 		status = atol(argv[1]);
-		write(STDERR_FILENO, "exit\n", strlen("exit\n"));
+		if (one_cmd)
+			write(STDERR_FILENO, "exit\n", strlen("exit\n"));
 		exit(status % 256);
 	}
 	else
 	{
-		write(STDERR_FILENO, "exit: too many arguments\n", strlen("exit: too many arguments\n"));
+		if (one_cmd)
+			write(STDERR_FILENO, "exit: too many arguments\n", strlen("exit: too many arguments\n"));
 		return (1);;
 	}
 	return (0);
