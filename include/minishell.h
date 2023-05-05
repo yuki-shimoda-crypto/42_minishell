@@ -121,7 +121,7 @@ void	setup_signal(void);
 void	assert_error(const char *msg);
 void	syntax_error(const char *msg, char **skipped, char *line);
 void	file_exec_error(const char *word, const char *msg);
-void	export_error(const char *cmd);
+int		export_error(const char *cmd);
 void	env_error(const char *cmd);
 void	unset_error(const char *cmd);
 void	exit_numeric(const char *cmd);
@@ -210,7 +210,7 @@ bool	is_special_charactor(char *line);
 char	*expand_word(char *word, t_node_kind kind, t_env *env_list);
 
 //builtin
-void	builtin_echo(char **argv);
+int		builtin_echo(char **argv);
 int		builtin_export(char **argv, t_env **env_list);
 
 int		recognize_builtin(char **argv, t_env **env_list);

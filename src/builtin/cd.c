@@ -19,10 +19,13 @@ static void	join_add_env(char *key, char *value, t_env **env_list)
 	char	*tmp;
 
 	tmp = strjoin(key, value);
+	if (!tmp)
+		assert_error("strjoin\n");
 	add_env(tmp, env_list);
 	free(tmp);
 	free(value);
 }
+
 static int	go_home(t_env **env_list)
 {
 	t_env	*path;
@@ -100,7 +103,7 @@ static int	go_back_prev(t_env **env_list)
 	}
 	pwd_new = wrap_getcwd(NULL, 0);
 	if (!pwd_new)
-		return (0);
+		return (1);
 	rewrite_pwd = search_env("PWD", *env_list);
 	if (!rewrite_pwd)
 		join_add_env("PWD=", pwd_new, env_list);
