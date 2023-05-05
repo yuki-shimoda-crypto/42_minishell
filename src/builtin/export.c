@@ -45,17 +45,19 @@ void	overwrite_env(const char *env, t_env *env_list)
 	}
 }
 
-static void	handle_env(char **argv, t_env **env_list)
+static int	handle_env(char **argv, t_env **env_list)
 {
 	size_t	i;
 	char	*eq_ptr;
+	int		status;
 
 	i = 1;
+	status = 0;
 	while (argv[i])
 	{
 		if (!is_alpha_under(argv[i][0]))
 		{
-			export_error(argv[i]);
+			status = export_error(argv[i]);
 			i++;
 			continue ;
 		}
@@ -71,12 +73,15 @@ static void	handle_env(char **argv, t_env **env_list)
 			add_env(argv[i], env_list);
 		i++;
 	}
+	return (status);
 }
 
 int	builtin_export(char **argv, t_env **env_list)
 {
 	size_t	num;
+	int		status;
 
+	status = 0;
 	if (!argv || !*argv || !env_list)
 		return (1);
 	num = 0;
@@ -85,7 +90,7 @@ int	builtin_export(char **argv, t_env **env_list)
 	if (num == 1)
 		put_sorted_env(*env_list);
 	else
-		handle_env(argv, env_list);
-	return (0);
+		status = handle_env(argv, env_list);
+	return (status);
 }
 
