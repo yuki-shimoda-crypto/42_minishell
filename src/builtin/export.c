@@ -14,7 +14,6 @@ static void	put_sorted_env(t_env *env_list)
 	i = 0;
 	while (sort_env[i])
 	{
-		//printf("declare -x %s\n", sort_env[i]);
 		write(1, "declare -x ", strlen("declare -x "));
 		write(1, sort_env[i], strlen(sort_env[i]));
 		if (strchr(sort_env[i], '='))
