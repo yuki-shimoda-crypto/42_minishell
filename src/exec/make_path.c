@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/05 23:16:42 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 00:05:06 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,11 @@ char	*make_environment_path(t_tk *token, t_env *env_list)
 		head = env_path;
 		tail = strchr(env_path, ':');
 		if (tail)
+		{
 			pathname = strndup(head, tail - head);
+			if (!*(tail + 1))
+				tail = NULL;
+		}
 		else
 			pathname = strdup(head);
 		if (!pathname)
