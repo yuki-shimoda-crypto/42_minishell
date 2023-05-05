@@ -22,10 +22,8 @@ static void	print_env(t_env *env_list)
 		if (env_list->value)
 			write(STDOUT_FILENO, env_list->value, strlen(env_list->value));
 		write(STDOUT_FILENO, "\n", 1);
-
 		env_list = env_list->next;
 	}
-	write(STDOUT_FILENO, "_=/usr/bin/env\n", strlen("_=/usr/bin/env\n"));
 }
 
 int	builtin_env(t_env *env_list)

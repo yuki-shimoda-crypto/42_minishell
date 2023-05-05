@@ -210,7 +210,7 @@ bool	is_special_charactor(char *line);
 char	*expand_word(char *word, t_node_kind kind, t_env *env_list);
 
 //builtin
-void	builtin_echo(char **argv);
+int		builtin_echo(char **argv);
 int		builtin_export(char **argv, t_env **env_list);
 
 int		recognize_builtin(char **argv, t_env **env_list);
