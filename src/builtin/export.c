@@ -14,11 +14,10 @@ static void	put_sorted_env(t_env *env_list)
 	i = 0;
 	while (sort_env[i])
 	{
-		//printf("declare -x %s\n", sort_env[i]);
-		write(1, "declare -x ", strlen("declare -x "));
-		write(1, sort_env[i], strlen(sort_env[i]));
-		write(1, "\"", 1);
-		write(1, "\n", 1);
+		write(STDOUT_FILENO, "declare -x ", strlen("declare -x "));
+		write(STDOUT_FILENO, sort_env[i], strlen(sort_env[i]));
+		write(STDOUT_FILENO, "\"", 1);
+		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
 	free_array(sort_env);
@@ -89,3 +88,4 @@ int	builtin_export(char **argv, t_env **env_list)
 		handle_env(argv, env_list);
 	return (0);
 }
+

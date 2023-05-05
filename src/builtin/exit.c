@@ -90,7 +90,7 @@ int	builtin_exit(char **argv)
 	else
 	{
 		write(STDERR_FILENO, "exit: too many arguments\n", strlen("exit: too many arguments\n"));
-		g_return_error.return_value = 1;
+		return (1);;
 	}
 	return (0);
 }
