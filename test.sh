@@ -277,6 +277,7 @@ assert 'exit 1 2'
 ## export
 print_desc "Output of 'export' differs, but it's ok."
 assert 'export' # order of variables, default variables differs...
+assert 'unset HOME\ncd \n export'
 assert 'export | grep nosuch | sort'
 assert 'export nosuch\n export | grep nosuch | sort'
 assert 'export nosuch=fuga\n export | grep nosuch | sort'
@@ -304,6 +305,7 @@ assert 'unset [invalid] fuga \n echo $fuga'
 ## env
 print_desc "Output of 'env' differs, but it's ok."
 assert 'env' # order of variables, default variables differs...
+assert 'unset HOME\ncd \n env'
 assert 'env | grep hoge | sort'
 
 ## cd
@@ -338,6 +340,7 @@ assert 'echo -n'
 assert 'echo -n hello'
 assert 'echo -n hello world'
 assert 'echo hello -n'
+assert 'unset HOME\ncd \n echo hello'
 
 ## pwd
 assert 'pwd'
@@ -349,6 +352,7 @@ assert 'cd .. \n pwd \n echo $PWD $OLDPWD'
 assert 'cd /// \n pwd \n echo $PWD $OLDPWD'
 assert 'cd /tmp/// \n pwd \n echo $PWD $OLDPWD'
 assert 'unset PWD\npwd\ncd /etc\npwd'
+assert 'unset HOME\ncd \n pwd'
 
 ## export attribute
 assert 'unset PWD \n cd \n echo $PWD \ncd /tmp\necho $PWD'

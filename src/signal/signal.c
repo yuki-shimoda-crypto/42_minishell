@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:29:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/04/11 14:09:32 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/05 13:34:51 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	setup_signal(void)
 {
 	if (isatty(STDIN_FILENO))
 		rl_event_hook = signal_hook;
-	rl_outstream = stderr;
 	if (signal(SIGINT, ctrl_c) == SIG_ERR)
 	{
 		perror(NULL);

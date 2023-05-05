@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/04/27 16:00:50 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/05 13:41:43 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	main(int argc, char const *argv[], char *envp[])
 	(void)argc;
 	(void)argv;
 	setup_signal();
+	rl_outstream = stderr;
 	env_list = make_env_list(envp);
 	while (1)
 	{
@@ -97,10 +98,12 @@ int	main(int argc, char const *argv[], char *envp[])
 		if (!line)
 		{
 //			wrap_write (STDOUT_FILENO, "exit", strlen("exit\n"));
-//			if (g_return_error.ctrl_c == false)
-//				wrap_write(STDOUT_FILENO, "\n", 1);
 			if (isatty(STDIN_FILENO))
-				wrap_write (STDOUT_FILENO, "exit\n", strlen("exit\n"));
+			{
+				wrap_write (STDOUT_FILENO, "exit", strlen("exit"));
+				if (g_return_error.ctrl_c == false)
+					wrap_write(STDOUT_FILENO, "\n", 1);
+			}
 			break ;
 		}
 		if (*line)
