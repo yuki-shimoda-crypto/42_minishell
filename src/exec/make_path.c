@@ -226,6 +226,7 @@ char	*make_pathname(t_tk *token, t_env *env_list)
 	else if (is_dot(token->word))
 	{
 		file_exec_error(token->word, ": command not found\n");
+		g_return_error.exec_error = true;
 		g_return_error.return_value = 127;
 		return (NULL);
 	}

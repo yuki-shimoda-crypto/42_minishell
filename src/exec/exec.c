@@ -358,6 +358,13 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	while (node)
 	{
 		pathname = make_pathname(node->token, *env_list);
+		if (g_return_error.exec_error)
+		{
+			free(pathname);
+			node = node->pipe;
+			g_return_error.exec_error = false;
+			continue ;
+		}
 		argv = make_argv(node->token);
 		if (!argv)
 		{
