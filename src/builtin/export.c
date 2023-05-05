@@ -14,10 +14,12 @@ static void	put_sorted_env(t_env *env_list)
 	i = 0;
 	while (sort_env[i])
 	{
-		write(STDOUT_FILENO, "declare -x ", strlen("declare -x "));
-		write(STDOUT_FILENO, sort_env[i], strlen(sort_env[i]));
-		write(STDOUT_FILENO, "\"", 1);
-		write(STDOUT_FILENO, "\n", 1);
+		//printf("declare -x %s\n", sort_env[i]);
+		write(1, "declare -x ", strlen("declare -x "));
+		write(1, sort_env[i], strlen(sort_env[i]));
+		if (strchr(sort_env[i], '='))
+			write(1, "\"", 1);
+		write(1, "\n", 1);
 		i++;
 	}
 	free_array(sort_env);
@@ -48,7 +50,6 @@ void	overwrite_env(const char *env, t_env *env_list)
 static int	handle_env(char **argv, t_env **env_list)
 {
 	size_t	i;
-	char	*eq_ptr;
 	int		status;
 
 	i = 1;
@@ -58,12 +59,6 @@ static int	handle_env(char **argv, t_env **env_list)
 		if (!is_alpha_under(argv[i][0]))
 		{
 			status = export_error(argv[i]);
-			i++;
-			continue ;
-		}
-		eq_ptr = strchr(argv[i], '=');
-		if (!eq_ptr)
-		{
 			i++;
 			continue ;
 		}

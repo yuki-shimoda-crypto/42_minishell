@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 12:59:41 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/30 17:49:18 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/04 20:48:01 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ char	**env_into_array(t_env *env_list)
 	i = 0;
 	while (env_list)
 	{
-		sort_env[i] = strjoin_three(env_list->key, "=\"", env_list->value);
+		if (env_list->value[0] != '\0')
+			sort_env[i] = strjoin_three(env_list->key, "=\"", env_list->value);
+		else
+			sort_env[i] = strdup(env_list->key);
 		env_list = env_list->next;
 		i++;
 	}
