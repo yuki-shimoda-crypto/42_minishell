@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:29:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/05 13:34:51 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 01:25:49 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	signal_hook(void)
 		g_return_error.g_sig = 0;
 		g_return_error.ctrl_c = true;
 		g_return_error.heredoc_interupt = true;
+		g_return_error.return_value = 1;
 		rl_replace_line("", 0);
 		rl_done = 1;
 	}
