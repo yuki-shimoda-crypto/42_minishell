@@ -120,7 +120,8 @@ leak:			all
 				while [ 1 ]; do leaks -q minishell;	sleep 1; done
 
 # Test rule
-test:			debug
+test:			CFLAGS += $(CFLAGS_DEBUG)
+test:			re
 				./test.sh
 
 # Docker rules

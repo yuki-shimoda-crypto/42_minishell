@@ -335,7 +335,8 @@ void	wait_child_process(void)
 			g_return_error.return_value = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 		{
-			wrap_write(STDOUT_FILENO, "\n", 1);
+			if (isatty(STDIN_FILENO))
+				wrap_write(STDOUT_FILENO, "\n", 1);
 			g_return_error.g_sig = 0;
 			if (WTERMSIG(status) == SIGINT)
 				g_return_error.ctrl_c = true;//
@@ -357,6 +358,13 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	while (node)
 	{
 		pathname = make_pathname(node->token, *env_list);
+		if (g_return_error.exec_error)
+		{
+			free(pathname);
+			node = node->pipe;
+			g_return_error.exec_error = false;
+			continue ;
+		}
 		argv = make_argv(node->token);
 		if (!argv)
 		{

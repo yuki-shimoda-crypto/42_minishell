@@ -121,9 +121,9 @@ void	setup_signal(void);
 void	assert_error(const char *msg);
 void	syntax_error(const char *msg, char **skipped, char *line);
 void	file_exec_error(const char *word, const char *msg);
-void	export_error(const char *cmd);
+int		export_error(const char *cmd);
 void	env_error(const char *cmd);
-void	unset_error(const char *cmd);
+int		unset_error(const char *cmd);
 void	exit_numeric(const char *cmd);
 void	cd_error(const char *cmd);
 

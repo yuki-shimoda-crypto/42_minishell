@@ -14,13 +14,14 @@
 #include <string.h>
 #include <unistd.h>
 
-void	export_error(const char *cmd)
+int	export_error(const char *cmd)
 {
 	write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
 	write(STDERR_FILENO, "export: `", strlen("export: `"));
 	write(STDERR_FILENO, cmd, strlen(cmd));
 	write(STDERR_FILENO, "': not a valid identifier\n",
 		strlen("': not a valid identifier\n"));
+	return (1);
 }
 
 void	env_error(const char *cmd)
@@ -32,12 +33,14 @@ void	env_error(const char *cmd)
 		strlen("`: No such file or directory\n"));
 }
 
-void	unset_error(const char *cmd)
+int	unset_error(const char *cmd)
 {
-	write(STDERR_FILENO, "bash: unset: `", strlen("bash: unset: `"));
+	write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
+	write(STDERR_FILENO, "unset: `", strlen("unset: `"));
 	write(STDERR_FILENO, cmd, strlen(cmd));
 	write(STDERR_FILENO, "': not a valid identifier\n",
 		strlen("': not a valid identifier\n"));
+	return (1);
 }
 
 void	exit_numeric(const char *cmd)

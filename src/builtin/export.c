@@ -14,10 +14,10 @@ static void	put_sorted_env(t_env *env_list)
 	i = 0;
 	while (sort_env[i])
 	{
-		//printf("declare -x %s\n", sort_env[i]);
 		write(1, "declare -x ", strlen("declare -x "));
 		write(1, sort_env[i], strlen(sort_env[i]));
-		write(1, "\"", 1);
+		if (strchr(sort_env[i], '='))
+			write(1, "\"", 1);
 		write(1, "\n", 1);
 		i++;
 	}
@@ -46,25 +46,44 @@ void	overwrite_env(const char *env, t_env *env_list)
 	}
 }
 
-static void	handle_env(char **argv, t_env **env_list)
+static bool is_str_alpha_num_under_export(const char *str)
 {
 	size_t	i;
-	char	*eq_ptr;
+	char	*ptr_equal;
+	
+	ptr_equal = strchr(str, '=');
+	i = 1;
+	while (str[0] && str[i])
+	{
+		if (ptr_equal == str + i)
+			break ;
+		if (!is_alpha_num_under(str[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+static int	handle_env(char **argv, t_env **env_list)
+{
+	size_t	i;
+	int		status;
 
 	i = 1;
+	status = 0;
 	while (argv[i])
 	{
 		if (!is_alpha_under(argv[i][0]))
 		{
-			export_error(argv[i]);
+			status = export_error(argv[i]);
 			i++;
 			continue ;
 		}
-		eq_ptr = strchr(argv[i], '=');
-		if (!eq_ptr)
+		if (!is_str_alpha_num_under_export(argv[i]))
 		{
-			i++;
-			continue ;
+				status = export_error(argv[i]);
+				i++;
+				continue ;
 		}
 		if (is_key_exist(argv[i], *env_list))
 			overwrite_env(argv[i], *env_list);
@@ -72,12 +91,15 @@ static void	handle_env(char **argv, t_env **env_list)
 			add_env(argv[i], env_list);
 		i++;
 	}
+	return (status);
 }
 
 int	builtin_export(char **argv, t_env **env_list)
 {
 	size_t	num;
+	int		status;
 
+	status = 0;
 	if (!argv || !*argv || !env_list)
 		return (1);
 	num = 0;
@@ -86,6 +108,7 @@ int	builtin_export(char **argv, t_env **env_list)
 	if (num == 1)
 		put_sorted_env(*env_list);
 	else
-		handle_env(argv, env_list);
-	return (0);
+		status = handle_env(argv, env_list);
+	return (status);
 }
+
