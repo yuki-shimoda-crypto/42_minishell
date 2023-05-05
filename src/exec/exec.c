@@ -335,7 +335,8 @@ void	wait_child_process(void)
 			g_return_error.return_value = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 		{
-			wrap_write(STDOUT_FILENO, "\n", 1);
+			if (isatty(STDIN_FILENO))
+				wrap_write(STDOUT_FILENO, "\n", 1);
 			g_return_error.g_sig = 0;
 			if (WTERMSIG(status) == SIGINT)
 				g_return_error.ctrl_c = true;//
