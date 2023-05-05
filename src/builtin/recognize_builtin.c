@@ -27,8 +27,8 @@ int	recognize_builtin(char **argv, t_env **env_list)
 	else if (!strcmp("export", argv[0]))
 		g_return_error.return_value = builtin_export(argv, env_list);
 	else if (!strcmp("pwd", argv[0]))
-		builtin_pwd();
+		g_return_error.return_value = builtin_pwd();
 	else if (!strcmp("unset", argv[0]))
-		builtin_unset(argv, env_list);
+		g_return_error.return_value = builtin_unset(argv, env_list);
 	return (0);
 }
