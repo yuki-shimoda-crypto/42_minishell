@@ -46,6 +46,24 @@ void	overwrite_env(const char *env, t_env *env_list)
 	}
 }
 
+static bool is_str_alpha_num_under_export(const char *str)
+{
+	size_t	i;
+	char	*ptr_equal;
+	
+	ptr_equal = strchr(str, '=');
+	i = 1;
+	while (str[0] && str[i])
+	{
+		if (ptr_equal == str + i)
+			break ;
+		if (!is_alpha_num_under(str[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 static int	handle_env(char **argv, t_env **env_list)
 {
 	size_t	i;
@@ -60,6 +78,12 @@ static int	handle_env(char **argv, t_env **env_list)
 			status = export_error(argv[i]);
 			i++;
 			continue ;
+		}
+		if (!is_str_alpha_num_under_export(argv[i]))
+		{
+				status = export_error(argv[i]);
+				i++;
+				continue ;
 		}
 		if (is_key_exist(argv[i], *env_list))
 			overwrite_env(argv[i], *env_list);
