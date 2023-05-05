@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:05:49 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/30 18:02:26 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 00:52:54 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int	recognize_builtin(char **argv, t_env **env_list)
+int	recognize_builtin(char **argv, t_env **env_list, bool one_cmd)
 {
 	if (!strcmp("cd", argv[0]))
 		g_return_error.return_value = builtin_cd(argv, env_list);
@@ -23,7 +23,7 @@ int	recognize_builtin(char **argv, t_env **env_list)
 	else if (!strcmp("env", argv[0]))
 		g_return_error.return_value = builtin_env(*env_list);
 	else if (!strcmp("exit", argv[0]))
-		g_return_error.return_value = builtin_exit(argv);
+		g_return_error.return_value = builtin_exit(argv, one_cmd);
 	else if (!strcmp("export", argv[0]))
 		g_return_error.return_value = builtin_export(argv, env_list);
 	else if (!strcmp("pwd", argv[0]))
