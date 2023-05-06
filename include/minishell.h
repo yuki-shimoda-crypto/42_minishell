@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/06 20:34:00 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 02:45:11 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ struct s_return_error
 	bool	heredoc_interupt;
 	bool	ctrl_c;//
 };
-
 
 extern t_return_error	g_return_error;
 
@@ -212,6 +211,14 @@ bool	is_alpha_under(char c);
 bool	is_alpha_num_under(char c);
 bool	is_special_charactor(char *line);
 char	*expand_word(char *word, t_node_kind kind, t_env *env_list);
+char	*expand_special_char(char **skipped, char *word, char *new_word);
+char	*expand_variable(char **skipped, char *word, char *new_word, t_env *env_list);
+char	*expand_db_quote(char **skipped, char *word, char *new_word, t_env *env_list);
+char	*expand_single_quote(char **skipped, char *word, char *new_word);
+char	*append_char(char **skipped, char *word, char *new_word);
+t_env	*find_word_expandable(const char *key, t_env *env_list);
+char	*make_expanded_word(char *new_word, t_env *target_list);
+char	*make_new_word(char *head, char *word, char *append_word, char *new_word);
 
 //builtin
 int		builtin_echo(char **argv);
