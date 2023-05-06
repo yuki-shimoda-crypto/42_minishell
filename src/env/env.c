@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 01:41:30 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/04 21:39:38 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 19:31:23 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_env	*search_env(const char *key, t_env *env_list)
 	return (NULL);
 }
 
-// ok
 void	del_env(const char *key, t_env **env_list)
 {
 	t_env	*del_list;
@@ -51,30 +50,21 @@ void	del_env(const char *key, t_env **env_list)
 	free(del_list);
 }
 
-// ok
-void	free_env(t_env **env_list)
+void	creat_and_add(char *key, char *value, t_env **env_list)
 {
-	t_env	*tmp;
+	t_env	*new_env_list;
 
-	if (!env_list || !*env_list)
-		return ;
-	while (*env_list)
-	{
-		tmp = (*env_list)->next;
-		free((*env_list)->key);
-		free((*env_list)->value);
-		free(*env_list);
-		*env_list = tmp;
-	}
+	new_env_list = env_new(key, value);
+	if (!new_env_list)
+		assert_error("env_new\n");
+	env_addback(env_list, new_env_list);
 }
 
-// ok
 void	add_env(const char *env, t_env **env_list)
 {
 	char		*tail;
 	char		*key;
 	char		*value;
-	t_env		*new_env_list;
 
 	if (!env || !env_list)
 		return ;
@@ -86,7 +76,7 @@ void	add_env(const char *env, t_env **env_list)
 	}
 	else
 	{
-	key = strndup(env, tail - env);
+		key = strndup(env, tail - env);
 		if (!key)
 			assert_error("strndup\n");
 		tail++;
@@ -94,11 +84,7 @@ void	add_env(const char *env, t_env **env_list)
 		if (!value)
 			assert_error("strdup\n");
 	}
-	new_env_list = env_new(key, value);
-	if (!new_env_list)
-		assert_error("env_new\n");
-	env_addback(env_list, new_env_list);
-	return ;
+	return (creat_and_add(key, value, env_list));
 }
 
 t_env	*make_env_list(char **envp)
@@ -115,17 +101,3 @@ t_env	*make_env_list(char **envp)
 	}
 	return (env_list);
 }
-
-// void	print_env_list(t_env *env_list)
-// {
-// 	while (env_list)
-// 	{
-// 		printf("key:\t%s\n", env_list->key);
-// 		printf("value:\t%s\n", env_list->value);
-// 		printf("pre:\t%p\n", env_list->pre);
-// 		printf("now:\t%p\n", env_list);
-// 		printf("next:\t%p\n", env_list->next);
-// 		printf("%s\n", "------------");
-// 		env_list = env_list->next;
-// 	}
-// }

@@ -6,13 +6,28 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 13:14:04 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/15 13:21:47 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 19:30:11 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// ok
+void	free_env(t_env **env_list)
+{
+	t_env	*tmp;
+
+	if (!env_list || !*env_list)
+		return ;
+	while (*env_list)
+	{
+		tmp = (*env_list)->next;
+		free((*env_list)->key);
+		free((*env_list)->value);
+		free(*env_list);
+		*env_list = tmp;
+	}
+}
+
 t_env	*env_new(char *key, char *value)
 {
 	t_env	*env_new;

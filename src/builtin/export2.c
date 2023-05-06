@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 12:59:41 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 15:42:05 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 19:17:55 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,24 @@ void	sort_array(char **env_array)
 	}
 }
 
+char	**put_env_into_array(t_env *env_list, char **sort_env)
+{
+	int	i;
+
+	i = 0;
+	while (env_list)
+	{
+		if (env_list->value[0] != '\0')
+			sort_env[i] = strjoin_three(env_list->key, "=\"", env_list->value);
+		else
+			sort_env[i] = strdup(env_list->key);
+		env_list = env_list->next;
+		i++;
+	}
+	sort_env[i] = NULL;
+	return (sort_env);
+}
+
 char	**env_into_array(t_env *env_list)
 {
 	t_env	*tmp;
@@ -65,18 +83,7 @@ char	**env_into_array(t_env *env_list)
 	sort_env = malloc(sizeof(char *) * (i + 1));
 	if (!sort_env)
 		assert_error("malloc\n");
-	i = 0;
-	while (env_list)
-	{
-		if (env_list->value[0] != '\0')
-			sort_env[i] = strjoin_three(env_list->key, "=\"", env_list->value);
-		else
-			sort_env[i] = strdup(env_list->key);
-		env_list = env_list->next;
-		i++;
-	}
-	sort_env[i] = NULL;
-	return (sort_env);
+	return (put_env_into_array(env_list, sort_env));
 }
 
 bool	is_key_exist(const char *env, t_env *env_list)

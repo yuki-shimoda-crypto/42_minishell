@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 15:54:58 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/02 11:13:44 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 20:37:48 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,22 @@
 #include <stdio.h>
 #include <readline/readline.h>
 
+static void	expand_and_put(bool flag, char *input, t_env *env_list, int fd)
+{
+	char	*expanded;
+
+	if (!flag)
+		expanded = expand_word(input, ND_SIMPLE_CMD, env_list);
+	else
+		expanded = input;
+	write(fd, expanded, strlen(expanded));
+	write(fd, "\n", strlen("\n"));
+	free(expanded);
+}
+
 int	heredoc(char *delimiter, t_env *env_list, bool quote_flag)
 {
 	char	*input;
-	char	*expanded;
 	int		pipe_fd[2];
 
 	if (pipe(pipe_fd) < 0)
@@ -34,13 +46,7 @@ int	heredoc(char *delimiter, t_env *env_list, bool quote_flag)
 			free(input);
 			break ;
 		}
-		if (!quote_flag)
-			expanded = expand_word(input, ND_SIMPLE_CMD, env_list);
-		else
-			expanded = input;
-		write(pipe_fd[1], expanded, strlen(expanded));
-		write(pipe_fd[1], "\n", strlen("\n"));
-		free(expanded);
+		expand_and_put(quote_flag, input, env_list, pipe_fd[1]);
 	}
 	close(pipe_fd[1]);
 	return (pipe_fd[0]);

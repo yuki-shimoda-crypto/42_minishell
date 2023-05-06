@@ -19,6 +19,7 @@ INCLUDE			=	-I include
 LIBS			=
 
 SRCS			=	src/main.c						\
+					src/free.c						\
 					src/signal/signal.c				\
 					src/debug_func.c				\
 					src/error/error.c				\
@@ -56,6 +57,7 @@ SRCS			=	src/main.c						\
 					src/env/env2.c					\
 					src/builtin/pwd.c				\
 					src/builtin/cd.c				\
+					src/builtin/cd2.c				\
 					src/builtin/env.c				\
 					src/builtin/unset.c				\
 					src/builtin/exit.c
