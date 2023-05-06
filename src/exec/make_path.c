@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/06 14:36:37 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 02:16:49 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,6 @@ char	*make_pathname(t_tk *token, t_env *env_list)
 	else if (is_dot(token->word))
 	{
 		file_exec_error(token->word, ": command not found\n");
-		g_return_error.exec_error = true;
 		g_return_error.return_value = 127;
 		return (NULL);
 	}

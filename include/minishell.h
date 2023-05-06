@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 01:00:54 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 02:12:31 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,7 @@ struct s_return_error
 {
 	bool	tokenize_error;
 	bool	parse_error;
-	bool	redirect_error;
-	bool	exec_error;
+	bool	error;
 	int		g_sig;
 	int		return_value;
 	//fix

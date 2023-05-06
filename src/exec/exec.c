@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:15:24 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 01:04:50 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 02:18:14 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,70 +250,6 @@ char	**make_envp(t_env *env_list)
 	return (envp);
 }
 
-// void	exec_cmd(t_node *node, t_env **env_list)
-// {
-// 	char	*pathname;
-// 	char	**argv;
-// 	char	**envp;
-// 	size_t	i;
-// 	size_t	pipe_num;
-// 
-// 	pipe_num = count_pipe_num(node);
-// 	input_pipefd(node, NULL);
-// 	expand(node, *env_list);
-// 	envp = make_envp(*env_list);
-// 	while (node)
-// 	{
-// 		pathname = make_pathname(node->token, *env_list);
-// 		argv = make_argv(node->token);
-// 		redirect_fd_list(node->redirect);
-// 		if (g_return_error.redirect_error)
-// 		{
-// 			free(pathname);
-// 			free_argv(argv);
-// 			node = node->pipe;
-// 			g_return_error.redirect_error = false;
-// 			continue ;
-// 		}
-// 		do_redirect(node->redirect);
-// 		if (g_return_error.exec_error)
-// 		{
-// 			free(pathname);
-// 			free_argv(argv);
-// 			node = node->pipe;
-// 			g_return_error.exec_error = false;
-// 			continue ;
-// 		}
-// 		if (argv && is_builtin(argv[0]))
-// 		{
-// 			connect_pipe_builtin(node);
-// 			recognize_builtin(argv, env_list);
-// 			reset_pipe_builtin(node);
-// 		}
-// 		else
-// 		{
-// 			// connect_pipe(node);
-// 			if (pathname && argv)
-// 				exec(pathname, argv, envp, node);
-// 		}
-// 		reset_redirect(node->redirect);
-// 		if (node->inpipe[0] != INT_MAX)
-// 		{
-// 			wrap_close(node->inpipe[1]);
-// 			wrap_close(node->inpipe[0]);
-// 		}
-// 		node = node->pipe;
-// 		free(pathname);
-// 		free_argv(argv);
-// 	}
-// 	free_envp(envp);
-// 	i = 0;
-// 	while (i < pipe_num)
-// 	{
-// 		wait(NULL);
-// 		i++;
-// 	}
-// }
 
 void	wait_child_process(void)
 {
@@ -353,55 +289,59 @@ void	init_exec_val(t_exec *exec_val)
 	exec_val->one_cmd = false;
 }
 
+void	free_path_node_next(t_node **node, t_exec *exec_val)
+{
+	free(exec_val->pathname);
+	*node = (*node)->pipe;
+	g_return_error.error = false;
+}
+
+void	free_path_arg_node_next(t_node **node, t_exec *exec_val)
+{
+	free_argv(exec_val->argv);
+	free_path_node_next(node, exec_val);
+}
+
 void	exec_cmd(t_node *node, t_env **env_list)
 {
 	t_exec	exec_val;
 
 	input_pipefd(node, NULL);
 	expand(node, *env_list);
+	init_exec_val(&exec_val);
 	exec_val.envp = make_envp(*env_list);
 	if (!node->pipe)
 		exec_val.one_cmd = true;
 	while (node)
 	{
 		exec_val.pathname = make_pathname(node->token, *env_list);
-		if (g_return_error.exec_error)
+		if (g_return_error.error)
 		{
-			free(exec_val.pathname);
-			node = node->pipe;
-			g_return_error.exec_error = false;
+			free_path_node_next(&node, &exec_val);
 			continue ;
 		}
 		exec_val.argv = make_argv(node->token);
 		if (!exec_val.argv)
 		{
-			node = node->pipe;
+			free_path_node_next(&node, &exec_val);
 			continue ;
 		}
 		redirect_fd_list(node->redirect, *env_list);//
-		if (g_return_error.redirect_error)
+		if (g_return_error.error)
 		{
-			free(exec_val.pathname);
-			free_argv(exec_val.argv);
-			node = node->pipe;
-			g_return_error.redirect_error = false;
+			free_path_arg_node_next(&node, &exec_val);
 			continue ;
 		}
 		do_redirect(node->redirect);
 		if (node->token->kind != TK_WORD)///
 		{
 			reset_redirect(node->redirect);
-			free(exec_val.pathname);
-			free_argv(exec_val.argv);
-			node = node->pipe;
+			free_path_arg_node_next(&node, &exec_val);
 			continue ;
 		}///
-		if (g_return_error.exec_error)
+		if (g_return_error.error)
 		{
-			free(exec_val.pathname);
-			free_argv(exec_val.argv);
-			node = node->pipe;
-			g_return_error.exec_error = false;
+			free_path_arg_node_next(&node, &exec_val);
 			continue ;
 		}
 		if (exec_val.argv && is_builtin(exec_val.argv[0]) && exec_val.one_cmd)
