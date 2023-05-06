@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:28:58 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 01:20:36 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 18:32:16 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 bool	is_number(const char *status)
 {
 	size_t	i;
-	
+
 	i = 0;
 	while (status[i])
 	{
@@ -90,8 +90,9 @@ int	builtin_exit(char **argv, bool one_cmd)
 	}
 	else
 	{
-		write(STDERR_FILENO, "exit: too many arguments\n", strlen("exit: too many arguments\n"));
-		return (1);;
+		write(STDERR_FILENO, "exit: too many arguments\n",
+			strlen("exit: too many arguments\n"));
+		return (1);
 	}
 	return (0);
 }

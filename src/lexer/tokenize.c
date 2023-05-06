@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:52:17 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/16 13:57:21 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 20:02:47 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,25 @@ static void	judge_kind_and_put(t_tk **token, char *line)
 	}
 }
 
+static void	error_token(t_tk *token, t_tk head, char *line)
+{
+	if (token && token->kind == TK_REDIRECT)
+	{
+		syntax_error("< or >\n", &line, line);
+		g_return_error.tokenize_error = true;
+	}
+	else if (token && token->kind == TK_PIPE)
+	{
+		syntax_error("|\n", &line, line);
+		g_return_error.tokenize_error = true;
+	}
+	else if (head.next && head.next->kind == TK_PIPE)
+	{
+		syntax_error("|\n", &line, line);
+		g_return_error.tokenize_error = true;
+	}
+}
+
 t_tk	*tokenize(char *line)
 {
 	t_tk	head;
@@ -72,26 +91,9 @@ t_tk	*tokenize(char *line)
 	token->word = NULL;
 	token->kind = TK_WORD;
 	token->next = NULL;
-
 	judge_kind_and_put(&token, line);
 	if (!g_return_error.tokenize_error)
-	{
-		if (token && token->kind == TK_REDIRECT)
-		{
-			syntax_error("< or >\n", &line, line);
-			g_return_error.tokenize_error = true;
-		}
-		else if (token && token->kind == TK_PIPE)
-		{
-			syntax_error("|\n", &line, line);
-			g_return_error.tokenize_error = true;
-		}
-		else if (head.next && head.next->kind == TK_PIPE)
-		{
-			syntax_error("|\n", &line, line);
-			g_return_error.tokenize_error = true;
-		}
-	}
+		error_token(token, head, line);
 	token->next = token_new(NULL, TK_EOF);
 	return (head.next);
 }

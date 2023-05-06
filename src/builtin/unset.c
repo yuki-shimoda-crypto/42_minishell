@@ -6,16 +6,16 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 00:18:33 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/30 18:03:49 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 19:19:12 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool is_str_alpha_num_under_unset(const char *str)
+static bool	is_str_alpha_num_under_unset(const char *str)
 {
 	size_t	i;
-	
+
 	i = 1;
 	while (str[0] && str[i])
 	{

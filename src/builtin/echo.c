@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:19:57 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/16 23:10:59 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 18:29:27 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	is_output_newline(const char *word)
 	while (word[i])
 	{
 		if (word[i] != 'n')
-			return (true);	
+			return (true);
 		i++;
 	}
 	return (false);
