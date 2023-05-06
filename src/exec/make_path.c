@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/06 00:05:06 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/06 14:36:37 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,29 @@ bool	is_directory(const char *pathname)
 char	*make_absolute_path(t_tk *token)
 {
 	char	*pathname;
+	char	*split;
+	char	*path;
 
 	pathname = strdup(token->word);
+	path = token->word;
+	path++;
+	while (strchr(path, '/'))
+	{
+		split = strndup(path, (path - strchr(path, '/')));
+		path = strchr(path, '/');
+		path++;
+		if (!is_directory(split) && is_file(split))
+		{
+			if (strchr(path, '/'))
+			{
+				file_exec_error(token->word, ": Not a directory\n");
+				g_return_error.return_value = 126;
+				free(split);
+				return (pathname);
+			}
+		}
+		free(split);
+	}
 	if (!pathname)
 		assert_error("strdup\n");
 	if (is_only_slash(pathname) || is_directory(pathname))
