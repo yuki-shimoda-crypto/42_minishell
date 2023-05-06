@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/06 20:34:00 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 01:00:54 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef enum e_node_kind		t_node_kind;
 typedef struct s_node			t_node;
 typedef struct s_env			t_env;
 typedef struct s_return_error	t_return_error;
+typedef struct s_exec			t_exec;
 
 enum e_tk_kind
 {
@@ -103,6 +104,15 @@ struct s_return_error
 	bool	export_error;
 	bool	heredoc_interupt;
 	bool	ctrl_c;//
+};
+
+struct s_exec
+{
+	char	*pathname;
+	char	**argv;
+	char	**envp;
+	pid_t	pid;
+	bool	one_cmd;
 };
 
 

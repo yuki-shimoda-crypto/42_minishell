@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:15:24 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/08 17:13:220 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 01:04:50 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,33 +344,36 @@ void	wait_child_process(void)
 		}
 	}
 }
+void	init_exec_val(t_exec *exec_val)
+{
+	exec_val->pathname = NULL;
+	exec_val->argv = NULL;
+	exec_val->envp = NULL;
+	exec_val->pid = 0;
+	exec_val->one_cmd = false;
+}
 
 void	exec_cmd(t_node *node, t_env **env_list)
 {
-	char	*pathname;
-	char	**argv;
-	char	**envp;
-	pid_t	pid;
-	bool	one_cmd;
+	t_exec	exec_val;
 
 	input_pipefd(node, NULL);
 	expand(node, *env_list);
-	envp = make_envp(*env_list);
-	one_cmd = false;
+	exec_val.envp = make_envp(*env_list);
 	if (!node->pipe)
-		one_cmd = true;
+		exec_val.one_cmd = true;
 	while (node)
 	{
-		pathname = make_pathname(node->token, *env_list);
+		exec_val.pathname = make_pathname(node->token, *env_list);
 		if (g_return_error.exec_error)
 		{
-			free(pathname);
+			free(exec_val.pathname);
 			node = node->pipe;
 			g_return_error.exec_error = false;
 			continue ;
 		}
-		argv = make_argv(node->token);
-		if (!argv)
+		exec_val.argv = make_argv(node->token);
+		if (!exec_val.argv)
 		{
 			node = node->pipe;
 			continue ;
@@ -378,8 +381,8 @@ void	exec_cmd(t_node *node, t_env **env_list)
 		redirect_fd_list(node->redirect, *env_list);//
 		if (g_return_error.redirect_error)
 		{
-			free(pathname);
-			free_argv(argv);
+			free(exec_val.pathname);
+			free_argv(exec_val.argv);
 			node = node->pipe;
 			g_return_error.redirect_error = false;
 			continue ;
@@ -388,44 +391,44 @@ void	exec_cmd(t_node *node, t_env **env_list)
 		if (node->token->kind != TK_WORD)///
 		{
 			reset_redirect(node->redirect);
-			free(pathname);
-			free_argv(argv);
+			free(exec_val.pathname);
+			free_argv(exec_val.argv);
 			node = node->pipe;
 			continue ;
 		}///
 		if (g_return_error.exec_error)
 		{
-			free(pathname);
-			free_argv(argv);
+			free(exec_val.pathname);
+			free_argv(exec_val.argv);
 			node = node->pipe;
 			g_return_error.exec_error = false;
 			continue ;
 		}
-		if (argv && is_builtin(argv[0]) && one_cmd)
+		if (exec_val.argv && is_builtin(exec_val.argv[0]) && exec_val.one_cmd)
 		{
 			connect_pipe_builtin(node);
-			recognize_builtin(argv, env_list, one_cmd);
+			recognize_builtin(exec_val.argv, env_list, exec_val.one_cmd);
 			reset_pipe_builtin(node);
 		}
 		else
 		{
-			pid = fork();
-			if (pid == -1)
+			exec_val.pid = fork();
+			if (exec_val.pid == -1)
 			{
 				perror("fork");
 				exit(EXIT_FAILURE);
 			}
-			if (pid == 0)
+			if (exec_val.pid == 0)
 			{
 				// Child process
 				signal(SIGQUIT, SIG_DFL);///
 				signal(SIGINT, SIG_DFL);///
 				connect_pipe(node);
-				if (argv && is_builtin(argv[0]))
-					exit(recognize_builtin(argv, env_list, one_cmd));
-				else if (pathname && argv)
+				if (exec_val.argv && is_builtin(exec_val.argv[0]))
+					exit(recognize_builtin(exec_val.argv, env_list, exec_val.one_cmd));
+				else if (exec_val.pathname && exec_val.argv)
 				{
-					execve(pathname, argv, envp);
+					execve(exec_val.pathname, exec_val.argv, exec_val.envp);
 					perror("execve");
 					exit(EXIT_FAILURE);
 				}
@@ -442,9 +445,9 @@ void	exec_cmd(t_node *node, t_env **env_list)
 		}
 		reset_redirect(node->redirect);
 		node = node->pipe;
-		free(pathname);
-		free_argv(argv);
+		free(exec_val.pathname);
+		free_argv(exec_val.argv);
 	}
-	free_envp(envp);
+	free_envp(exec_val.envp);
 	wait_child_process();
 }
