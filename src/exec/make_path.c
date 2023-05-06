@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/06 00:05:06 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 03:03:58 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool	is_only_slash(const char *pathname)
 
 bool	is_directory(const char *pathname)
 {
-	struct stat st;
+	struct stat	st;
 
 	if (stat(pathname, &st) == 0)
 	{
@@ -85,6 +85,30 @@ char	*make_absolute_path(t_tk *token)
 	return (pathname);
 }
 
+char	*check_pathname_error(char *pathname, char *abs_path, const char *word)
+{
+	pathname = strjoin(abs_path, word - 1);
+	free(abs_path);
+	if (!pathname)
+		assert_error("malloc\n");
+	if (*(word) == '\0')
+	{
+		file_exec_error(word, ": Permission deied\n");
+		g_return_error.return_value = 126;
+	}
+	else if (!is_file_exist(pathname))
+	{
+		file_exec_error(word, ": No such file or directory\n");
+		g_return_error.return_value = 127;
+	}
+	else if (!is_file_executable(pathname) || pathname[0] == '\0')
+	{
+		file_exec_error(word, ": Permission deied\n");
+		g_return_error.return_value = 126;
+	}
+	return (pathname);
+}
+
 char	*make_relative_path(const char *word)
 {
 	char	*pathname;
@@ -107,26 +131,7 @@ char	*make_relative_path(const char *word)
 				*tmp = '\0';
 		}
 	}
-	pathname = strjoin(abs_path, word - 1);
-	free(abs_path);
-	if (!pathname)
-		assert_error("malloc\n");
-	if (*(word) == '\0')
-	{
-		file_exec_error(word, ": Permission deied\n");
-		g_return_error.return_value = 126;
-	}
-	else if (!is_file_exist(pathname))
-	{
-		file_exec_error(word, ": No such file or directory\n");
-		g_return_error.return_value = 127;
-	}
-	else if (!is_file_executable(pathname) || pathname[0] == '\0')
-	{
-		file_exec_error(word, ": Permission deied\n");
-		g_return_error.return_value = 126;
-	}
-	return (pathname);
+	return (check_pathname_error(pathname, abs_path, word));
 }
 
 char	*make_environment_path(t_tk *token, t_env *env_list)
