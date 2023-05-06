@@ -422,10 +422,7 @@ void	exec_cmd(t_node *node, t_env **env_list)
 				signal(SIGINT, SIG_DFL);///
 				connect_pipe(node);
 				if (argv && is_builtin(argv[0]))
-				{
-					recognize_builtin(argv, env_list, one_cmd);
-					exit(EXIT_SUCCESS);
-				}
+					exit(recognize_builtin(argv, env_list, one_cmd));
 				else if (pathname && argv)
 				{
 					execve(pathname, argv, envp);
