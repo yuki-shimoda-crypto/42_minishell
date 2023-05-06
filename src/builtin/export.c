@@ -30,6 +30,8 @@ void	overwrite_env(const char *env, t_env *env_list)
 	char	*value_head;
 
 	value_head = strchr(env, '=');
+	if (!value_head)
+		return ;
 	value_head++;
 	value = strdup(value_head);
 	if (!value)
