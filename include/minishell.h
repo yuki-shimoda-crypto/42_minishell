@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/06 17:52:15 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 20:34:00 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,8 @@ void	input_pipefd(t_node *node, int *inpipe);
 void	connect_pipe(t_node *node);
 void	reset_pipe_builtin(t_node *node);
 void	connect_pipe_builtin(t_node *node);
+bool	is_redirect_in_exist(t_node *node);
+bool	is_redirect_out_exist(t_node *node);
 
 // wrap
 int		wrap_close(int fd);
