@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 12:59:41 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/04 20:48:01 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 15:42:05 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,9 @@ bool	is_key_exist(const char *env, t_env *env_list)
 		return (false);
 	tail = strchr(env, '=');
 	if (!tail)
-		return (false);
-	key = strndup(env, tail - env);
+		key = strdup(env);
+	else
+		key = strndup(env, tail - env);
 	if (!key)
 		assert_error("strndup\n");
 	while (env_list)
