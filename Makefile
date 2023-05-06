@@ -37,6 +37,7 @@ SRCS			=	src/main.c						\
 					src/redirect/heredoc.c			\
 					src/redirect/open_file.c		\
 					src/pipe/pipe.c					\
+					src/pipe/pipe2.c				\
 					src/wrap/close.c				\
 					src/wrap/dup2.c					\
 					src/wrap/dup.c					\
