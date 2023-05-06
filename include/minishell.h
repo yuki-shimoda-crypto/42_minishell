@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/06 00:18:10 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 17:52:15 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ extern t_return_error	g_return_error;
 
 // main.c
 void	ctrl_c(int sig);
+void	free_token(t_tk **token);
+void	free_node(t_node **node);
 
 //signal
 void	ctrl_backslash(int sig);
@@ -217,6 +219,9 @@ int		recognize_builtin(char **argv, t_env **env_list, bool one_cmd);
 bool	is_builtin(const char *cmd);
 int		builtin_pwd(void);
 int		builtin_cd(char **destination, t_env **env_list);
+int		rewrite(char *old_pwd, t_env **env_list);
+int		rewrite_go_back(char *old_pwd, t_env **env_list, t_env *path);
+void	join_add_env(char *key, char *value, t_env **env_list);
 int		builtin_env(t_env *env_list);
 int		builtin_unset(char **del_target, t_env **env_list);
 int		builtin_exit(char **argv, bool one_cmd);

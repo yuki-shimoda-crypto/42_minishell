@@ -6,14 +6,13 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 20:46:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/04 17:01:01 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/06 20:39:21 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <ctype.h>
 #include <stdlib.h>
-
 
 char	*expand_special_char(char **skipped, char *word, char *new_word)
 {
@@ -73,7 +72,6 @@ char	*expand_variable(char **skipped, char *word, char *new_word, t_env *env_lis
 	char	*tmp;
 	t_env	*target_list;
 
-// ok
 	word++;
 	head = word;
 	while (*word && is_alpha_num_under(*word))
@@ -104,43 +102,6 @@ char	*expand_variable(char **skipped, char *word, char *new_word, t_env *env_lis
 	*skipped = word;
 	return (new_word);
 }
-
-//char	*expand_variable(char **skipped, char *word, char *new_word, t_env *env_list)
-//{
-//	char	*head;
-//	char	*env;
-//	char	*tmp;
-//
-//	word++;
-//	head = word;
-//	while (*word && is_alpha_num_under(*word))
-//		word++;
-//	env = strndup(head, word - head);
-//	if (!env)
-//		assert_error("strndup");
-//	tmp = getenv(env);
-//	free(env);
-//	if (!tmp)
-//	{
-//		env = calloc(1, sizeof(char));
-//		if (!env)
-//			assert_error("calloc\n");
-//	}
-//	else
-//	{
-//		env = strdup(tmp);
-//		if (!env)
-//			assert_error("strndup");
-//	}
-//	tmp = strjoin(new_word, env);
-//	free(new_word);
-//	free(env);
-//	if (!tmp)
-//		assert_error("strjoin");
-//	new_word = tmp;
-//	*skipped = word;
-//	return (new_word);
-//}
 
 char	*expand_double_quote(char **skipped, char *word, char *new_word, t_env *env_list, t_node_kind kind)
 {

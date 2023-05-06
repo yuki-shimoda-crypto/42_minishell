@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/06 18:33:27 by enogaWa           #+#    #+#             */
+/*   Updated: 2023/05/06 18:37:35 by enogaWa          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <stdio.h>
 #include <string.h>
@@ -48,11 +60,11 @@ void	overwrite_env(const char *env, t_env *env_list)
 	}
 }
 
-static bool is_str_alpha_num_under_export(const char *str)
+static bool	is_str_alpha_num_under_export(const char *str)
 {
 	size_t	i;
 	char	*ptr_equal;
-	
+
 	ptr_equal = strchr(str, '=');
 	i = 1;
 	while (str[0] && str[i])
@@ -72,7 +84,6 @@ static int	handle_env(char **argv, t_env **env_list)
 	int		status;
 
 	i = 1;
-	status = 0;
 	while (argv[i])
 	{
 		if (!is_alpha_under(argv[i][0]))
@@ -83,9 +94,9 @@ static int	handle_env(char **argv, t_env **env_list)
 		}
 		if (!is_str_alpha_num_under_export(argv[i]))
 		{
-				status = export_error(argv[i]);
-				i++;
-				continue ;
+			status = export_error(argv[i]);
+			i++;
+			continue ;
 		}
 		if (is_key_exist(argv[i], *env_list))
 			overwrite_env(argv[i], *env_list);
@@ -113,4 +124,3 @@ int	builtin_export(char **argv, t_env **env_list)
 		status = handle_env(argv, env_list);
 	return (status);
 }
-
