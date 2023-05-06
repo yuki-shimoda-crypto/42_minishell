@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:15:24 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 02:18:14 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 02:49:07 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,6 +302,20 @@ void	free_path_arg_node_next(t_node **node, t_exec *exec_val)
 	free_path_node_next(node, exec_val);
 }
 
+bool	should_continue(t_node **node, t_exec *exec_val, bool is_continue, bool free_arg)
+{
+	if (is_continue)
+	{
+		if (free_arg)
+			free_path_arg_node_next(node, exec_val);
+		else
+			free_path_node_next(node, exec_val);
+		return (true);
+	}
+	else
+		return (false);
+}
+
 void	exec_cmd(t_node *node, t_env **env_list)
 {
 	t_exec	exec_val;
@@ -315,33 +329,18 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	while (node)
 	{
 		exec_val.pathname = make_pathname(node->token, *env_list);
-		if (g_return_error.error)
-		{
-			free_path_node_next(&node, &exec_val);
+		if (should_continue(&node, &exec_val, g_return_error.error, false))
 			continue ;
-		}
 		exec_val.argv = make_argv(node->token);
-		if (!exec_val.argv)
-		{
-			free_path_node_next(&node, &exec_val);
+		if (should_continue(&node, &exec_val, !exec_val.argv, false))
 			continue ;
-		}
-		redirect_fd_list(node->redirect, *env_list);//
-		if (g_return_error.error)
-		{
-			free_path_arg_node_next(&node, &exec_val);
+		redirect_fd_list(node->redirect, *env_list);
+		if (should_continue(&node, &exec_val, g_return_error.error, true))
 			continue ;
-		}
 		do_redirect(node->redirect);
-		if (node->token->kind != TK_WORD)///
+		if (should_continue(&node, &exec_val, node->token->kind != TK_WORD, true))
 		{
 			reset_redirect(node->redirect);
-			free_path_arg_node_next(&node, &exec_val);
-			continue ;
-		}///
-		if (g_return_error.error)
-		{
-			free_path_arg_node_next(&node, &exec_val);
 			continue ;
 		}
 		if (exec_val.argv && is_builtin(exec_val.argv[0]) && exec_val.one_cmd)
@@ -372,6 +371,8 @@ void	exec_cmd(t_node *node, t_env **env_list)
 					perror("execve");
 					exit(EXIT_FAILURE);
 				}
+				else
+					exit(EXIT_FAILURE);
 			}
 			else
 			{
