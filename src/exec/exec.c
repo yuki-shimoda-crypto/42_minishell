@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:15:24 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 02:49:07 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 04:33:58 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,29 @@ char	**make_envp(t_env *env_list)
 	return (envp);
 }
 
+void	handle_waitpid_error(pid_t pid)
+{
+	if (pid == -1)
+	{
+		perror(NULL);
+		assert_error("waitpid\n");
+	}
+}
+
+void	update_return_value(int status)
+{
+	if (WIFEXITED(status))
+		g_return_error.return_value = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		if (isatty(STDIN_FILENO))
+			wrap_write(STDOUT_FILENO, "\n", 1);
+		g_return_error.g_sig = 0;
+		if (WTERMSIG(status) == SIGINT)
+			g_return_error.ctrl_c = true;
+		g_return_error.return_value = 128 + WTERMSIG(status);
+	}
+}
 
 void	wait_child_process(void)
 {
@@ -262,24 +285,14 @@ void	wait_child_process(void)
 		pid = waitpid(-1, &status, 0);
 		if (pid == -1 && errno == ECHILD)
 			break ;
-		else if (pid == -1)
+		else
 		{
-			perror(NULL);
-			assert_error("waitpid\n");
-		}
-		else if (WIFEXITED(status))
-			g_return_error.return_value = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			if (isatty(STDIN_FILENO))
-				wrap_write(STDOUT_FILENO, "\n", 1);
-			g_return_error.g_sig = 0;
-			if (WTERMSIG(status) == SIGINT)
-				g_return_error.ctrl_c = true;//
-			g_return_error.return_value = 128 + WTERMSIG(status);
+			handle_waitpid_error(pid);
+			update_return_value(status);
 		}
 	}
 }
+
 void	init_exec_val(t_exec *exec_val)
 {
 	exec_val->pathname = NULL;
@@ -302,7 +315,8 @@ void	free_path_arg_node_next(t_node **node, t_exec *exec_val)
 	free_path_node_next(node, exec_val);
 }
 
-bool	should_continue(t_node **node, t_exec *exec_val, bool is_continue, bool free_arg)
+bool	should_continue(t_node **node, t_exec *exec_val,
+		bool is_continue, bool free_arg)
 {
 	if (is_continue)
 	{
@@ -316,6 +330,86 @@ bool	should_continue(t_node **node, t_exec *exec_val, bool is_continue, bool fre
 		return (false);
 }
 
+void	exec_builtin(t_node *node, t_env **env_list, t_exec *exec_val)
+{
+	connect_pipe_builtin(node);
+	recognize_builtin(exec_val->argv, env_list, exec_val->one_cmd);
+	reset_pipe_builtin(node);
+}
+
+void	handle_child_process(t_node *node, t_env **env_list, t_exec *exec_val)
+{
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	connect_pipe(node);
+	if (exec_val->argv && is_builtin(exec_val->argv[0]))
+		exit(recognize_builtin(exec_val->argv, env_list, exec_val->one_cmd));
+	else if (exec_val->pathname && exec_val->argv)
+	{
+		execve(exec_val->pathname, exec_val->argv, exec_val->envp);
+		perror("execve");
+		exit(EXIT_FAILURE);
+	}
+	else
+		exit(EXIT_FAILURE);
+}
+
+void	handle_parent_process(t_node *node)
+{
+	if (node->inpipe[0] != INT_MAX)
+	{
+		wrap_close(node->inpipe[1]);
+		wrap_close(node->inpipe[0]);
+	}
+}
+
+void	exec_command(t_node *node, t_env **env_list, t_exec *exec_val)
+{
+	if (exec_val->argv && is_builtin(exec_val->argv[0]) && exec_val->one_cmd)
+		exec_builtin(node, env_list, exec_val);
+	else
+	{
+		exec_val->pid = fork();
+		if (exec_val->pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		if (exec_val->pid == 0)
+			handle_child_process(node, env_list, exec_val);
+		else
+			handle_parent_process(node);
+	}
+}
+
+void	exec_cmd_in_loop(t_node *node, t_env **env_list, t_exec *exec_val)
+{
+	while (node)
+	{
+		exec_val->pathname = make_pathname(node->token, *env_list);
+		if (should_continue(&node, exec_val, g_return_error.error, false))
+			continue ;
+		exec_val->argv = make_argv(node->token);
+		if (should_continue(&node, exec_val, !exec_val->argv, false))
+			continue ;
+		redirect_fd_list(node->redirect, *env_list);
+		if (should_continue(&node, exec_val, g_return_error.error, true))
+			continue ;
+		do_redirect(node->redirect);
+		if (should_continue(&node, exec_val,
+				node->token->kind != TK_WORD, true))
+		{
+			reset_redirect(node->redirect);
+			continue ;
+		}
+		exec_command(node, env_list, exec_val);
+		reset_redirect(node->redirect);
+		node = node->pipe;
+		free(exec_val->pathname);
+		free_argv(exec_val->argv);
+	}
+}
+
 void	exec_cmd(t_node *node, t_env **env_list)
 {
 	t_exec	exec_val;
@@ -326,69 +420,7 @@ void	exec_cmd(t_node *node, t_env **env_list)
 	exec_val.envp = make_envp(*env_list);
 	if (!node->pipe)
 		exec_val.one_cmd = true;
-	while (node)
-	{
-		exec_val.pathname = make_pathname(node->token, *env_list);
-		if (should_continue(&node, &exec_val, g_return_error.error, false))
-			continue ;
-		exec_val.argv = make_argv(node->token);
-		if (should_continue(&node, &exec_val, !exec_val.argv, false))
-			continue ;
-		redirect_fd_list(node->redirect, *env_list);
-		if (should_continue(&node, &exec_val, g_return_error.error, true))
-			continue ;
-		do_redirect(node->redirect);
-		if (should_continue(&node, &exec_val, node->token->kind != TK_WORD, true))
-		{
-			reset_redirect(node->redirect);
-			continue ;
-		}
-		if (exec_val.argv && is_builtin(exec_val.argv[0]) && exec_val.one_cmd)
-		{
-			connect_pipe_builtin(node);
-			recognize_builtin(exec_val.argv, env_list, exec_val.one_cmd);
-			reset_pipe_builtin(node);
-		}
-		else
-		{
-			exec_val.pid = fork();
-			if (exec_val.pid == -1)
-			{
-				perror("fork");
-				exit(EXIT_FAILURE);
-			}
-			if (exec_val.pid == 0)
-			{
-				// Child process
-				signal(SIGQUIT, SIG_DFL);///
-				signal(SIGINT, SIG_DFL);///
-				connect_pipe(node);
-				if (exec_val.argv && is_builtin(exec_val.argv[0]))
-					exit(recognize_builtin(exec_val.argv, env_list, exec_val.one_cmd));
-				else if (exec_val.pathname && exec_val.argv)
-				{
-					execve(exec_val.pathname, exec_val.argv, exec_val.envp);
-					perror("execve");
-					exit(EXIT_FAILURE);
-				}
-				else
-					exit(EXIT_FAILURE);
-			}
-			else
-			{
-				// Parent process
-				if (node->inpipe[0] != INT_MAX)
-				{
-					wrap_close(node->inpipe[1]);
-					wrap_close(node->inpipe[0]);
-				}
-			}
-		}
-		reset_redirect(node->redirect);
-		node = node->pipe;
-		free(exec_val.pathname);
-		free_argv(exec_val.argv);
-	}
+	exec_cmd_in_loop(node, env_list, &exec_val);
 	free_envp(exec_val.envp);
 	wait_child_process();
 }
