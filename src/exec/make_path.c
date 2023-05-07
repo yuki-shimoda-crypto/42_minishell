@@ -6,13 +6,32 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 10:16:44 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 13:44:07 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdio.h>
 #include <sys/stat.h>
+
+void	check_abs_path_error(char *pathname, char *word)
+{
+	if (is_only_slash(pathname) || is_directory(pathname))
+	{
+		file_exec_error(word, ": is a directory\n");
+		g_return_error.return_value = 126;
+	}
+	else if (!is_file(pathname) || !is_file_exist(pathname))
+	{
+		file_exec_error(word, ": No such file or directory\n");
+		g_return_error.return_value = 127;
+	}
+	else if (!is_file_executable(pathname))
+	{
+		file_exec_error(word, ": Permission deied\n");
+		g_return_error.return_value = 126;
+	}	
+}
 
 char	*make_absolute_path(t_tk *token)
 {
@@ -28,35 +47,16 @@ char	*make_absolute_path(t_tk *token)
 		split = strndup(path, (path - strchr(path, '/')));
 		path = strchr(path, '/');
 		path++;
-		if (!is_directory(split) && is_file(split))
+		if (check_file_dir_error(split, path, token))
 		{
-			if (strchr(path, '/'))
-			{
-				file_exec_error(token->word, ": Not a directory\n");
-				g_return_error.return_value = 126;
-				free(split);
-				return (pathname);
-			}
+			free(split);
+			return (pathname);
 		}
 		free(split);
 	}
 	if (!pathname)
 		assert_error("strdup\n");
-	if (is_only_slash(pathname) || is_directory(pathname))
-	{
-		file_exec_error(token->word, ": is a directory\n");
-		g_return_error.return_value = 126;
-	}
-	else if (!is_file(pathname) || !is_file_exist(pathname))
-	{
-		file_exec_error(token->word, ": No such file or directory\n");
-		g_return_error.return_value = 127;
-	}
-	else if (!is_file_executable(pathname))
-	{
-		file_exec_error(token->word, ": Permission deied\n");
-		g_return_error.return_value = 126;
-	}
+	check_abs_path_error(pathname, token->word);
 	return (pathname);
 }
 

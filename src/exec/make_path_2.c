@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 09:56:32 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 10:17:23 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 13:43:31 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,18 @@ char	*find_env_path(t_env *env_list)
 		env_list = env_list->next;
 	}
 	return (NULL);
+}
+
+bool	check_file_dir_error(char *split, char *path, t_tk *token)
+{
+	if (!is_directory(split) && is_file(split))
+	{
+		if (strchr(path, '/'))
+		{
+			file_exec_error(token->word, ": Not a directory\n");
+			g_return_error.return_value = 126;
+			return (true);
+		}
+	}
+	return (false);
 }
