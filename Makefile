@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+         #
+#    By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2023/05/07 13:18:45 by enogaWa          ###   ########.fr        #
+#    Updated: 2023/05/07 20:02:37 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,17 +32,18 @@ SRCS			=	src/main.c						\
 					src/parse/parse.c				\
 					src/parse/parse2.c				\
 					src/exec/argv_utils.c			\
+					src/exec/builtin_handling.c		\
 					src/exec/builtin_utils.c		\
+					src/exec/child_process_execution.c			\
 					src/exec/env_utils.c			\
 					src/exec/exec.c					\
-					src/exec/handle_process.c		\
-					src/exec/init_free.c			\
 					src/exec/is.c					\
-          src/exec/is2.c					\
-					src/exec/pipe_count.c			\
-					src/exec/waitpid.c				\
+					src/exec/is2.c					\
 					src/exec/make_path.c			\
 					src/exec/make_path_2.c			\
+					src/exec/node_management.c		\
+					src/exec/pipe_utils.c			\
+					src/exec/process_handling.c		\
 					src/redirect/redirect.c			\
 					src/redirect/heredoc.c			\
 					src/redirect/open_file.c		\

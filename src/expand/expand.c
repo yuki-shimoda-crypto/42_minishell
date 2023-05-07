@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 20:46:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 15:51:51 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 21:51:56 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,9 +241,9 @@ char	*expand_word(char *word, t_node_kind kind, t_env *env_list)
 		assert_error("ft_calloc\n");
 	while (*word)
 	{
-		if (is_single_quote(*word))
+		if (is_single_quote(*word) && kind != ND_FLAG_HEREDOC)
 			new_word = expand_single_quote(&word, word, new_word);
-		else if (is_double_quote(*word))
+		else if (is_double_quote(*word) && kind != ND_FLAG_HEREDOC)
 			new_word = db_quote_new_word(&word, kind, new_word, env_list);
 		else if (is_variable(word) && kind != ND_REDIRECT_HEREDOC)
 			new_word = expand_variable(&word, word, new_word, env_list);
