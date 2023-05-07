@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 14:14:18 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/08 00:48:38 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	interpret(char *line, t_env **env_list)
 	free_node(&node);
 }
 
-int	into_minishell(char *line, t_env *env_list)
+int	into_minishell(char *line, t_env **env_list)
 {
 	if (!line)
 	{
@@ -60,7 +60,7 @@ int	into_minishell(char *line, t_env *env_list)
 	if (*line)
 	{
 		add_history(line);
-		interpret(line, &env_list);
+		interpret(line, env_list);
 	}
 	free(line);
 	return (0);
@@ -80,7 +80,7 @@ int	main(int argc, char const *argv[], char *envp[])
 	{
 		init_return_error();
 		line = readline(PROMPT);
-		if (into_minishell(line, env_list))
+		if (into_minishell(line, &env_list))
 			break ;
 	}
 	free_env(&env_list);
