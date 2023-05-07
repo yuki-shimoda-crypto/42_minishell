@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 10:04:36 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 11:00:21 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,7 @@ enum e_node_kind
 struct s_node
 {
 	t_node_kind	kind;
-	// CMD
 	t_tk		*token;
-	// REDIRECT
 	t_node		*redirect;
 	t_node		*redirect_pre;
 	char		*filename;
@@ -75,7 +73,6 @@ struct s_node
 	int			fd_save;
 	int			fd_target;
 	bool		quote_flag;
-	// PIPE
 	int			fd_save_inpipe;
 	int			fd_save_outpipe;
 	int			inpipe[2];
@@ -99,13 +96,12 @@ struct s_return_error
 	bool	exec_error;
 	int		g_sig;
 	int		return_value;
-	//fix
 	bool	export_error;
 	bool	heredoc_interupt;
-	bool	ctrl_c;//
+	bool	ctrl_c;
 };
 
-extern t_return_error	g_return_error;
+extern t_return_error			g_return_error;
 
 // main.c
 void	ctrl_c(int sig);
@@ -128,7 +124,6 @@ int		unset_error(const char *cmd);
 void	exit_numeric(const char *cmd);
 void	cd_error(const char *cmd);
 
-
 // tokenize.c
 t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token);
 t_tk	*word_into_list(char **skipped, char *line);
@@ -148,7 +143,6 @@ bool	is_pipe(char c);
 // parse.c
 void	new_node_redirect(t_node *node, t_tk *token);
 int		judge_nd_kind(char *redirect);
-// t_node	*new_node(t_node_kind kind);
 t_node	*new_node(t_node_kind kind, t_node *node_pre);
 void	make_redirect(t_node *node, t_tk *token);
 t_tk	*dup_token(char *word);
@@ -205,7 +199,7 @@ int		wrap_dup2(int oldfd, int newfd);
 pid_t	wrap_fork(void);
 int		wrap_pipe(int pipefd[2]);
 ssize_t	wrap_read(int fd, void *buf, size_t count);
-ssize_t wrap_write(int fd, const void *buf, size_t count);
+ssize_t	wrap_write(int fd, const void *buf, size_t count);
 char	*wrap_getcwd(char *buf, size_t size);
 int		wrap_chdir(const char *path);
 
@@ -219,13 +213,16 @@ bool	is_alpha_num_under(char c);
 bool	is_special_charactor(char *line);
 char	*expand_word(char *word, t_node_kind kind, t_env *env_list);
 char	*expand_special_char(char **skipped, char *word, char *new_word);
-char	*expand_variable(char **skipped, char *word, char *new_word, t_env *env_list);
-char	*expand_db_quote(char **skipped, char *word, char *new_word, t_env *env_list);
+char	*expand_variable(char **skipped, char *word,
+			char *new_word, t_env *env_list);
+char	*expand_db_quote(char **skipped, char *word,
+			char *new_word, t_env *env_list);
 char	*expand_single_quote(char **skipped, char *word, char *new_word);
 char	*append_char(char **skipped, char *word, char *new_word);
 t_env	*find_word_expandable(const char *key, t_env *env_list);
 char	*make_expanded_word(char *new_word, t_env *target_list);
-char	*make_new_word(char *head, char *word, char *append_word, char *new_word);
+char	*make_new_word(char *head, char *word,
+			char *append_word, char *new_word);
 
 //builtin
 int		builtin_echo(char **argv);
@@ -258,7 +255,6 @@ t_env	*make_env_list(char **envp);
 t_env	*env_new(char *key, char *value);
 t_env	*env_last(t_env *env_list);
 void	env_addback(t_env **env_list, t_env *env_new);
-
 
 // debug_func.c
 void	print_t_tk(t_tk	*token);
