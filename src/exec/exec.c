@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:15:24 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 18:41:10 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:57:26 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,9 +259,9 @@ void	handle_waitpid_error(pid_t pid)
 	}
 }
 
-void	update_return_value(int status)
+void	update_return_value(pid_t pid, int status, t_exec *exec_val)
 {
-	if (WIFEXITED(status))
+	if (WIFEXITED(status) && pid == exec_val->pid  && exec_val->is_overwrite)
 		g_return_error.return_value = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 	{
@@ -274,7 +274,7 @@ void	update_return_value(int status)
 	}
 }
 
-void	wait_child_process(void)
+void	wait_child_process(t_exec *exec_val)
 {
 	int		status;
 	pid_t	pid;
@@ -288,7 +288,7 @@ void	wait_child_process(void)
 		else
 		{
 			handle_waitpid_error(pid);
-			update_return_value(status);
+			update_return_value(pid, status, exec_val);
 		}
 	}
 }
@@ -300,6 +300,7 @@ void	init_exec_val(t_exec *exec_val)
 	exec_val->envp = NULL;
 	exec_val->pid = 0;
 	exec_val->one_cmd = false;
+	exec_val->is_overwrite = false;
 }
 
 void	free_path_node_next(t_node **node, t_exec *exec_val)
@@ -345,8 +346,10 @@ void	handle_child_process(t_node *node, t_env **env_list, t_exec *exec_val)
 	}
 }
 
-void	handle_parent_process(t_node *node)
+void	handle_parent_process(t_node *node, t_exec *exec_val)
 {
+	if (!node->pipe)
+		exec_val->is_overwrite = true;
 	if (node->inpipe[0] != INT_MAX)
 	{
 		wrap_close(node->inpipe[1]);
@@ -395,7 +398,7 @@ void	exec_child_process(t_node *node, t_env **env_list, t_exec *exec_val)
 	if (exec_val->pid == 0)
 		handle_child_process(node, env_list, exec_val);
 	else
-		handle_parent_process(node);
+		handle_parent_process(node, exec_val);
 }
 
 void	exec_cmd(t_node *node, t_env **env_list)
@@ -423,5 +426,5 @@ void	exec_cmd(t_node *node, t_env **env_list)
 		free_argv(exec_val.argv);
 	}
 	free_envp(exec_val.envp);
-	wait_child_process();
+	wait_child_process(&exec_val);
 }

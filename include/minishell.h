@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 02:12:31 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:56:29 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ struct s_exec
 	char	**envp;
 	pid_t	pid;
 	bool	one_cmd;
+	bool	is_overwrite;
 };
 
 
@@ -181,7 +182,7 @@ size_t	argv_len(t_tk *token);
 char	**make_argv(t_tk *token);
 void	exec(char *pathname, char **argv, char **envp, t_node *node);
 void	exec_cmd(t_node *node, t_env **env_list);
-void	wait_child_process(void);
+void	wait_child_process(t_exec *exec_val);
 
 // redirect.c
 int		open_redir_file(t_node *redir, t_env *env_list);
