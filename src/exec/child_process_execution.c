@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:46:03 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 20:03:33 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/08 01:25:39 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 
 void	process_node(t_node **node, t_env **env_list, t_exec *exec_val)
 {
+	redirect_fd_list((*node)->redirect, *env_list);
+	if (g_return_error.error)
+	{
+		*node = (*node)->pipe;
+		return ;
+	}
 	exec_val->pathname = make_pathname((*node)->token, *env_list);
 	if (g_return_error.error)
 	{
@@ -25,12 +31,6 @@ void	process_node(t_node **node, t_env **env_list, t_exec *exec_val)
 	if (!exec_val->argv)
 	{
 		free_path_node_next(node, exec_val);
-		return ;
-	}
-	redirect_fd_list((*node)->redirect, *env_list);
-	if (g_return_error.error)
-	{
-		free_path_arg_node_next(node, exec_val);
 		return ;
 	}
 	do_redirect((*node)->redirect);
