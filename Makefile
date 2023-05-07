@@ -6,7 +6,7 @@
 #    By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2023/05/07 15:16:22 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/05/07 15:53:02 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,6 @@ SRCS			=	src/main.c						\
 					src/exec/init_free.c			\
 					src/exec/is.c					\
           			src/exec/is2.c					\
-					src/exec/libft.c				\
 					src/exec/pipe_count.c			\
 					src/exec/waitpid.c				\
 					src/exec/make_path.c			\

@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 02:24:53 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 14:15:30 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:51:25 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*append_char(char **skipped, char *word, char *new_word)
 	append_word = ft_strndup(word, 1);
 	if (!append_word)
 		assert_error("ft_strndup\n");
-	tmp = strjoin(new_word, append_word);
+	tmp = ft_strjoin(new_word, append_word);
 	free(new_word);
 	free(append_word);
 	new_word = tmp;
@@ -59,11 +59,11 @@ char	*make_expanded_word(char *new_word, t_env *target_list)
 		if (!value)
 			assert_error("ft_calloc\n");
 	}
-	tmp = strjoin(new_word, value);
+	tmp = ft_strjoin(new_word, value);
 	free(new_word);
 	free(value);
 	if (!tmp)
-		assert_error("strjoin");
+		assert_error("ft_strjoin");
 	return (tmp);
 }
 
@@ -75,11 +75,11 @@ char	*make_new_word(char *head, char *word,
 	append_word = ft_strndup(head, word - head);
 	if (!append_word)
 		assert_error("ft_strndup\n");
-	tmp = strjoin(new_word, append_word);
+	tmp = ft_strjoin(new_word, append_word);
 	free(new_word);
 	free(append_word);
 	if (!tmp)
-		assert_error("strjoin\n");
+		assert_error("ft_strjoin\n");
 	new_word = tmp;
 	return (new_word);
 }

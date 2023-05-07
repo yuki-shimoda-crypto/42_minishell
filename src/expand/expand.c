@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 20:46:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 14:36:50 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:51:51 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 // 	char	*append_word;
 // 	char	*tmp;
 
-// 	append_word = itoa(g_return_error.return_value);
+// 	append_word = ft_itoa(g_return_error.return_value);
 // 	if (!append_word)
-// 		assert_error("itoa\n");
-// 	tmp = strjoin(new_word, append_word);
+// 		assert_error("ft_itoa\n");
+// 	tmp = ft_strjoin(new_word, append_word);
 // 	if (!tmp)
-// 		assert_error("strjoin\n");
+// 		assert_error("ft_strjoin\n");
 // 	free(new_word);
 // 	free(append_word);
 // 	new_word = tmp;
@@ -42,7 +42,7 @@
 // 	append_word = ft_strndup(word, 1);
 // 	if (!append_word)
 // 		assert_error("ft_strndup\n");
-// 	tmp = strjoin(new_word, append_word);
+// 	tmp = ft_strjoin(new_word, append_word);
 // 	free(new_word);
 // 	free(append_word);
 // 	new_word = tmp;
@@ -81,11 +81,11 @@
 // 		if (!value)
 // 			assert_error("ft_calloc\n");
 // 	}
-// 	tmp = strjoin(new_word, value);
+// 	tmp = ft_strjoin(new_word, value);
 // 	free(new_word);
 // 	free(value);
 // 	if (!tmp)
-// 		assert_error("strjoin");
+// 		assert_error("ft_strjoin");
 // 	return (tmp);
 // }
 
@@ -118,11 +118,11 @@
 // 	append_word = ft_strndup(head, word - head);
 // 	if (!append_word)
 // 		assert_error("ft_strndup\n");
-// 	tmp = strjoin(new_word, append_word);
+// 	tmp = ft_strjoin(new_word, append_word);
 // 	free(new_word);
 // 	free(append_word);
 // 	if (!tmp)
-// 		assert_error("strjoin\n");
+// 		assert_error("ft_strjoin\n");
 // 	new_word = tmp;
 // 	return (new_word);
 // }
@@ -183,9 +183,9 @@
 // 	appended_word = ft_strndup(head, word - head);
 // 	if (!appended_word)
 // 		assert_error("ft_strndup\n");
-// 	tmp = strjoin(new_word, appended_word);
+// 	tmp = ft_strjoin(new_word, appended_word);
 // 	if (!tmp)
-// 		assert_error("strjoin\n");
+// 		assert_error("ft_strjoin\n");
 // 	free(appended_word);
 // 	free(new_word);
 // 	new_word = tmp;
@@ -207,9 +207,9 @@ char	*skip_db_quote(char **skipped, char *word, char *new_word)
 	append_word = ft_strndup(head, word - head);
 	if (!append_word)
 		assert_error("ft_strndup\n");
-	tmp = strjoin(new_word, append_word);
+	tmp = ft_strjoin(new_word, append_word);
 	if (!tmp)
-		assert_error("strjoin\n");
+		assert_error("ft_strjoin\n");
 	free(append_word);
 	free(new_word);
 	new_word = tmp;

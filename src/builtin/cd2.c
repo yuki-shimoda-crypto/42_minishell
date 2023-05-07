@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 16:51:51 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 18:26:21 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 15:51:25 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	join_add_env(char *key, char *value, t_env **env_list)
 {
 	char	*tmp;
 
-	tmp = strjoin(key, value);
+	tmp = ft_strjoin(key, value);
 	if (!tmp)
-		assert_error("strjoin\n");
+		assert_error("ft_strjoin\n");
 	add_env(tmp, env_list);
 	free(tmp);
 	free(value);

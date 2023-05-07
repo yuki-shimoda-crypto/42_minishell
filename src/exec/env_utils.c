@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:37:35 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 14:10:48 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:51:25 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ char	**make_envp(t_env *env_list)
 	i = 0;
 	while (i < list_size)
 	{
-		envp[i] = strjoin_three(env_list->key, "=", env_list->value);
+		envp[i] = ft_strjoin_three(env_list->key, "=", env_list->value);
 		if (!envp[i])
-			assert_error("strjoin_three, malloc\n");
+			assert_error("ft_strjoin_three, malloc\n");
 		i++;
 		env_list = env_list->next;
 	}

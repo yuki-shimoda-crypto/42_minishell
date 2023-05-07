@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 09:56:32 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 14:38:18 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:51:25 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_pathname(char *head, char *tail, char **word)
 		pathname = ft_strdup(head);
 	if (!pathname)
 		assert_error("ft_strndup\n");
-	tmp = strjoin_three(pathname, "/", *word);
+	tmp = ft_strjoin_three(pathname, "/", *word);
 	free(pathname);
 	if (!tmp)
 		assert_error("malloc\n");
@@ -55,7 +55,7 @@ void	check_error_env_path(char *pathname, char *word)
 
 char	*check_pathname_error(char *pathname, char *abs_path, const char *word)
 {
-	pathname = strjoin(abs_path, word - 1);
+	pathname = ft_strjoin(abs_path, word - 1);
 	free(abs_path);
 	if (!pathname)
 		assert_error("malloc\n");

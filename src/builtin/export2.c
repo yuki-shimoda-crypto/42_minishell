@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 12:59:41 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 14:15:30 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:57:32 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ char	**put_env_into_array(t_env *env_list, char **sort_env)
 	while (env_list)
 	{
 		if (env_list->value[0] != '\0')
-			sort_env[i] = strjoin_three(env_list->key, "=\"", env_list->value);
+			sort_env[i] = ft_strjoin_three
+				(env_list->key, "=\"", env_list->value);
 		else
 			sort_env[i] = ft_strdup(env_list->key);
 		env_list = env_list->next;

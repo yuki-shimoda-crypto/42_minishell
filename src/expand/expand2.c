@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 02:24:24 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 14:34:54 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:51:51 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ char	*expand_special_char(char **skipped, char *word, char *new_word)
 	char	*append_word;
 	char	*tmp;
 
-	append_word = itoa(g_return_error.return_value);
+	append_word = ft_itoa(g_return_error.return_value);
 	if (!append_word)
-		assert_error("itoa\n");
-	tmp = strjoin(new_word, append_word);
+		assert_error("ft_itoa\n");
+	tmp = ft_strjoin(new_word, append_word);
 	if (!tmp)
-		assert_error("strjoin\n");
+		assert_error("ft_strjoin\n");
 	free(new_word);
 	free(append_word);
 	new_word = tmp;
@@ -109,9 +109,9 @@ char	*expand_single_quote(char **skipped, char *word, char *new_word)
 	appended_word = ft_strndup(head, word - head);
 	if (!appended_word)
 		assert_error("ft_strndup\n");
-	tmp = strjoin(new_word, appended_word);
+	tmp = ft_strjoin(new_word, appended_word);
 	if (!tmp)
-		assert_error("strjoin\n");
+		assert_error("ft_strjoin\n");
 	free(appended_word);
 	free(new_word);
 	new_word = tmp;

@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 14:08:14 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:55:50 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,6 @@ struct s_exec
 };
 
 extern t_return_error			g_return_error;
-
-// remove
-char	*itoa(int n);
-char	*strjoin(char const *s1, char const *s2);
-char	*strjoin_three(char const *s1, char const *s2, char const *s3);
 
 // main.c
 void	ctrl_c(int sig);
