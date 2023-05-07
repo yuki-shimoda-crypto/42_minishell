@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <signal.h>
 
 void	handle_builtin(t_node *node, t_env **env_list, t_exec *exec_val)
 {
