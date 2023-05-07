@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:15:24 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 18:32:00 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:41:10 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,29 @@ char	**make_envp(t_env *env_list)
 	return (envp);
 }
 
+void	handle_waitpid_error(pid_t pid)
+{
+	if (pid == -1)
+	{
+		perror(NULL);
+		assert_error("waitpid\n");
+	}
+}
+
+void	update_return_value(int status)
+{
+	if (WIFEXITED(status))
+		g_return_error.return_value = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		if (isatty(STDIN_FILENO))
+			wrap_write(STDOUT_FILENO, "\n", 1);
+		g_return_error.g_sig = 0;
+		if (WTERMSIG(status) == SIGINT)
+			g_return_error.ctrl_c = true;//
+		g_return_error.return_value = 128 + WTERMSIG(status);
+	}
+}
 
 void	wait_child_process(void)
 {
@@ -262,24 +285,14 @@ void	wait_child_process(void)
 		pid = waitpid(-1, &status, 0);
 		if (pid == -1 && errno == ECHILD)
 			break ;
-		else if (pid == -1)
+		else
 		{
-			perror(NULL);
-			assert_error("waitpid\n");
-		}
-		else if (WIFEXITED(status))
-			g_return_error.return_value = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			if (isatty(STDIN_FILENO))
-				wrap_write(STDOUT_FILENO, "\n", 1);
-			g_return_error.g_sig = 0;
-			if (WTERMSIG(status) == SIGINT)
-				g_return_error.ctrl_c = true;//
-			g_return_error.return_value = 128 + WTERMSIG(status);
+			handle_waitpid_error(pid);
+			update_return_value(status);
 		}
 	}
 }
+
 void	init_exec_val(t_exec *exec_val)
 {
 	exec_val->pathname = NULL;
