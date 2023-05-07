@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 12:24:18 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/16 12:42:28 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 02:14:08 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	open_redir_out(char *filename)
 	{
 		write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
 		perror(filename);
-		g_return_error.redirect_error = true;
+		g_return_error.error = true;
 		g_return_error.return_value = 1;
 	}
 	return (fd);
@@ -42,7 +42,7 @@ int	open_redir_append(char *filename)
 	{
 		write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
 		perror(filename);
-		g_return_error.redirect_error = true;
+		g_return_error.error = true;
 		g_return_error.return_value = 1;
 	}
 	return (fd);
@@ -58,7 +58,7 @@ int	open_redir_in(char *filename)
 	{
 		write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
 		perror(filename);
-		g_return_error.redirect_error = true;
+		g_return_error.error = true;
 		g_return_error.return_value = 1;
 	}
 	return (fd);

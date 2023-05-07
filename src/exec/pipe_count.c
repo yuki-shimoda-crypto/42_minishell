@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close.c                                            :+:      :+:    :+:   */
+/*   pipe_count.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/12 19:38:57 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 02:17:23 by yshimoda         ###   ########.fr       */
+/*   Created: 2023/05/07 11:39:20 by yshimoda          #+#    #+#             */
+/*   Updated: 2023/05/07 11:39:28 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <unistd.h>
 
-int	wrap_close(int fd)
+size_t	count_pipe_num(t_node *node)
 {
-	int	ret;
+	size_t	num;
 
-	ret = close(fd);
-	if (ret == -1)
+	num = 0;
+	while (node)
 	{
-		perror("close");
-		g_return_error.error = true;
+		node = node->pipe;
+		num++;
 	}
-	return (ret);
+	return (num);
 }

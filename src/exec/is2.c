@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close.c                                            :+:      :+:    :+:   */
+/*   is2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/12 19:38:57 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 02:17:23 by yshimoda         ###   ########.fr       */
+/*   Created: 2023/05/07 10:02:23 by enogaWa           #+#    #+#             */
+/*   Updated: 2023/05/07 10:17:41 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <unistd.h>
 
-int	wrap_close(int fd)
+bool	is_relative_path(const char *word)
 {
-	int	ret;
+	size_t	len;
 
-	ret = close(fd);
-	if (ret == -1)
-	{
-		perror("close");
-		g_return_error.error = true;
-	}
-	return (ret);
+	len = strlen(word);
+	if (2 <= len && !strncmp(word, "./", 2))
+		return (true);
+	if (3 <= len && !strncmp(word, "../", 3))
+		return (true);
+	return (false);
+}
+
+bool	is_dot(const char *word)
+{
+	size_t	len;
+
+	len = strlen(word);
+	if (len == 1 && !strncmp(word, ".", 1))
+		return (true);
+	else if (len == 2 && !strncmp(word, "..", 2))
+		return (true);
+	return (false);
 }
