@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:15:24 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 02:18:14 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 17:27:33 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,14 +302,50 @@ void	free_path_arg_node_next(t_node **node, t_exec *exec_val)
 	free_path_node_next(node, exec_val);
 }
 
+void	input_pipe_and_expand(t_node *node, t_env **env_list, t_exec *exec_val)
+{
+	input_pipefd(node, NULL);
+	expand(node, *env_list);
+	init_exec_val(exec_val);
+	exec_val->envp = make_envp(*env_list);
+}
+
+void	handle_builtin(t_node *node, t_env **env_list, t_exec *exec_val)
+{
+	connect_pipe_builtin(node);
+	recognize_builtin(exec_val->argv, env_list, exec_val->one_cmd);
+	reset_pipe_builtin(node);
+}
+
+void	handle_child_process(t_node *node, t_env **env_list, t_exec *exec_val)
+{
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	connect_pipe(node);
+	if (exec_val->argv && is_builtin(exec_val->argv[0]))
+		exit(recognize_builtin(exec_val->argv, env_list, exec_val->one_cmd));
+	else if (exec_val->pathname && exec_val->argv)
+	{
+		execve(exec_val->pathname, exec_val->argv, exec_val->envp);
+		perror("execve");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	handle_parent_process(t_node *node)
+{
+	if (node->inpipe[0] != INT_MAX)
+	{
+		wrap_close(node->inpipe[1]);
+		wrap_close(node->inpipe[0]);
+	}
+}
+
 void	exec_cmd(t_node *node, t_env **env_list)
 {
 	t_exec	exec_val;
 
-	input_pipefd(node, NULL);
-	expand(node, *env_list);
-	init_exec_val(&exec_val);
-	exec_val.envp = make_envp(*env_list);
+	input_pipe_and_expand(node, env_list, &exec_val);
 	if (!node->pipe)
 		exec_val.one_cmd = true;
 	while (node)
@@ -345,11 +381,7 @@ void	exec_cmd(t_node *node, t_env **env_list)
 			continue ;
 		}
 		if (exec_val.argv && is_builtin(exec_val.argv[0]) && exec_val.one_cmd)
-		{
-			connect_pipe_builtin(node);
-			recognize_builtin(exec_val.argv, env_list, exec_val.one_cmd);
-			reset_pipe_builtin(node);
-		}
+			handle_builtin(node, env_list, &exec_val);
 		else
 		{
 			exec_val.pid = fork();
@@ -359,29 +391,9 @@ void	exec_cmd(t_node *node, t_env **env_list)
 				exit(EXIT_FAILURE);
 			}
 			if (exec_val.pid == 0)
-			{
-				// Child process
-				signal(SIGQUIT, SIG_DFL);///
-				signal(SIGINT, SIG_DFL);///
-				connect_pipe(node);
-				if (exec_val.argv && is_builtin(exec_val.argv[0]))
-					exit(recognize_builtin(exec_val.argv, env_list, exec_val.one_cmd));
-				else if (exec_val.pathname && exec_val.argv)
-				{
-					execve(exec_val.pathname, exec_val.argv, exec_val.envp);
-					perror("execve");
-					exit(EXIT_FAILURE);
-				}
-			}
+				handle_child_process(node, env_list, &exec_val);
 			else
-			{
-				// Parent process
-				if (node->inpipe[0] != INT_MAX)
-				{
-					wrap_close(node->inpipe[1]);
-					wrap_close(node->inpipe[0]);
-				}
-			}
+				handle_parent_process(node);
 		}
 		reset_redirect(node->redirect);
 		node = node->pipe;
