@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2023/05/07 11:31:45 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/05/07 13:18:45 by enogaWa          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,8 @@ SRCS			=	src/main.c						\
 					src/exec/handle_process.c		\
 					src/exec/init_free.c			\
 					src/exec/is.c					\
-          src/exec/is2.c			\
+					src/exec/is2.c					\
 					src/exec/libft.c				\
-					src/exec/make_path.c			\
 					src/exec/pipe_count.c			\
 					src/exec/waitpid.c				\
 					src/exec/make_path.c			\

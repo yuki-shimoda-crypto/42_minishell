@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 11:28:51 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 13:43:58 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ char	*make_relative_path(const char *word);
 char	*get_pathname(char *head, char *tail, char **word);
 void	check_error_env_path(char *pathname, char *word);
 char	*check_pathname_error(char *pathname, char *abs_path, const char *word);
+bool	check_file_dir_error(char *split, char *path, t_tk *token);
 size_t	argv_len(t_tk *token);
 size_t	count_pipe_num(t_node *node);
 size_t	env_list_size(t_env *env_list);
