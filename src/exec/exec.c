@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:15:24 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 18:16:41 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:32:00 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -371,6 +371,20 @@ void	process_node(t_node **node, t_env **env_list, t_exec *exec_val)
 	}
 }
 
+void	exec_child_process(t_node *node, t_env **env_list, t_exec *exec_val)
+{
+	exec_val->pid = fork();
+	if (exec_val->pid == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	if (exec_val->pid == 0)
+		handle_child_process(node, env_list, exec_val);
+	else
+		handle_parent_process(node);
+}
+
 void	exec_cmd(t_node *node, t_env **env_list)
 {
 	t_exec	exec_val;
@@ -389,18 +403,7 @@ void	exec_cmd(t_node *node, t_env **env_list)
 		if (exec_val.argv && is_builtin(exec_val.argv[0]) && exec_val.one_cmd)
 			handle_builtin(node, env_list, &exec_val);
 		else
-		{
-			exec_val.pid = fork();
-			if (exec_val.pid == -1)
-			{
-				perror("fork");
-				exit(EXIT_FAILURE);
-			}
-			if (exec_val.pid == 0)
-				handle_child_process(node, env_list, &exec_val);
-			else
-				handle_parent_process(node);
-		}
+			exec_child_process(node, env_list, &exec_val);
 		reset_redirect(node->redirect);
 		node = node->pipe;
 		free(exec_val.pathname);
