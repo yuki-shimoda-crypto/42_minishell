@@ -32,7 +32,9 @@ SRCS			=	src/main.c						\
 					src/parse/parse2.c				\
 					src/exec/exec.c					\
 					src/exec/is.c					\
+					src/exec/is2.c					\
 					src/exec/make_path.c			\
+					src/exec/make_path_2.c			\
 					src/redirect/redirect.c			\
 					src/redirect/heredoc.c			\
 					src/redirect/open_file.c		\
@@ -48,6 +50,8 @@ SRCS			=	src/main.c						\
 					src/wrap/getcwd.c				\
 					src/wrap/chdir.c				\
 					src/expand/expand.c				\
+					src/expand/expand2.c			\
+					src/expand/expand3.c			\
 					src/expand/is_01.c				\
 					src/expand/is_02.c				\
 					src/builtin/recognize_builtin.c	\
