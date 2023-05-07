@@ -5,14 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/07 11:37:07 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 14:14:05 by yshimoda         ###   ########.fr       */
+/*   Created: 2023/05/07 19:35:37 by yshimoda          #+#    #+#             */
+/*   Updated: 2023/05/07 19:37:31 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
-#include <string.h>
 
 size_t	argv_len(t_tk *token)
 {

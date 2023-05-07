@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:15:24 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 11:10:22 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 19:47:07 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/wait.h>
+#include <limits.h>
+#include <errno.h>
 
 void	exec(char *pathname, char **argv, char **envp, t_node *node)
 {
@@ -30,64 +33,40 @@ void	exec(char *pathname, char **argv, char **envp, t_node *node)
 	}
 }
 
-void	exec_command(t_node *node, t_env **env_list, t_exec *exec_val)
+void	init_exec_val(t_exec *exec_val)
 {
-	if (exec_val->argv && is_builtin(exec_val->argv[0]) && exec_val->one_cmd)
-		exec_builtin(node, env_list, exec_val);
-	else
-	{
-		exec_val->pid = fork();
-		if (exec_val->pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		if (exec_val->pid == 0)
-			handle_child_process(node, env_list, exec_val);
-		else
-			handle_parent_process(node, exec_val);
-	}
-}
-
-void	exec_cmd_in_loop(t_node *node, t_env **env_list, t_exec *exec_val)
-{
-	while (node)
-	{
-		exec_val->pathname = make_pathname(node->token, *env_list);
-		if (should_continue(&node, exec_val, g_return_error.error, false))
-			continue ;
-		exec_val->argv = make_argv(node->token);
-		if (should_continue(&node, exec_val, !exec_val->argv, false))
-			continue ;
-		redirect_fd_list(node->redirect, *env_list);
-		if (should_continue(&node, exec_val, g_return_error.error, true))
-			continue ;
-		do_redirect(node->redirect);
-		if (should_continue(&node, exec_val,
-				node->token->kind != TK_WORD, true))
-		{
-			reset_redirect(node->redirect);
-			continue ;
-		}
-		exec_command(node, env_list, exec_val);
-		reset_redirect(node->redirect);
-		node = node->pipe;
-		free(exec_val->pathname);
-		free_argv(exec_val->argv);
-	}
+	exec_val->pathname = NULL;
+	exec_val->argv = NULL;
+	exec_val->envp = NULL;
+	exec_val->pid = 0;
+	exec_val->one_cmd = false;
+	exec_val->is_overwrite = false;
 }
 
 void	exec_cmd(t_node *node, t_env **env_list)
 {
 	t_exec	exec_val;
 
-	input_pipefd(node, NULL);
-	expand(node, *env_list);
-	init_exec_val(&exec_val);
-	exec_val.envp = make_envp(*env_list);
+	input_pipe_and_expand(node, env_list, &exec_val);
 	if (!node->pipe)
 		exec_val.one_cmd = true;
-	exec_cmd_in_loop(node, env_list, &exec_val);
+	while (node)
+	{
+		process_node(&node, env_list, &exec_val);
+		if (g_return_error.error)
+		{
+			g_return_error.error = false;
+			continue ;
+		}
+		if (exec_val.argv && is_builtin(exec_val.argv[0]) && exec_val.one_cmd)
+			handle_builtin(node, env_list, &exec_val);
+		else
+			exec_child_process(node, env_list, &exec_val);
+		reset_redirect(node->redirect);
+		node = node->pipe;
+		free(exec_val.pathname);
+		free_argv(exec_val.argv);
+	}
 	free_envp(exec_val.envp);
 	wait_child_process(&exec_val);
 }
