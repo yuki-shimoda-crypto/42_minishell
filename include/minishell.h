@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 11:28:51 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 13:19:38 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,8 @@ bool	is_file_executable(const char *pathname);
 bool	is_file_exist(const char *pathname);
 bool	is_only_slash(const char *pathname);
 bool	is_relative_path(const char *word);
-bool	should_continue(t_node **node, t_exec *exec_val, bool is_continue, bool free_arg);
+bool	should_continue(t_node **node, t_exec *exec_val,
+			bool is_continue, bool free_arg);
 char	**make_argv(t_tk *token);
 char	**make_envp(t_env *env_list);
 char	*find_env_path(t_env *env_list);
@@ -203,8 +204,6 @@ void	init_exec_val(t_exec *exec_val);
 void	handle_waitpid_error(pid_t pid);
 void	update_return_value(pid_t pid, int status, t_exec *exec_val);
 void	wait_child_process(t_exec *exec_val);
-
-
 
 // redirect.c
 int		open_redir_file(t_node *redir, t_env *env_list);

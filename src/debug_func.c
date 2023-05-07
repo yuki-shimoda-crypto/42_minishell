@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_func.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:04:47 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/14 00:13:06 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 13:17:38 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static const char	*print_t_node_kind(int kind)
 void	print_node(t_node *node, int i)
 {
 	printf("%s\n", "----------");
-
 	printf("rank\t\t%d\n", i);
 	printf("node_kind\t%s\n", print_t_node_kind(node->kind));
 	printf("node->token\t%p\n", node->token);
@@ -57,7 +56,6 @@ void	print_node(t_node *node, int i)
 		printf("node_filename\t%s\n", node->filename);
 	print_t_tk(node->token);
 	printf("node_ptr\t%p\n", node);
-
 	printf("%s\n", "----------");
 	if (node->redirect)
 		print_node(node->redirect, i + 1);
