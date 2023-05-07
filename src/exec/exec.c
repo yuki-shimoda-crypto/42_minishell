@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:15:24 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 17:27:33 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 17:58:01 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,6 @@ void	free_path_node_next(t_node **node, t_exec *exec_val)
 {
 	free(exec_val->pathname);
 	*node = (*node)->pipe;
-	g_return_error.error = false;
 }
 
 void	free_path_arg_node_next(t_node **node, t_exec *exec_val)
@@ -341,6 +340,29 @@ void	handle_parent_process(t_node *node)
 	}
 }
 
+void	process_node(t_node **node, t_env **env_list, t_exec *exec_val)
+{
+	exec_val->pathname = make_pathname((*node)->token, *env_list);
+	if (g_return_error.error)
+	{
+		free_path_node_next(node, exec_val);
+		return ;
+	}
+	exec_val->argv = make_argv((*node)->token);
+	if (!exec_val->argv)
+	{
+		free_path_node_next(node, exec_val);
+		g_return_error.error = true;
+		return ;
+	}
+	redirect_fd_list((*node)->redirect, *env_list);//
+	if (g_return_error.error)
+	{
+		free_path_arg_node_next(node, exec_val);
+		return ;
+	}
+}
+
 void	exec_cmd(t_node *node, t_env **env_list)
 {
 	t_exec	exec_val;
@@ -350,22 +372,10 @@ void	exec_cmd(t_node *node, t_env **env_list)
 		exec_val.one_cmd = true;
 	while (node)
 	{
-		exec_val.pathname = make_pathname(node->token, *env_list);
+		process_node(&node, env_list, &exec_val);
 		if (g_return_error.error)
 		{
-			free_path_node_next(&node, &exec_val);
-			continue ;
-		}
-		exec_val.argv = make_argv(node->token);
-		if (!exec_val.argv)
-		{
-			free_path_node_next(&node, &exec_val);
-			continue ;
-		}
-		redirect_fd_list(node->redirect, *env_list);//
-		if (g_return_error.error)
-		{
-			free_path_arg_node_next(&node, &exec_val);
+			g_return_error.error = false;
 			continue ;
 		}
 		do_redirect(node->redirect);
