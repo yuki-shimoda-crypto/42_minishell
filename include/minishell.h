@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 02:45:11 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 10:04:36 by enogaWa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,10 +163,17 @@ bool	is_file_executable(const char *pathname);
 bool	is_file_exist(const char *pathname);
 bool	is_file(const char *pathname);
 bool	is_relative_path(const char *word);
+bool	is_dot(const char *word);
+bool	is_only_slash(const char *pathname);
+bool	is_directory(const char *pathname);
 char	*find_env_path(t_env *env_list);
 char	*make_absolute_path(t_tk *token);
 char	*make_environment_path(t_tk *token, t_env *env_list);
 char	*make_pathname(t_tk *token, t_env *env_list);
+char	*get_pathname(char *head, char *tail, char **word);
+void	check_error_env_path(char *pathname, char *word);
+char	*check_pathname_error(char *pathname, char *abs_path, const char *word);
+
 size_t	argv_len(t_tk *token);
 char	**make_argv(t_tk *token);
 void	exec(char *pathname, char **argv, char **envp, t_node *node);
