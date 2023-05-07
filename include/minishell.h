@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 13:19:38 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 14:03:44 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 # include <stdbool.h>
 # include <stdint.h>
+# include "libft.h"
+# include "ft_printf.h"
 
 # include <string.h>
 # include <stdlib.h>
