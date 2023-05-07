@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   waitpid.c                                          :+:      :+:    :+:   */
+/*   process_handling.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/07 11:39:15 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 11:39:16 by yshimoda         ###   ########.fr       */
+/*   Created: 2023/05/07 19:42:09 by yshimoda          #+#    #+#             */
+/*   Updated: 2023/05/07 20:04:41 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/wait.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <sys/wait.h>
 #include <errno.h>
-
-void	handle_waitpid_error(pid_t pid)
-{
-	if (pid == -1)
-	{
-		perror(NULL);
-		assert_error("waitpid\n");
-	}
-}
 
 void	update_return_value(pid_t pid, int status, t_exec *exec_val)
 {
-	if (WIFEXITED(status) && pid == exec_val->pid && exec_val->is_last_process)
+	if (WIFEXITED(status) && pid == exec_val->pid && exec_val->is_overwrite)
 		g_return_error.return_value = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 	{
@@ -56,5 +46,14 @@ void	wait_child_process(t_exec *exec_val)
 			handle_waitpid_error(pid);
 			update_return_value(pid, status, exec_val);
 		}
+	}
+}
+
+void	handle_waitpid_error(pid_t pid)
+{
+	if (pid == -1)
+	{
+		perror(NULL);
+		assert_error("waitpid\n");
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 15:55:50 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 20:00:59 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ struct s_exec
 	char	**argv;
 	char	**envp;
 	pid_t	pid;
-	bool	is_last_process;
+	bool	is_overwrite;
 	bool	one_cmd;
 };
 
@@ -163,6 +163,7 @@ void	make_simple_command(t_node *node, t_tk **skipped, t_tk *token);
 t_node	*parse(t_tk *token);
 
 // exec.c
+bool	check_file_dir_error(char *split, char *path, t_tk *token);
 bool	is_builtin(const char *cmd);
 bool	is_directory(const char *pathname);
 bool	is_dot(const char *word);
@@ -171,35 +172,34 @@ bool	is_file_executable(const char *pathname);
 bool	is_file_exist(const char *pathname);
 bool	is_only_slash(const char *pathname);
 bool	is_relative_path(const char *word);
-bool	should_continue(t_node **node, t_exec *exec_val,
-			bool is_continue, bool free_arg);
 char	**make_argv(t_tk *token);
 char	**make_envp(t_env *env_list);
+char	*check_pathname_error(char *pathname, char *abs_path, const char *word);
 char	*find_env_path(t_env *env_list);
+char	*get_pathname(char *head, char *tail, char **word);
 char	*make_absolute_path(t_tk *token);
 char	*make_environment_path(t_tk *token, t_env *env_list);
 char	*make_pathname(t_tk *token, t_env *env_list);
 char	*make_relative_path(const char *word);
-char	*get_pathname(char *head, char *tail, char **word);
-void	check_error_env_path(char *pathname, char *word);
-char	*check_pathname_error(char *pathname, char *abs_path, const char *word);
-bool	check_file_dir_error(char *split, char *path, t_tk *token);
 size_t	argv_len(t_tk *token);
 size_t	count_pipe_num(t_node *node);
 size_t	env_list_size(t_env *env_list);
+void	check_abs_path_error(char *pathname, char *word);
+void	check_error_env_path(char *pathname, char *word);
 void	exec(char *pathname, char **argv, char **envp, t_node *node);
-void	exec_builtin(t_node *node, t_env **env_list, t_exec *exec_val);
+void	exec_child_process(t_node *node, t_env **env_list, t_exec *exec_val);
 void	exec_cmd(t_node *node, t_env **env_list);
-void	exec_cmd_in_loop(t_node *node, t_env **env_list, t_exec *exec_val);
-void	exec_command(t_node *node, t_env **env_list, t_exec *exec_val);
 void	free_argv(char **argv);
 void	free_envp(char **envp);
 void	free_path_arg_node_next(t_node **node, t_exec *exec_val);
 void	free_path_node_next(t_node **node, t_exec *exec_val);
+void	handle_builtin(t_node *node, t_env **env_list, t_exec *exec_val);
 void	handle_child_process(t_node *node, t_env **env_list, t_exec *exec_val);
 void	handle_parent_process(t_node *node, t_exec *exec_val);
-void	init_exec_val(t_exec *exec_val);
 void	handle_waitpid_error(pid_t pid);
+void	init_exec_val(t_exec *exec_val);
+void	input_pipe_and_expand(t_node *node, t_env **env_list, t_exec *exec_val);
+void	process_node(t_node **node, t_env **env_list, t_exec *exec_val);
 void	update_return_value(pid_t pid, int status, t_exec *exec_val);
 void	wait_child_process(t_exec *exec_val);
 
