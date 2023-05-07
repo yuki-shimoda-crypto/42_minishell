@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:12:53 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/14 17:25:01 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/08 01:15:28 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ char	*wrap_getcwd(char *buf, size_t size)
 		if (errno != ERANGE)
 		{
 			perror("NULL");
+			free(buf);
 			return (NULL);
 		}
 		size *= 2;
