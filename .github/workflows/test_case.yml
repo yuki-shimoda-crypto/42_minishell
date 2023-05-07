@@ -11,4 +11,4 @@ jobs:
       - name: make minishell & run
         run: |
           make
-          ./minishell < test.txt
+          ./test.sh
