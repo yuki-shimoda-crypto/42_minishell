@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:38:12 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 11:38:14 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 14:14:18 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*strjoin_three(char const *s1, char const *s2, char const *s3)
 
 	if (!s1 || !s2 || !s3)
 		return (NULL);
-	ptr = (char *)malloc(strlen(s1) + strlen(s2) + strlen(s3) + 1);
+	ptr = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1);
 	if (!ptr)
 		return (NULL);
 	save = ptr;
@@ -85,10 +85,10 @@ char	*strjoin(char const *s1, char const *s2)
 	if (!s1 && !s2)
 		return (NULL);
 	if (!s1)
-		return (strdup(s2));
+		return (ft_strdup(s2));
 	if (!s2)
-		return (strdup(s1));
-	ptr = (char *)malloc(strlen(s1) + strlen(s2) + 1);
+		return (ft_strdup(s1));
+	ptr = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!ptr)
 		return (NULL);
 	save = ptr;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:52:17 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 20:02:47 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:10:48 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ t_tk	*token_new(char *word, t_tk_kind kind)
 {
 	t_tk	*token;
 
-	token = calloc(1, sizeof(t_tk));
+	token = ft_calloc(1, sizeof(t_tk));
 	if (!token)
-		assert_error("calloc\n");
+		assert_error("ft_calloc\n");
 	token->word = word;
 	token->kind = kind;
 	token->next = NULL;

@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:37:07 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 11:37:11 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 14:14:05 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ char	**make_argv(t_tk *token)
 		return (NULL);
 	i = 0;
 	len = argv_len(token);
-	argv = calloc(len + 1, sizeof(char *));
+	argv = ft_calloc(len + 1, sizeof(char *));
 	if (!argv)
 		assert_error("malloc\n");
 	while (token->kind != TK_EOF)
 	{
-		argv[i] = strdup(token->word);
+		argv[i] = ft_strdup(token->word);
 		if (!argv[i])
-			assert_error("strdup\n");
+			assert_error("ft_strdup\n");
 		token = token->next;
 		i++;
 	}

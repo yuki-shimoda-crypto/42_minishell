@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 15:22:37 by yshimoda          #+#    #+#             */
-/*   Updated: 2022/11/30 04:52:32 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 14:33:21 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ char	*ft_strjoin_four(char const *s1, char const *s2, char const *s3,
 			char const *s4);
 char	*ft_strndup(char const *s, size_t len);
 int		ft_isspace(int c);
+int		ft_strcmp(const char *s1, const char *s2);
 char	*get_next_line(int fd);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 13:14:04 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 19:30:11 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:10:48 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ t_env	*env_new(char *key, char *value)
 {
 	t_env	*env_new;
 
-	env_new = calloc(1, sizeof(t_env));
+	env_new = ft_calloc(1, sizeof(t_env));
 	if (!env_new)
-		assert_error("calloc\n");
+		assert_error("ft_calloc\n");
 	env_new->key = key;
 	env_new->value = value;
 	return (env_new);

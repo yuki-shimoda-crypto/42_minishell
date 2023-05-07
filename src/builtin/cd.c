@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 14:11:26 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 18:22:38 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:13:51 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	builtin_cd(char **destination, t_env **env_list)
 		args++;
 	if (args == 1)
 		return (go_home(env_list));
-	else if (!strcmp(destination[1], "-"))
+	else if (!ft_strcmp(destination[1], "-"))
 		return (go_back_prev(env_list));
 	status = manage_cd_path(destination[1], env_list);
 	return (status);

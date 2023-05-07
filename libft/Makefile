@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/24 12:25:55 by yshimoda          #+#    #+#              #
-#    Updated: 2022/11/15 23:35:49 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/05/07 14:40:34 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,8 @@ EXTRA_SRCS		=	ft_atol.c			\
 					ft_ltoa.c			\
 					ft_strjoin_three.c	\
 					ft_strjoin_four.c	\
-					ft_strndup.c			
+					ft_strndup.c		\
+					ft_strcmp.c	
 
 OBJDIR			=	objs
 SRCS			=	$(M_SRCS) $(B_SRCS) $(PRINTF_SRCS) $(GNL_SRCS) $(EXTRA_SRCS)

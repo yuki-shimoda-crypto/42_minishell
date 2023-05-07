@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:37:35 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 11:37:39 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 14:10:48 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ char	**make_envp(t_env *env_list)
 	size_t	i;
 
 	list_size = env_list_size(env_list);
-	envp = calloc(list_size + 1, sizeof(char *));
+	envp = ft_calloc(list_size + 1, sizeof(char *));
 	if (!envp)
-		assert_error("calloc\n");
+		assert_error("ft_calloc\n");
 	i = 0;
 	while (i < list_size)
 	{

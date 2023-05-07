@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 04:21:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/06 20:03:36 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:14:05 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_node	*new_node(t_node_kind kind, t_node *node_pre)
 {
 	t_node	*node;
 
-	node = calloc(1, sizeof(t_node));
+	node = ft_calloc(1, sizeof(t_node));
 	if (!node)
-		assert_error("calloc\n");
+		assert_error("ft_calloc\n");
 	node->kind = kind;
 	if (node->kind == ND_REDIRECT_OUT || node->kind == ND_REDIRECT_APPEND)
 		node->fd_target = STDOUT_FILENO;
@@ -44,9 +44,9 @@ void	make_redirect(t_node *node, t_tk *token)
 		if (token->kind == TK_REDIRECT)
 		{
 			node->redirect = new_node(judge_nd_kind(token->word), node);
-			filename = strdup(token->next->word);
+			filename = ft_strdup(token->next->word);
 			if (!filename)
-				assert_error("strdup\n");
+				assert_error("ft_strdup\n");
 			node->redirect->filename = filename;
 			node = node->redirect;
 			token = token->next->next;
@@ -78,9 +78,9 @@ t_node	*parse(t_tk *token)
 	t_node	*head;
 	t_node	*node;
 
-	node = calloc(1, sizeof(t_node));
+	node = ft_calloc(1, sizeof(t_node));
 	if (!node)
-		assert_error("calloc");
+		assert_error("ft_calloc");
 	head = node;
 	init_node(node);
 	while (token && token->kind != TK_EOF)

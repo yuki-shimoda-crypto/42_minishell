@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 15:54:58 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 20:37:48 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:14:18 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static void	expand_and_put(bool flag, char *input, t_env *env_list, int fd)
 		expanded = expand_word(input, ND_SIMPLE_CMD, env_list);
 	else
 		expanded = input;
-	write(fd, expanded, strlen(expanded));
-	write(fd, "\n", strlen("\n"));
+	write(fd, expanded, ft_strlen(expanded));
+	write(fd, "\n", ft_strlen("\n"));
 	free(expanded);
 }
 
@@ -41,7 +41,7 @@ int	heredoc(char *delimiter, t_env *env_list, bool quote_flag)
 		input = readline("> ");
 		if (input == NULL)
 			break ;
-		if (g_return_error.heredoc_interupt || !strcmp(input, delimiter))
+		if (g_return_error.heredoc_interupt || !ft_strcmp(input, delimiter))
 		{
 			free(input);
 			break ;

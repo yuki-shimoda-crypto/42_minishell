@@ -6,7 +6,7 @@
 #    By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2023/05/07 13:58:36 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/05/07 15:16:22 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -141,6 +141,14 @@ leak:			all
 test:			CFLAGS += $(CFLAGS_DEBUG)
 test:			re
 				./test.sh
+
+# norminette
+norm:
+	norminette include src libft
+
+nm:
+	nm -u $(NAME) | grep -v -w -E "_(access|add_history|chdir|close|closedir|dup|dup2|execve|exit|fork|free|fstat|getcwd|getenv|ioctl|isatty|kill|lstat|malloc|open|opendir|perror|pipe|printf|read|readdir|readline|rl_clear_history|rl_on_new_line|rl_redi    splay|rl_replace_line|sigaction|sigaddset|sigemptyset|signal|stat|strerror|tcgetattr|tcsetattr|tgetent|tgetflag|tgetnum|tgetstr|tgoto|tputs|ttyname|ttyslot|unlink|wait|wait3|wait4|waitpid|write)"
+
 
 # Docker rules
 build:

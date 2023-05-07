@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_path_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 09:56:32 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 10:17:23 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:38:18 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ char	*get_pathname(char *head, char *tail, char **word)
 
 	if (tail)
 	{
-		pathname = strndup(head, tail - head);
+		pathname = ft_strndup(head, tail - head);
 		if (!*(tail + 1))
 			tail = NULL;
 	}
 	else
-		pathname = strdup(head);
+		pathname = ft_strdup(head);
 	if (!pathname)
-		assert_error("strndup\n");
+		assert_error("ft_strndup\n");
 	tmp = strjoin_three(pathname, "/", *word);
 	free(pathname);
 	if (!tmp)
@@ -83,11 +83,11 @@ char	*find_env_path(t_env *env_list)
 
 	while (env_list)
 	{
-		if (!strcmp("PATH", env_list->key))
+		if (!ft_strcmp("PATH", env_list->key))
 		{
-			value = strdup(env_list->value);
+			value = ft_strdup(env_list->value);
 			if (!value)
-				assert_error("strdup\n");
+				assert_error("ft_strdup\n");
 			return (value);
 		}
 		env_list = env_list->next;

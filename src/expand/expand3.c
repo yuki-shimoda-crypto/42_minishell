@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 02:24:53 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 02:34:17 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:15:30 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ char	*append_char(char **skipped, char *word, char *new_word)
 	char	*append_word;
 	char	*tmp;
 
-	append_word = strndup(word, 1);
+	append_word = ft_strndup(word, 1);
 	if (!append_word)
-		assert_error("strndup\n");
+		assert_error("ft_strndup\n");
 	tmp = strjoin(new_word, append_word);
 	free(new_word);
 	free(append_word);
@@ -35,7 +35,7 @@ t_env	*find_word_expandable(const char *key, t_env *env_list)
 		return (NULL);
 	while (env_list)
 	{
-		if (!strcmp(key, env_list->key))
+		if (!ft_strcmp(key, env_list->key))
 			return (env_list);
 		env_list = env_list->next;
 	}
@@ -49,15 +49,15 @@ char	*make_expanded_word(char *new_word, t_env *target_list)
 
 	if (target_list)
 	{
-		value = strdup(target_list->value);
+		value = ft_strdup(target_list->value);
 		if (!value)
-			assert_error("strdup\n");
+			assert_error("ft_strdup\n");
 	}
 	else
 	{
-		value = calloc(1, sizeof(char));
+		value = ft_calloc(1, sizeof(char));
 		if (!value)
-			assert_error("calloc\n");
+			assert_error("ft_calloc\n");
 	}
 	tmp = strjoin(new_word, value);
 	free(new_word);
@@ -72,9 +72,9 @@ char	*make_new_word(char *head, char *word,
 {
 	char	*tmp;
 
-	append_word = strndup(head, word - head);
+	append_word = ft_strndup(head, word - head);
 	if (!append_word)
-		assert_error("strndup\n");
+		assert_error("ft_strndup\n");
 	tmp = strjoin(new_word, append_word);
 	free(new_word);
 	free(append_word);
