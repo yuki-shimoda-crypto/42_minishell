@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:44:58 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 20:03:09 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 20:25:43 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	handle_child_process(t_node *node, t_env **env_list, t_exec *exec_val)
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
+	exit(EXIT_FAILURE);
 }
 
 void	handle_parent_process(t_node *node, t_exec *exec_val)

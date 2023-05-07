@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 20:00:59 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 21:51:00 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ enum e_node_kind
 	ND_REDIRECT_APPEND,
 	ND_REDIRECT_HEREDOC,
 	ND_PIPE,
+	ND_FLAG_HEREDOC,
 };
 
 struct s_node
