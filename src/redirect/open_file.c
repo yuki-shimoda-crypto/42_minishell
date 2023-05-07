@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 12:24:18 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 02:14:08 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 14:14:18 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	open_redir_out(char *filename)
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
+		write(STDERR_FILENO, PROMPT_ERROR, ft_strlen(PROMPT_ERROR));
 		perror(filename);
 		g_return_error.error = true;
 		g_return_error.return_value = 1;
@@ -40,7 +40,7 @@ int	open_redir_append(char *filename)
 	fd = open (filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd == -1)
 	{
-		write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
+		write(STDERR_FILENO, PROMPT_ERROR, ft_strlen(PROMPT_ERROR));
 		perror(filename);
 		g_return_error.error = true;
 		g_return_error.return_value = 1;
@@ -56,7 +56,7 @@ int	open_redir_in(char *filename)
 	fd = open (filename, O_RDONLY);
 	if (fd == -1)
 	{
-		write(STDERR_FILENO, PROMPT_ERROR, strlen(PROMPT_ERROR));
+		write(STDERR_FILENO, PROMPT_ERROR, ft_strlen(PROMPT_ERROR));
 		perror(filename);
 		g_return_error.error = true;
 		g_return_error.return_value = 1;

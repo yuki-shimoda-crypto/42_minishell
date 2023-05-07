@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:19:57 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 18:29:27 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:15:18 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static bool	is_output_newline(const char *word)
 {
 	size_t	i;
 
-	if (strncmp(word, "-n", 2))
+	if (ft_strncmp(word, "-n", 2))
 		return (true);
 	i = 1;
 	while (word[i])
@@ -43,7 +43,7 @@ int	builtin_echo(char **argv)
 			i++;
 		while (argv[i])
 		{
-			wrap_write(STDOUT_FILENO, argv[i], strlen(argv[i]));
+			wrap_write(STDOUT_FILENO, argv[i], ft_strlen(argv[i]));
 			if (argv[i + 1])
 				wrap_write(STDOUT_FILENO, " ", 1);
 			i++;

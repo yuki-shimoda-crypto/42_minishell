@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 01:41:30 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/06 19:31:23 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:15:30 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_env	*search_env(const char *key, t_env *env_list)
 		return (NULL);
 	while (env_list)
 	{
-		if (!strcmp(key, env_list->key))
+		if (!ft_strcmp(key, env_list->key))
 			return (env_list);
 		env_list = env_list->next;
 	}
@@ -68,21 +68,21 @@ void	add_env(const char *env, t_env **env_list)
 
 	if (!env || !env_list)
 		return ;
-	tail = strchr(env, '=');
+	tail = ft_strchr(env, '=');
 	if (!tail)
 	{
-		key = strdup(env);
-		value = calloc(1, 1);
+		key = ft_strdup(env);
+		value = ft_calloc(1, 1);
 	}
 	else
 	{
-		key = strndup(env, tail - env);
+		key = ft_strndup(env, tail - env);
 		if (!key)
-			assert_error("strndup\n");
+			assert_error("ft_strndup\n");
 		tail++;
-		value = strdup(tail);
+		value = ft_strdup(tail);
 		if (!value)
-			assert_error("strdup\n");
+			assert_error("ft_strdup\n");
 	}
 	return (creat_and_add(key, value, env_list));
 }

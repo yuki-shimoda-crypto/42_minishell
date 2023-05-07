@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2023/05/07 11:31:45 by yshimoda         ###   ########.fr        #
+#    Updated: 2023/05/07 15:53:02 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ CC				=	cc
 CFLAGS			=	-Wall -Werror -Wextra
 CFLAGS_DEBUG	=	-g -fsanitize=address -fsanitize=undefined
 INCLUDE			=	-I include
-LIBS			=
+LIBS			=	-L$(LIBFT_DIR) -lft
+LIBFT_DIR		=	libft
 
 SRCS			=	src/main.c						\
 					src/free.c						\
@@ -37,9 +38,7 @@ SRCS			=	src/main.c						\
 					src/exec/handle_process.c		\
 					src/exec/init_free.c			\
 					src/exec/is.c					\
-          src/exec/is2.c			\
-					src/exec/libft.c				\
-					src/exec/make_path.c			\
+          			src/exec/is2.c					\
 					src/exec/pipe_count.c			\
 					src/exec/waitpid.c				\
 					src/exec/make_path.c			\
@@ -83,10 +82,10 @@ OBJ_DIR			=	obj
 ifeq ($(shell uname -s), Linux)
 CFLAGS_DEBUG	+=	-fsanitize=leak
 SHELL			=	/bin/bash
-LIBS			=	-lreadline
+LIBS			+=	-lreadline
 else
 RLDIR   		= $(shell brew --prefix readline)
-LIBS			=	-L$(RLDIR)/lib -lreadline
+LIBS			+=	-L$(RLDIR)/lib -lreadline
 INCLUDE			+=	-I $(RLDIR)/include
 endif
 
@@ -104,6 +103,7 @@ $(OBJ_DIR)/%.o:%.c
 
 # Main build rule
 $(NAME):		$(OBJS)
+				make -C $(LIBFT_DIR)
 				$(CCACHE) $(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 .PHONY: all clean fclean re debug valgrind leak test build up down down-clean exec logs ps logs-compose start stop restart
@@ -113,7 +113,7 @@ all:			$(NAME)
 
 # Clean rules
 clean:			
-				# make fclean -C $(LIBFT_DIR)
+				make fclean -C $(LIBFT_DIR)
 				$(RM) -r $(OBJ_DIR)
 
 fclean:			clean
@@ -140,6 +140,14 @@ leak:			all
 test:			CFLAGS += $(CFLAGS_DEBUG)
 test:			re
 				./test.sh
+
+# norminette
+norm:
+	norminette include src libft
+
+nm:
+	nm -u $(NAME) | grep -v -w -E "_(access|add_history|chdir|close|closedir|dup|dup2|execve|exit|fork|free|fstat|getcwd|getenv|ioctl|isatty|kill|lstat|malloc|open|opendir|perror|pipe|printf|read|readdir|readline|rl_clear_history|rl_on_new_line|rl_redi    splay|rl_replace_line|sigaction|sigaddset|sigemptyset|signal|stat|strerror|tcgetattr|tcsetattr|tgetent|tgetflag|tgetnum|tgetstr|tgoto|tputs|ttyname|ttyslot|unlink|wait|wait3|wait4|waitpid|write)"
+
 
 # Docker rules
 build:

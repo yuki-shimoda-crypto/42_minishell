@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:03:54 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 10:16:44 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:15:41 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ char	*make_absolute_path(t_tk *token)
 	char	*split;
 	char	*path;
 
-	pathname = strdup(token->word);
+	pathname = ft_strdup(token->word);
 	path = token->word;
 	path++;
-	while (strchr(path, '/'))
+	while (ft_strchr(path, '/'))
 	{
-		split = strndup(path, (path - strchr(path, '/')));
-		path = strchr(path, '/');
+		split = ft_strndup(path, (path - ft_strchr(path, '/')));
+		path = ft_strchr(path, '/');
 		path++;
 		if (!is_directory(split) && is_file(split))
 		{
-			if (strchr(path, '/'))
+			if (ft_strchr(path, '/'))
 			{
 				file_exec_error(token->word, ": Not a directory\n");
 				g_return_error.return_value = 126;
@@ -41,7 +41,7 @@ char	*make_absolute_path(t_tk *token)
 		free(split);
 	}
 	if (!pathname)
-		assert_error("strdup\n");
+		assert_error("ft_strdup\n");
 	if (is_only_slash(pathname) || is_directory(pathname))
 	{
 		file_exec_error(token->word, ": is a directory\n");
@@ -72,12 +72,12 @@ char	*make_relative_path(const char *word)
 		assert_error("get_cwd\n");
 	while (is_relative_path(word))
 	{
-		if (!strncmp(word, "./", 2))
+		if (!ft_strncmp(word, "./", 2))
 			word += 2;
-		else if (!strncmp(word, "../", 3))
+		else if (!ft_strncmp(word, "../", 3))
 		{
 			word += 3;
-			tmp = strrchr(abs_path, '/');
+			tmp = ft_strrchr(abs_path, '/');
 			if (tmp)
 				*tmp = '\0';
 		}
@@ -99,7 +99,7 @@ char	*make_environment_path(t_tk *token, t_env *env_list)
 	while (env_path && *env_path)
 	{
 		head = env_path;
-		tail = strchr(env_path, ':');
+		tail = ft_strchr(env_path, ':');
 		pathname = get_pathname(head, tail, &token->word);
 		if (is_file_exist(pathname) && is_file_executable(pathname))
 			break ;

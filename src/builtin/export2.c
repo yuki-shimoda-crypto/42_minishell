@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 12:59:41 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 19:17:55 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 15:57:32 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	sort_array(char **env_array)
 		j = i + 1;
 		while (env_array[j])
 		{
-			if (strcmp(env_array[i], env_array[j]) > 0)
+			if (ft_strcmp(env_array[i], env_array[j]) > 0)
 			{
 				temp = env_array[i];
 				env_array[i] = env_array[j];
@@ -57,9 +57,10 @@ char	**put_env_into_array(t_env *env_list, char **sort_env)
 	while (env_list)
 	{
 		if (env_list->value[0] != '\0')
-			sort_env[i] = strjoin_three(env_list->key, "=\"", env_list->value);
+			sort_env[i] = ft_strjoin_three
+				(env_list->key, "=\"", env_list->value);
 		else
-			sort_env[i] = strdup(env_list->key);
+			sort_env[i] = ft_strdup(env_list->key);
 		env_list = env_list->next;
 		i++;
 	}
@@ -93,16 +94,16 @@ bool	is_key_exist(const char *env, t_env *env_list)
 
 	if (!env || !env_list)
 		return (false);
-	tail = strchr(env, '=');
+	tail = ft_strchr(env, '=');
 	if (!tail)
-		key = strdup(env);
+		key = ft_strdup(env);
 	else
-		key = strndup(env, tail - env);
+		key = ft_strndup(env, tail - env);
 	if (!key)
-		assert_error("strndup\n");
+		assert_error("ft_strndup\n");
 	while (env_list)
 	{
-		if (!strcmp(key, env_list->key))
+		if (!ft_strcmp(key, env_list->key))
 		{
 			free(key);
 			return (true);

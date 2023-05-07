@@ -5,6 +5,7 @@ tmp
 *.swp
 .*.swp
 tags
+.vscode
 
 # Prerequisites
 *.d
