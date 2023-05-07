@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 14:11:26 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 14:13:51 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/08 03:49:10 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,14 @@ static int	go_home(t_env **env_list)
 		cd_error("HOME");
 		return (1);
 	}
-	old_pwd = wrap_getcwd(NULL, 0);
-	if (!old_pwd)
-		return (1);
 	status = wrap_chdir(path->value);
 	if (status == -1)
-	{
-		free(old_pwd);
 		return (status);
-	}
+	path = search_env("PWD", *env_list);
+	if (!path || (path && !path->value))
+		old_pwd = ft_strdup("");
+	else
+		old_pwd = ft_strdup(path->value);
 	if (rewrite(old_pwd, env_list))
 	{
 		free(old_pwd);
