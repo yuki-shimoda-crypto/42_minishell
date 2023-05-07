@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 04:04:00 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/03/16 14:20:08 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 02:15:13 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,5 @@ void	file_exec_error(const char *word, const char *msg)
 	write(STDERR_FILENO, ERROR_EXEC, strlen(ERROR_EXEC));
 	write(STDERR_FILENO, word, strlen(word));
 	write(STDERR_FILENO, msg, strlen(msg));
-	g_return_error.exec_error = true;
+	g_return_error.error = true;
 }

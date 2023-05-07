@@ -181,6 +181,7 @@ assert 'cat <<"$EOF"       \neof\n$EOF\nEOF'
 # Pipe
 assert 'cat Makefile | grep minishell'
 assert 'cat | cat | ls\n\n'
+assert 'ls | [invalid command]'
 
 # Expand Variable
 assert 'echo $USER'

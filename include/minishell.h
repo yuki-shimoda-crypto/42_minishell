@@ -36,6 +36,7 @@ typedef enum e_node_kind		t_node_kind;
 typedef struct s_node			t_node;
 typedef struct s_env			t_env;
 typedef struct s_return_error	t_return_error;
+typedef struct s_exec			t_exec;
 
 enum e_tk_kind
 {
@@ -92,13 +93,21 @@ struct s_return_error
 {
 	bool	tokenize_error;
 	bool	parse_error;
-	bool	redirect_error;
-	bool	exec_error;
+	bool	error;
 	int		g_sig;
 	int		return_value;
 	bool	export_error;
 	bool	heredoc_interupt;
 	bool	ctrl_c;
+};
+
+struct s_exec
+{
+	char	*pathname;
+	char	**argv;
+	char	**envp;
+	pid_t	pid;
+	bool	one_cmd;
 };
 
 extern t_return_error			g_return_error;

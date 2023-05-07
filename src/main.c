@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 16:41:15 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 02:13:28 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ void	init_return_error(void)
 {
 	g_return_error.tokenize_error = false;
 	g_return_error.parse_error = false;
-	g_return_error.redirect_error = false;
-	g_return_error.exec_error = false;
+	g_return_error.error = false;
 	g_return_error.export_error = false;
 	g_return_error.heredoc_interupt = false;
 }

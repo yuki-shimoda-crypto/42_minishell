@@ -17,8 +17,29 @@
 char	*make_absolute_path(t_tk *token)
 {
 	char	*pathname;
+	char	*split;
+	char	*path;
 
 	pathname = strdup(token->word);
+	path = token->word;
+	path++;
+	while (strchr(path, '/'))
+	{
+		split = strndup(path, (path - strchr(path, '/')));
+		path = strchr(path, '/');
+		path++;
+		if (!is_directory(split) && is_file(split))
+		{
+			if (strchr(path, '/'))
+			{
+				file_exec_error(token->word, ": Not a directory\n");
+				g_return_error.return_value = 126;
+				free(split);
+				return (pathname);
+			}
+		}
+		free(split);
+	}
 	if (!pathname)
 		assert_error("strdup\n");
 	if (is_only_slash(pathname) || is_directory(pathname))
@@ -107,7 +128,6 @@ char	*make_pathname(t_tk *token, t_env *env_list)
 	else if (is_dot(token->word))
 	{
 		file_exec_error(token->word, ": command not found\n");
-		g_return_error.exec_error = true;
 		g_return_error.return_value = 127;
 		return (NULL);
 	}
