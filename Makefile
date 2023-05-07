@@ -6,7 +6,7 @@
 #    By: yshimoda <yshimoda@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/02 16:52:00 by yshimoda          #+#    #+#              #
-#    Updated: 2022/12/12 02:40: by yshimoda         ###   ########.fr        #
+#    Updated: 2023/05/07 11:31:45 by yshimoda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,17 @@ SRCS			=	src/main.c						\
 					src/lexer/tokenize.c			\
 					src/parse/parse.c				\
 					src/parse/parse2.c				\
+					src/exec/argv_utils.c			\
+					src/exec/builtin_utils.c		\
+					src/exec/env_utils.c			\
 					src/exec/exec.c					\
+					src/exec/handle_process.c		\
+					src/exec/init_free.c			\
 					src/exec/is.c					\
+					src/exec/libft.c				\
 					src/exec/make_path.c			\
+					src/exec/pipe_count.c			\
+					src/exec/waitpid.c				\
 					src/redirect/redirect.c			\
 					src/redirect/heredoc.c			\
 					src/redirect/open_file.c		\
@@ -62,6 +70,7 @@ SRCS			=	src/main.c						\
 					src/builtin/env.c				\
 					src/builtin/unset.c				\
 					src/builtin/exit.c
+
 OBJS			=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 OBJ_DIR			=	obj
 

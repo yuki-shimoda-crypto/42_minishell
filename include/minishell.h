@@ -6,7 +6,7 @@
 /*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 20:11:08 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 04:50:54 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 11:28:51 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,11 @@ struct s_exec
 
 extern t_return_error	g_return_error;
 
+// remove
+char	*itoa(int n);
+char	*strjoin(char const *s1, char const *s2);
+char	*strjoin_three(char const *s1, char const *s2, char const *s3);
+
 // main.c
 void	ctrl_c(int sig);
 void	free_token(t_tk **token);
@@ -168,21 +173,42 @@ void	make_simple_command(t_node *node, t_tk **skipped, t_tk *token);
 t_node	*parse(t_tk *token);
 
 // exec.c
-char	*strjoin(char const *s1, char const *s2);
-char	*strjoin_three(char const *s1, char const *s2, char const *s3);
+bool	is_builtin(const char *cmd);
+bool	is_directory(const char *pathname);
+bool	is_dot(const char *word);
+bool	is_file(const char *pathname);
 bool	is_file_executable(const char *pathname);
 bool	is_file_exist(const char *pathname);
-bool	is_file(const char *pathname);
+bool	is_only_slash(const char *pathname);
 bool	is_relative_path(const char *word);
+bool	should_continue(t_node **node, t_exec *exec_val, bool is_continue, bool free_arg);
+char	**make_argv(t_tk *token);
+char	**make_envp(t_env *env_list);
 char	*find_env_path(t_env *env_list);
 char	*make_absolute_path(t_tk *token);
 char	*make_environment_path(t_tk *token, t_env *env_list);
 char	*make_pathname(t_tk *token, t_env *env_list);
+char	*make_relative_path(const char *word);
 size_t	argv_len(t_tk *token);
-char	**make_argv(t_tk *token);
+size_t	count_pipe_num(t_node *node);
+size_t	env_list_size(t_env *env_list);
 void	exec(char *pathname, char **argv, char **envp, t_node *node);
+void	exec_builtin(t_node *node, t_env **env_list, t_exec *exec_val);
 void	exec_cmd(t_node *node, t_env **env_list);
+void	exec_cmd_in_loop(t_node *node, t_env **env_list, t_exec *exec_val);
+void	exec_command(t_node *node, t_env **env_list, t_exec *exec_val);
+void	free_argv(char **argv);
+void	free_envp(char **envp);
+void	free_path_arg_node_next(t_node **node, t_exec *exec_val);
+void	free_path_node_next(t_node **node, t_exec *exec_val);
+void	handle_child_process(t_node *node, t_env **env_list, t_exec *exec_val);
+void	handle_parent_process(t_node *node, t_exec *exec_val);
+void	init_exec_val(t_exec *exec_val);
+void	handle_waitpid_error(pid_t pid);
+void	update_return_value(pid_t pid, int status, t_exec *exec_val);
 void	wait_child_process(t_exec *exec_val);
+
+
 
 // redirect.c
 int		open_redir_file(t_node *redir, t_env *env_list);
