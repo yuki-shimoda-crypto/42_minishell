@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 18:33:27 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 18:37:35 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:36:09 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static void	put_sorted_env(t_env *env_list)
 	i = 0;
 	while (sort_env[i])
 	{
-		write(1, "declare -x ", strlen("declare -x "));
-		write(1, sort_env[i], strlen(sort_env[i]));
-		if (strchr(sort_env[i], '='))
+		write(1, "declare -x ", ft_strlen("declare -x "));
+		write(1, sort_env[i], ft_strlen(sort_env[i]));
+		if (ft_strchr(sort_env[i], '='))
 			write(1, "\"", 1);
 		write(1, "\n", 1);
 		i++;
@@ -41,16 +41,16 @@ void	overwrite_env(const char *env, t_env *env_list)
 	char	*value;
 	char	*value_head;
 
-	value_head = strchr(env, '=');
+	value_head = ft_strchr(env, '=');
 	if (!value_head)
 		return ;
 	value_head++;
-	value = strdup(value_head);
+	value = ft_strdup(value_head);
 	if (!value)
-		assert_error("strdup");
+		assert_error("ft_strdup");
 	while (env_list)
 	{
-		if (!strncmp(env, env_list->key, strlen(env_list->key)))
+		if (!ft_strncmp(env, env_list->key, ft_strlen(env_list->key)))
 		{
 			free(env_list->value);
 			env_list->value = value;
@@ -65,7 +65,7 @@ static bool	is_str_alpha_num_under_export(const char *str)
 	size_t	i;
 	char	*ptr_equal;
 
-	ptr_equal = strchr(str, '=');
+	ptr_equal = ft_strchr(str, '=');
 	i = 1;
 	while (str[0] && str[i])
 	{

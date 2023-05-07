@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 18:39:29 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/06 15:47:06 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:14:18 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	print_env(t_env *env_list)
 	{
 		if (env_list->value[0] != '\0')
 		{
-			write(STDOUT_FILENO, env_list->key, strlen(env_list->key));
+			write(STDOUT_FILENO, env_list->key, ft_strlen(env_list->key));
 			write(STDOUT_FILENO, "=", 1);
-			write(STDOUT_FILENO, env_list->value, strlen(env_list->value));
+			write(STDOUT_FILENO, env_list->value, ft_strlen(env_list->value));
 			write(STDOUT_FILENO, "\n", 1);
 		}
 		env_list = env_list->next;

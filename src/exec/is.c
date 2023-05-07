@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 02:02:39 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 10:06:58 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:14:18 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	is_file(const char *pathname)
 
 	if (!pathname)
 		return (false);
-	len = strlen(pathname);
+	len = ft_strlen(pathname);
 	if (len != 0 && pathname[len - 1] == '/')
 		return (false);
 	return (true);

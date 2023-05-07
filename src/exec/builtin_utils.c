@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 11:37:22 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 11:37:27 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 14:16:37 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ bool	is_builtin(const char *cmd)
 {
 	if (!cmd)
 		return (false);
-	if (!strcmp("cd", cmd))
+	if (!ft_strcmp("cd", cmd))
 		return (true);
-	else if (!strcmp("echo", cmd))
+	else if (!ft_strcmp("echo", cmd))
 		return (true);
-	else if (!strcmp("env", cmd))
+	else if (!ft_strcmp("env", cmd))
 		return (true);
-	else if (!strcmp("exit", cmd))
+	else if (!ft_strcmp("exit", cmd))
 		return (true);
-	else if (!strcmp("export", cmd))
+	else if (!ft_strcmp("export", cmd))
 		return (true);
-	else if (!strcmp("pwd", cmd))
+	else if (!ft_strcmp("pwd", cmd))
 		return (true);
-	else if (!strcmp("unset", cmd))
+	else if (!ft_strcmp("unset", cmd))
 		return (true);
 	else
 		return (false);

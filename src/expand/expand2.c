@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 02:24:24 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 02:39:27 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 15:51:51 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ char	*expand_special_char(char **skipped, char *word, char *new_word)
 	char	*append_word;
 	char	*tmp;
 
-	append_word = itoa(g_return_error.return_value);
+	append_word = ft_itoa(g_return_error.return_value);
 	if (!append_word)
-		assert_error("itoa\n");
-	tmp = strjoin(new_word, append_word);
+		assert_error("ft_itoa\n");
+	tmp = ft_strjoin(new_word, append_word);
 	if (!tmp)
-		assert_error("strjoin\n");
+		assert_error("ft_strjoin\n");
 	free(new_word);
 	free(append_word);
 	new_word = tmp;
@@ -43,9 +43,9 @@ char	*expand_variable(char **skipped, char *word,
 	head = word;
 	while (*word && is_alpha_num_under(*word))
 		word++;
-	key = strndup(head, word - head);
+	key = ft_strndup(head, word - head);
 	if (!key)
-		assert_error("strndup");
+		assert_error("ft_strndup");
 	target_list = find_word_expandable(key, env_list);
 	free(key);
 	new_word = make_expanded_word(new_word, target_list);
@@ -106,12 +106,12 @@ char	*expand_single_quote(char **skipped, char *word, char *new_word)
 			break ;
 		word++;
 	}
-	appended_word = strndup(head, word - head);
+	appended_word = ft_strndup(head, word - head);
 	if (!appended_word)
-		assert_error("strndup\n");
-	tmp = strjoin(new_word, appended_word);
+		assert_error("ft_strndup\n");
+	tmp = ft_strjoin(new_word, appended_word);
 	if (!tmp)
-		assert_error("strjoin\n");
+		assert_error("ft_strjoin\n");
 	free(appended_word);
 	free(new_word);
 	new_word = tmp;

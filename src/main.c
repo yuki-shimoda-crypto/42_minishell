@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:45:01 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 02:13:28 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 14:14:18 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	into_minishell(char *line, t_env *env_list)
 	if (!line)
 	{
 		if (isatty(STDIN_FILENO))
-			wrap_write (STDOUT_FILENO, "exit\n", strlen("exit\n"));
+			wrap_write (STDOUT_FILENO, "exit\n", ft_strlen("exit\n"));
 		return (1);
 	}
 	if (*line)

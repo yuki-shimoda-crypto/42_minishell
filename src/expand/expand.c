@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 20:46:02 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/05/07 02:34:25 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 15:51:51 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 // 	char	*append_word;
 // 	char	*tmp;
 
-// 	append_word = itoa(g_return_error.return_value);
+// 	append_word = ft_itoa(g_return_error.return_value);
 // 	if (!append_word)
-// 		assert_error("itoa\n");
-// 	tmp = strjoin(new_word, append_word);
+// 		assert_error("ft_itoa\n");
+// 	tmp = ft_strjoin(new_word, append_word);
 // 	if (!tmp)
-// 		assert_error("strjoin\n");
+// 		assert_error("ft_strjoin\n");
 // 	free(new_word);
 // 	free(append_word);
 // 	new_word = tmp;
@@ -39,10 +39,10 @@
 // 	char	*append_word;
 // 	char	*tmp;
 
-// 	append_word = strndup(word, 1);
+// 	append_word = ft_strndup(word, 1);
 // 	if (!append_word)
-// 		assert_error("strndup\n");
-// 	tmp = strjoin(new_word, append_word);
+// 		assert_error("ft_strndup\n");
+// 	tmp = ft_strjoin(new_word, append_word);
 // 	free(new_word);
 // 	free(append_word);
 // 	new_word = tmp;
@@ -57,7 +57,7 @@
 // 		return (NULL);
 // 	while (env_list)
 // 	{
-// 		if (!strcmp(key, env_list->key))
+// 		if (!ft_strcmp(key, env_list->key))
 // 			return (env_list);
 // 		env_list = env_list->next;
 // 	}
@@ -71,21 +71,21 @@
 
 // 	if (target_list)
 // 	{
-// 		value = strdup(target_list->value);
+// 		value = ft_strdup(target_list->value);
 // 		if (!value)
-// 			assert_error("strdup\n");
+// 			assert_error("ft_strdup\n");
 // 	}
 // 	else
 // 	{
-// 		value = calloc(1, sizeof(char));
+// 		value = ft_calloc(1, sizeof(char));
 // 		if (!value)
-// 			assert_error("calloc\n");
+// 			assert_error("ft_calloc\n");
 // 	}
-// 	tmp = strjoin(new_word, value);
+// 	tmp = ft_strjoin(new_word, value);
 // 	free(new_word);
 // 	free(value);
 // 	if (!tmp)
-// 		assert_error("strjoin");
+// 		assert_error("ft_strjoin");
 // 	return (tmp);
 // }
 
@@ -100,9 +100,9 @@
 // 	head = word;
 // 	while (*word && is_alpha_num_under(*word))
 // 		word++;
-// 	key = strndup(head, word - head);
+// 	key = ft_strndup(head, word - head);
 // 	if (!key)
-// 		assert_error("strndup");
+// 		assert_error("ft_strndup");
 // 	target_list = find_word_expandable(key, env_list);
 // 	free(key);
 // 	new_word = make_expanded_word(new_word, target_list);
@@ -115,14 +115,14 @@
 // {
 // 	char	*tmp;
 
-// 	append_word = strndup(head, word - head);
+// 	append_word = ft_strndup(head, word - head);
 // 	if (!append_word)
-// 		assert_error("strndup\n");
-// 	tmp = strjoin(new_word, append_word);
+// 		assert_error("ft_strndup\n");
+// 	tmp = ft_strjoin(new_word, append_word);
 // 	free(new_word);
 // 	free(append_word);
 // 	if (!tmp)
-// 		assert_error("strjoin\n");
+// 		assert_error("ft_strjoin\n");
 // 	new_word = tmp;
 // 	return (new_word);
 // }
@@ -180,12 +180,12 @@
 // 			break ;
 // 		word++;
 // 	}
-// 	appended_word = strndup(head, word - head);
+// 	appended_word = ft_strndup(head, word - head);
 // 	if (!appended_word)
-// 		assert_error("strndup\n");
-// 	tmp = strjoin(new_word, appended_word);
+// 		assert_error("ft_strndup\n");
+// 	tmp = ft_strjoin(new_word, appended_word);
 // 	if (!tmp)
-// 		assert_error("strjoin\n");
+// 		assert_error("ft_strjoin\n");
 // 	free(appended_word);
 // 	free(new_word);
 // 	new_word = tmp;
@@ -204,12 +204,12 @@ char	*skip_db_quote(char **skipped, char *word, char *new_word)
 	head = word;
 	while (*word != '"')
 		word++;
-	append_word = strndup(head, word - head);
+	append_word = ft_strndup(head, word - head);
 	if (!append_word)
-		assert_error("strndup\n");
-	tmp = strjoin(new_word, append_word);
+		assert_error("ft_strndup\n");
+	tmp = ft_strjoin(new_word, append_word);
 	if (!tmp)
-		assert_error("strjoin\n");
+		assert_error("ft_strjoin\n");
 	free(append_word);
 	free(new_word);
 	new_word = tmp;
@@ -236,9 +236,9 @@ char	*expand_word(char *word, t_node_kind kind, t_env *env_list)
 	if (!word)
 		return (NULL);
 	head = word;
-	new_word = calloc(1, sizeof(char));
+	new_word = ft_calloc(1, sizeof(char));
 	if (!new_word)
-		assert_error("calloc\n");
+		assert_error("ft_calloc\n");
 	while (*word)
 	{
 		if (is_single_quote(*word))
@@ -270,7 +270,7 @@ void	expand(t_node *node, t_env *env_list)
 		return ;
 	expand_token(node->token, env_list);
 	if (node->filename
-		&& (strchr(node->filename, '"') || strchr(node->filename, '\'')))
+		&& (ft_strchr(node->filename, '"') || ft_strchr(node->filename, '\'')))
 		node->quote_flag = true;
 	node->filename = expand_word(node->filename, node->kind, env_list);
 	expand(node->redirect, env_list);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_01.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 00:28:31 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/07 15:13:11 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:15:18 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ bool	is_quoted(char c, char **skipped, char *line)
 // ok_yshimoda
 static bool	is_redirect_error(char *line)
 {
-	if (!strncmp(line, "<>", 2))
+	if (!ft_strncmp(line, "<>", 2))
 		return (true);
-	else if (!strncmp(line, "><", 2))
+	else if (!ft_strncmp(line, "><", 2))
 		return (true);
-	else if (!strncmp(line, ">>>", 3))
+	else if (!ft_strncmp(line, ">>>", 3))
 		return (true);
-	else if (!strncmp(line, ">><", 3))
+	else if (!ft_strncmp(line, ">><", 3))
 		return (true);
-	else if (!strncmp(line, "<<<", 3))
+	else if (!ft_strncmp(line, "<<<", 3))
 		return (true);
-	else if (!strncmp(line, "<<>", 3))
+	else if (!ft_strncmp(line, "<<>", 3))
 		return (true);
 	return (false);
 }
@@ -67,7 +67,7 @@ bool	is_redirect(char c, char **skipped, char *line)
 		g_return_error.tokenize_error = true;
 		return (false);
 	}
-	else if (!strncmp(line, ">>", 2) || !strncmp(line, "<<", 2))
+	else if (!ft_strncmp(line, ">>", 2) || !ft_strncmp(line, "<<", 2))
 		return (true);
 	return (c == '>' || c == '<');
 }

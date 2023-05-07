@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   into_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enogaWa <enogawa@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 02:26:51 by yshimoda          #+#    #+#             */
-/*   Updated: 2023/03/16 14:11:05 by enogaWa          ###   ########.fr       */
+/*   Updated: 2023/05/07 14:15:30 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ t_tk	*pipe_into_list(char **skipped, char *line, t_tk *token)
 	}
 	else
 	{
-		word = strndup(line, 1);
+		word = ft_strndup(line, 1);
 		if (!word)
-			assert_error("strndup\n");
+			assert_error("ft_strndup\n");
 		line++;
 		*skipped = line;
 	}
@@ -57,7 +57,7 @@ t_tk	*word_into_list(char **skipped, char *line)
 		else
 			line++;
 	}
-	word = strndup(start, line - start);
+	word = ft_strndup(start, line - start);
 	*skipped = line;
 	return (token_new(word, TK_WORD));
 }
@@ -79,7 +79,7 @@ t_tk	*redirect_into_list(char **skipped,
 		start = line;
 		while (*line == c)
 			line++;
-		word = strndup(start, line - start);
+		word = ft_strndup(start, line - start);
 		*skipped = line;
 	}
 	return (token_new(word, TK_REDIRECT));
@@ -118,7 +118,7 @@ t_tk	*quoted_into_list(char **skipped, char *line, const char c)
 		else
 			line++;
 	}
-	word = strndup(start, line - start);
+	word = ft_strndup(start, line - start);
 	*skipped = line;
 	return (token_new(word, TK_WORD));
 }
