@@ -6,7 +6,7 @@
 /*   By: yshimoda <yshimoda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 09:56:32 by enogaWa           #+#    #+#             */
-/*   Updated: 2023/05/07 16:17:29 by yshimoda         ###   ########.fr       */
+/*   Updated: 2023/05/07 23:15:35 by yshimoda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ bool	check_file_dir_error(char *split, char *path, t_tk *token)
 {
 	if (!is_directory(split) && is_file(split))
 	{
-		if (ft_strchr(path, '/'))
+		if (ft_strchr(path, '/') && !access(path, X_OK))
 		{
 			file_exec_error(token->word, ": Not a directory\n");
 			g_return_error.return_value = 126;
