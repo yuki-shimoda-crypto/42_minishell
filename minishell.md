@@ -135,7 +135,6 @@ struct s_env
 - Only if original function exists add "ft" at head of the function
 
 ## Link_Minishell
-- [subject_pdf](https://cdn.intra.42.fr/pdf/pdf/65564/en.subject.pdf)
 - [github](https://github.com/yuki-shimoda-crypto/42_minishell)
 - [The Architecture of Open Source Applications](https://aosabook.org/en/index.html)
 - [The Architecture of Open Source Applications_日本語版](https://github.com/m-takagi/aosa-ja)
